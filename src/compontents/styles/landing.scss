@@ -1,0 +1,46 @@
+.landingimage{
+  height: 100vh;
+  width: 100vw;
+  background-image: url('../../assets/landingpic');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: #cc55cc;
+
+}
+.layer{
+  background-color: rgba(12,12,12, 0.6);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Text{
+  color: white;
+  width: 100%;
+  font-family: "Segoe UI ",sans-serif;
+  line-height: 0.5;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-size: 300px;
+  font-weight: 200;
+
+}
+.SplashText{
+  text-align: center;
+
+}
+h1{
+  font-family: "Segoe UI ",sans-serif;
+  font-size: 5rem;
+  font-weight: 200;
+}
+
+.landingbutton{
+  font-family: "Segoe UI ",sans-serif;
+
+}
