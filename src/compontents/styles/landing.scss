@@ -34,13 +34,42 @@
   text-align: center;
 
 }
-h1{
-  font-family: "Segoe UI ",sans-serif;
+.h1landingimage{
+  font-family: "Segoe UI ", sans-serif;
+  color: white;
+  font-size: 5rem;
+  font-weight: 200;
+}
+
+.h1landingbutton{
+  font-family: "Segoe UI ", sans-serif;
+  color: dodgerblue;
   font-size: 5rem;
   font-weight: 200;
 }
 
 .landingbutton{
   font-family: "Segoe UI ",sans-serif;
+
+}
+
+.button-div{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-size: 7em;
+
+}
+
+.button-upis{
+  border-color: dodgerblue dodgerblue;
+  background: dodgerblue;
+  color: white;
+  opacity: 0.7;
+  border-radius: 10px;
+}
+
+.button-upis:hover{
+  opacity: 1;
 
 }

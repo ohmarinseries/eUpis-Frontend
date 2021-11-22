@@ -6,7 +6,7 @@ const Landing = () => {
     return(
       <div>
         <LandingImage />
-
+        <LandingButton />
       </div>
     );
 }
