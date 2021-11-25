@@ -1,14 +1,14 @@
 import "bootstrap/dist/css/bootstrap.css"
 import "./App.css"
 
-import Landing from "./pages/landing";
+import Navigation from "./Navigation";
 
 function App() {
 
   return (
       <div>
-  <Landing />
-      </div>
+          <Navigation />
+          </div>
         );
 }
 

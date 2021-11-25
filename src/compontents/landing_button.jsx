@@ -1,5 +1,6 @@
 import React from "react";
 import './styles/landing.scss'
+import {Link} from "react-router-dom";
 
 const LandingButton = () => {
     return(
@@ -9,7 +10,7 @@ const LandingButton = () => {
          <h1 className="h1landingbutton">Upisi se odmah!</h1>
         </div>
         <div className="button-div" style={{paddingTop: '10%', paddingBottom: '10%'}}>
-            <button className="button-upis" >Upisi se!</button>
+            <Link to="/form">  <button className="button-upis">  Upisi se!</button> </Link>
         </div>
 
        </div>
