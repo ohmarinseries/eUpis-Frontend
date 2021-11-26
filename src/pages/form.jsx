@@ -1,9 +1,14 @@
 import React from "react";
+import "../compontents/styles/form.scss"
+
+import FormHeader from "../compontents/form_header";
+import FormGeneralInfo from "../compontents/form_general_info";
 
 const Form = () => {
     return(
-         <div>
-             <h1>Forma</h1>
+         <div className="form">
+             <FormHeader />
+             <FormGeneralInfo />
 
          </div>
 
