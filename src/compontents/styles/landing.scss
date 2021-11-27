@@ -46,7 +46,7 @@
   background-color: transparent;
   color: #191919;
   overflow: hidden;
-  font-size: 5rem;
+  font-size: 3rem;
   font-weight: 200;
 }
 
@@ -59,7 +59,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  font-size: 7em;
+  font-size: 3em;
 
 }
 
@@ -78,5 +78,14 @@
   color: dodgerblue;
 }
 
-.landing{
+.landing-button-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 10% 0 10% 0;
+}
+.landing-button-header-container{
+  text-align: center;
+
 }

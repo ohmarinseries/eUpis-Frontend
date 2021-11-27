@@ -1,10 +1,48 @@
-import React from "react";
+import React, {useState} from "react";
 import "bootstrap/dist/css/bootstrap.css"
 import "../compontents/styles/form.scss"
 
 
-function FormGeneralInfo(){
-   // const [state, setState]=React.useState("");
+const FormGeneralInfo = () => {
+
+
+   const [surname, setSurname]=React.useState("");
+   const [fatherSurname, setFatherSurname]=React.useState("");
+   const [motherSurname, setMotherSurname]=React.useState("");
+
+
+
+    const handleSurnameOnChange = (e) => {
+        setSurname(e.target.value);
+
+    }
+
+    const handleSurnameOnBlur = (e) => {
+        setMotherSurname(e.target.value);
+        setFatherSurname(e.target.value);
+        setSurname(e.target.value);
+    }
+
+    /*
+    const handleMotherSurnameOnFocus = (e) => {
+        setMotherSurname(surname)
+
+    }
+    const handleFatherSurnameOnFocus = (e) => {
+        setFatherSurname(surname)
+
+    } */
+    const handleMotherSurnameOnChange = (e) => {
+
+        setMotherSurname(e.target.value);
+
+    }
+    const handleFatherSurnameOnChange = (e) => {
+
+        setFatherSurname(e.target.value);
+
+    }
+
 
     return(
         <div className="form-content">
@@ -20,7 +58,7 @@ function FormGeneralInfo(){
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input" > Prezime </label>
-                <input className="form-control" id="prezime-input" />
+                <input className="form-control" id="prezime-input" onChange={handleSurnameOnChange} onBlur={handleSurnameOnBlur}/>
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Datum Rođenja </label>
@@ -55,22 +93,23 @@ function FormGeneralInfo(){
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prezime Oca </label>
-                    <input className="form-control" id="prezimeoca-input"/>
+                    <input className="form-control" id="prezimeoca-input" value={fatherSurname} onChange={handleFatherSurnameOnChange} />
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Oca </label>
                     <input className="form-control" id="zanimanjeoca-input"/>
                 </div>
                 <div className="one-input-container">
-                    <label className="form-label" htmlFor="ime-input"> Ime Majke </label>
+                    <label className="form-label" htmlFor="ime-input"> Ime Majke</label>
                     <input  className="form-control" id="imeoca-input"/>
                 </div>
                 <div className="one-input-container">
-                    <label className="form-label" htmlFor="prezime-input"> Prezime Majke </label>
-                    <input className="form-control" id="prezimeoca-input"/>
+                    <label className="form-label" htmlFor="prezime-input"> Prezime Majke</label>
+                    <input className="form-control" id="prezimeoca-input" value={motherSurname}
+                           onChange={handleMotherSurnameOnChange}/>
                 </div>
                 <div className="one-input-container">
-                    <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Majke </label>
+                    <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Majke</label>
                     <input className="form-control" id="zanimanjeoca-input"/>
                 </div>
 
@@ -141,7 +180,7 @@ function FormGeneralInfo(){
                     <select id="drugistrani" className="form-select" >
                         <option value=" "> </option>
                         <option value="Engleski jezik"> Engleski jezik</option>
-                        <option value="Njemački jezik ">Njemački jezik </option>
+                        <option value="Njemački jezik">Njemački jezik </option>
                     </select>
                 </div>
                 <div className="one-input-container">
@@ -213,6 +252,9 @@ function FormGeneralInfo(){
             </div>
         </div>
     );
+
+
+    
 }
 
 
