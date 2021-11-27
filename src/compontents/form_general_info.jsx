@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React from "react";
+
 import "bootstrap/dist/css/bootstrap.css"
 import "../compontents/styles/form.scss"
 
@@ -23,20 +24,12 @@ const FormGeneralInfo = () => {
         setSurname(e.target.value);
     }
 
-    /*
-    const handleMotherSurnameOnFocus = (e) => {
-        setMotherSurname(surname)
-
-    }
-    const handleFatherSurnameOnFocus = (e) => {
-        setFatherSurname(surname)
-
-    } */
     const handleMotherSurnameOnChange = (e) => {
 
         setMotherSurname(e.target.value);
 
     }
+
     const handleFatherSurnameOnChange = (e) => {
 
         setFatherSurname(e.target.value);
@@ -66,7 +59,7 @@ const FormGeneralInfo = () => {
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Mjesto Rođenja </label>
-                <input type="date" className="form-control" id="prezime-input"/>
+                <input className="form-control" id="prezime-input"/>
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="ime-input"> Općina Rođenja </label>
@@ -155,7 +148,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Broj Svjedodžbe </label>
-                    <input type="number" className="form-control" id="zanimanjeoca-input"/>
+                    <input className="form-control" id="zanimanjeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="ime-input"> Datum svjedodžbe </label>

@@ -7,7 +7,7 @@ const FormHeader = () => {
     return(
         <div className="header-container">
         <div className="logo-form-header">
-        <img src={logo_ets} alt="logoets" style={{height:'50%', width:'40%'}}/>
+        <img src={logo_ets} alt="logoets" style={{height:'100%', width:'auto'}}/>
         </div>
 
         <div className="h1-form-header">
