@@ -6,47 +6,56 @@ import "../compontents/styles/form.scss"
 
 const FormGeneralInfo = () => {
 
+    const [surnames, setSurnames] = React.useState({surname:"", fatherSurname:"", motherSurname:""});
+    const [candidate, setCandidate] = React.useState({
+        name:"",
+        surname:""
 
-   const [surname, setSurname]=React.useState("");
-   const [fatherSurname, setFatherSurname]=React.useState("");
-   const [motherSurname, setMotherSurname]=React.useState("");
+    })
 
 
 
     const handleSurnameOnChange = (e) => {
-        setSurname(e.target.value);
+        setSurnames({surname:e.target.value, fatherSurname: surnames.fatherSurname, motherSurname: surnames.motherSurname});
 
     }
 
     const handleSurnameOnBlur = (e) => {
-        setMotherSurname(e.target.value);
-        setFatherSurname(e.target.value);
-        setSurname(e.target.value);
+        setSurnames({surname:e.target.value, fatherSurname: e.target.value, motherSurname: e.target.value});
     }
 
     const handleMotherSurnameOnChange = (e) => {
 
-        setMotherSurname(e.target.value);
+        setSurnames({surname:surnames.surname, fatherSurname: surnames.fatherSurname, motherSurname: e.target.value});
 
     }
 
     const handleFatherSurnameOnChange = (e) => {
 
-        setFatherSurname(e.target.value);
+        setSurnames({surname:surnames.surname, fatherSurname: e.target.value, motherSurname: surnames.motherSurname});
+
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        console.log(surnames);
+
 
     }
 
 
     return(
         <div className="form-content">
+            <form onSubmit={handleSubmit}>
         <div className="input-container">
             <div className="input-container-header">
              <p>Informacije o kandidatu</p>
             </div>
             <div className="one-input-container">
 
-                <label htmlFor="ime-input" for="floatingTextarea2" > Ime </label>
-                <input className="form-control" id="floatingTextarea2" />
+                <label htmlFor="floatingTextarea2" > Ime </label>
+                <input className="form-control" id="floatingTextarea2" autoFocus required />
 
             </div>
             <div className="one-input-container">
@@ -59,7 +68,7 @@ const FormGeneralInfo = () => {
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Mjesto Rođenja </label>
-                <input className="form-control" id="prezime-input"/>
+                <input className="form-control" id="prezime-input" required/>
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="ime-input"> Općina Rođenja </label>
@@ -86,7 +95,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prezime Oca </label>
-                    <input className="form-control" id="prezimeoca-input" value={fatherSurname} onChange={handleFatherSurnameOnChange} />
+                    <input className="form-control" id="prezimeoca-input" value={surnames.fatherSurname} onChange={handleFatherSurnameOnChange} />
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Oca </label>
@@ -98,7 +107,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prezime Majke</label>
-                    <input className="form-control" id="prezimeoca-input" value={motherSurname}
+                    <input className="form-control" id="prezimeoca-input" value={surnames.motherSurname}
                            onChange={handleMotherSurnameOnChange}/>
                 </div>
                 <div className="one-input-container">
@@ -239,10 +248,11 @@ const FormGeneralInfo = () => {
                     <p>Poslaji podatke</p>
                 </div>
                 <div className="one-input-container">
-                    <input className="btn-lg btn-primary" type="submit" value="Pošalji" />
+                    <input className="btn-lg btn-primary" type="submit" value="Pošalji"  />
                 </div>
 
             </div>
+            </form>
         </div>
     );
 
