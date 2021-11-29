@@ -6,33 +6,60 @@ import "../compontents/styles/form.scss"
 
 const FormGeneralInfo = () => {
 
-    const [surnames, setSurnames] = React.useState({surname:"", fatherSurname:"", motherSurname:""});
+    const [surnames, setSurnames] = React.useState({surname:"", father_surname:"", mother_surname:""});
     const [candidate, setCandidate] = React.useState({
         name:"",
-        surname:""
+        surname:"",
+        birth_date:"",
+        birth_place:"",
+        birth_muncipality:"",
+        birth_republic:"",
+        citizenship:"",
+        father_name:"",
+        father_surname:"",
+        father_proffesion:"",
+        mother_name:"",
+        mother_surname:"",
+        mother_proffesion:"",
+        street:"",
+        house_number:0,
+        residence_place:"",
+        residence_muncipality:"",
+        phone:"",
+        email_contact:"",
+        elementary_school:"",
+        testimony_number:"",
+        testimony_date:"",
+        first_foriegn_language:"",
+        second_foriegn_language:"",
+        facultative_subject:"",
+        first_choice:"",
+        second_choice:"",
+        third_choice:""
+        
 
     })
 
 
 
     const handleSurnameOnChange = (e) => {
-        setSurnames({surname:e.target.value, fatherSurname: surnames.fatherSurname, motherSurname: surnames.motherSurname});
+        setSurnames({surname:e.target.value, father_surname: surnames.father_surname, mother_surname: surnames.mother_surname});
 
     }
 
     const handleSurnameOnBlur = (e) => {
-        setSurnames({surname:e.target.value, fatherSurname: e.target.value, motherSurname: e.target.value});
+        setSurnames({surname:e.target.value, father_surname: e.target.value, mother_surname: e.target.value});
     }
 
     const handleMotherSurnameOnChange = (e) => {
 
-        setSurnames({surname:surnames.surname, fatherSurname: surnames.fatherSurname, motherSurname: e.target.value});
+        setSurnames({surname:surnames.surname, father_surname: surnames.father_surname, mother_surname: e.target.value});
 
     }
 
     const handleFatherSurnameOnChange = (e) => {
 
-        setSurnames({surname:surnames.surname, fatherSurname: e.target.value, motherSurname: surnames.motherSurname});
+        setSurnames({surname:surnames.surname, father_surname: e.target.value, mother_surname: surnames.mother_surname});
 
     }
 
@@ -95,7 +122,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prezime Oca </label>
-                    <input className="form-control" id="prezimeoca-input" value={surnames.fatherSurname} onChange={handleFatherSurnameOnChange} />
+                    <input className="form-control" id="prezimeoca-input" value={surnames.father_surname} onChange={handleFatherSurnameOnChange} />
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Oca </label>
@@ -107,7 +134,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prezime Majke</label>
-                    <input className="form-control" id="prezimeoca-input" value={surnames.motherSurname}
+                    <input className="form-control" id="prezimeoca-input" value={surnames.mother_surname}
                            onChange={handleMotherSurnameOnChange}/>
                 </div>
                 <div className="one-input-container">
