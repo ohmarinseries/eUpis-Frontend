@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 
 import "bootstrap/dist/css/bootstrap.css"
 import "../compontents/styles/form.scss"
-import { NULL } from "node-sass";
+
 
 
 const FormGeneralInfo = () => {
@@ -63,7 +63,7 @@ const FormGeneralInfo = () => {
     const elementary_school_input = useRef(null);
     const testimony_date_input = useRef(null);
     const testimony_number_input = useRef(null);
-    const first_foriegn_language_input = useEffect(null);
+    const first_foriegn_language_input = useRef(null);
     const second_foriegn_language_input = useRef(null);
     const facultative_subject_input = useRef(null);
     const first_choice_input = useRef(null);
@@ -71,7 +71,43 @@ const FormGeneralInfo = () => {
     const third_choice_input = useRef(null);
 
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
+        setCandidate({
+            name : name_input.current.value,
+            surname: surname_input.current.value,
+            birth_date: birth_date_input.current.value,
+            birth_place: birth_place_input.current.value,
+            birth_muncipality: birth_muncipality_input.current.value,
+            birth_republic: birth_republic_input.current.value,
+            citizenship: citizenship_input.current.value,
+            father_name: father_name_input.current.value,
+            father_surname: father_surname_input.current.value,
+            father_proffesion: father_proffesion_input.current.value,
+            mother_name: mother_name_input.current.value,
+            mother_surname: mother_surname_input.current.value,
+            mother_proffesion: mother_proffesion_input.current.value,
+            street: street_input.current.value,
+            house_number: house_number_input.current.value,
+            residence_place: residence_place_input.current.value,
+            residence_muncipality: residence_muncipality_input.current.value,
+            phone: phone_input.current.value,
+            email_contact: email_contact_input.current.value,
+            elementary_school: elementary_school_input.current.value,
+            testimony_number: testimony_number_input.current.value,
+            testimony_date: testimony_date_input.current.value,
+            first_foriegn_language: first_foriegn_language_input.value,
+            second_foriegn_language: second_foriegn_language_input.current.value,
+            facultative_subject: facultative_subject_input.current.value,
+            first_choice:first_choice_input.current.value,
+            second_choice:second_choice_input.current.value,
+            third_choice: third_choice_input.current.value
+
+        });
+
+        console.log(candidate);
+    }
 
 
     const handleSurnameOnChange = (e) => {
@@ -95,13 +131,7 @@ const FormGeneralInfo = () => {
 
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        console.log(surnames);
-
-
-    }
+    
 
 
     return(
