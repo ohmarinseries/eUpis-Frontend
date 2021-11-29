@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import "bootstrap/dist/css/bootstrap.css"
 import "../compontents/styles/form.scss"
+import { NULL } from "node-sass";
 
 
 const FormGeneralInfo = () => {
@@ -36,9 +37,40 @@ const FormGeneralInfo = () => {
         first_choice:"",
         second_choice:"",
         third_choice:""
-        
-
     })
+
+    //Ref
+
+    const name_input = useRef(null);
+    const surname_input = useRef(null);
+    const birth_date_input = useRef(null);
+    const birth_place_input = useRef(null);
+    const birth_muncipality_input = useRef(null);
+    const birth_republic_input = useRef(null);
+    const citizenship_input = useRef(null);
+    const father_name_input = useRef(null);
+    const father_surname_input = useRef(null);
+    const father_proffesion_input = useRef(null);
+    const mother_name_input = useRef(null);
+    const mother_surname_input = useRef(null);
+    const mother_proffesion_input = useRef(null);
+    const street_input = useRef(null);
+    const house_number_input = useRef(null);
+    const residence_place_input = useRef(null);
+    const residence_muncipality_input = useRef(null);
+    const phone_input = useRef(null);
+    const email_contact_input = useRef(null);
+    const elementary_school_input = useRef(null);
+    const testimony_date_input = useRef(null);
+    const testimony_number_input = useRef(null);
+    const first_foriegn_language_input = useEffect(null);
+    const second_foriegn_language_input = useRef(null);
+    const facultative_subject_input = useRef(null);
+    const first_choice_input = useRef(null);
+    const second_choice_input = useRef(null);
+    const third_choice_input = useRef(null);
+
+
 
 
 
@@ -82,32 +114,32 @@ const FormGeneralInfo = () => {
             <div className="one-input-container">
 
                 <label htmlFor="floatingTextarea2" > Ime </label>
-                <input className="form-control" id="floatingTextarea2" autoFocus required />
+                <input ref={name_input} className="form-control" id="floatingTextarea2" autoFocus required />
 
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input" > Prezime </label>
-                <input className="form-control" id="prezime-input" onChange={handleSurnameOnChange} onBlur={handleSurnameOnBlur}/>
+                <input ref={surname_input} className="form-control" id="prezime-input" onChange={handleSurnameOnChange} onBlur={handleSurnameOnBlur}/>
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Datum Rođenja </label>
-                <input type="date" className="form-control" id="prezime-input"/>
+                <input ref={birth_date_input} type="date" className="form-control" id="prezime-input"/>
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Mjesto Rođenja </label>
-                <input className="form-control" id="prezime-input" required/>
+                <input ref={birth_place_input} className="form-control" id="prezime-input" required/>
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="ime-input"> Općina Rođenja </label>
-                <input  className="form-control" id="ime-input"/>
+                <input ref={birth_muncipality_input} className="form-control" id="ime-input"/>
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Republika Rođenja </label>
-                <input className="form-control" id="prezime-input"/>
+                <input ref={birth_republic_input} className="form-control" id="prezime-input"/>
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Državljanstvo </label>
-                <input className="form-control" id="prezime-input"/>
+                <input ref={citizenship_input} className="form-control" id="prezime-input"/>
             </div>
 
 
@@ -118,28 +150,28 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="ime-input"> Ime Oca </label>
-                    <input  className="form-control" id="imeoca-input"/>
+                    <input ref={father_name_input} className="form-control" id="imeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prezime Oca </label>
-                    <input className="form-control" id="prezimeoca-input" value={surnames.father_surname} onChange={handleFatherSurnameOnChange} />
+                    <input ref={father_surname_input} className="form-control" id="prezimeoca-input" value={surnames.father_surname} onChange={handleFatherSurnameOnChange} />
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Oca </label>
-                    <input className="form-control" id="zanimanjeoca-input"/>
+                    <input ref={father_proffesion_input} className="form-control" id="zanimanjeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="ime-input"> Ime Majke</label>
-                    <input  className="form-control" id="imeoca-input"/>
+                    <input ref={mother_name_input} className="form-control" id="imeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prezime Majke</label>
-                    <input className="form-control" id="prezimeoca-input" value={surnames.mother_surname}
+                    <input ref={mother_surname_input} className="form-control" id="prezimeoca-input" value={surnames.mother_surname}
                            onChange={handleMotherSurnameOnChange}/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Majke</label>
-                    <input className="form-control" id="zanimanjeoca-input"/>
+                    <input ref={mother_proffesion_input} className="form-control" id="zanimanjeoca-input"/>
                 </div>
 
 
@@ -150,27 +182,27 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Ulica </label>
-                    <input className="form-control" id="prezimeoca-input"/>
+                    <input ref={street_input} className="form-control" id="prezimeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Broj </label>
-                    <input type="number" className="form-control" id="zanimanjeoca-input"/>
+                    <input ref={house_number_input} type="number" className="form-control" id="zanimanjeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="ime-input"> Mjesto </label>
-                    <input  className="form-control" id="imeoca-input"/>
+                    <input ref={residence_place_input} className="form-control" id="imeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Općina </label>
-                    <input className="form-control" id="prezimeoca-input"/>
+                    <input ref={residence_muncipality_input} className="form-control" id="prezimeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Telefon </label>
-                    <input className="form-control" id="zanimanjeoca-input"/>
+                    <input ref={phone_input} className="form-control" id="zanimanjeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Email </label>
-                    <input type="email" className="form-control" id="prezimeoca-input"/>
+                    <input ref={email_contact_input} type="email" className="form-control" id="prezimeoca-input"/>
                 </div>
 
             </div>
@@ -180,15 +212,15 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Osnovna škola </label>
-                    <input className="form-control" id="prezimeoca-input"/>
+                    <input ref={elementary_school_input} className="form-control" id="prezimeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Broj Svjedodžbe </label>
-                    <input className="form-control" id="zanimanjeoca-input"/>
+                    <input ref={testimony_number_input} className="form-control" id="zanimanjeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="ime-input"> Datum svjedodžbe </label>
-                    <input type="date" className="form-control" id="imeoca-input"/>
+                    <input ref={testimony_date_input} type="date" className="form-control" id="imeoca-input"/>
                 </div>
 
             </div>
@@ -198,7 +230,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prvi strani jezik </label>
-                    <select id="drugistrani" className="form-select" >
+                    <select ref={first_foriegn_language_input} id="drugistrani" className="form-select" >
                         <option value=" "> </option>
                         <option value="Engleski jezik">Engleski jezik </option>
                         <option value="Njemački jezik ">Njemački jezik </option>
@@ -206,7 +238,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Drugi strani jezik </label>
-                    <select id="drugistrani" className="form-select" >
+                    <select ref={second_foriegn_language_input} id="drugistrani" className="form-select" >
                         <option value=" "> </option>
                         <option value="Engleski jezik"> Engleski jezik</option>
                         <option value="Njemački jezik">Njemački jezik </option>
@@ -214,7 +246,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="fakultativni"> Izborno - Fakultativna nastava (obavezna) </label>
-                    <select id="fakultativni" className="form-select" >
+                    <select ref={facultative_subject_input} id="fakultativni" className="form-select" >
                         <option value=" "> </option>
                         <option value="Islamski vjeronauk">Islamski vjeronauk</option>
                         <option value="Katolički vjeronauk">Katolicki vjeronauk</option>
@@ -231,7 +263,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prvi želja </label>
-                    <select id="drugistrani" className="form-select" >
+                    <select ref={first_choice_input} id="drugistrani" className="form-select" >
                         <option value=" "> </option>
                         <option value="Tehničar računarstva"> Tehničar računarstva</option>
                         <option value="Tehničar elektronike">Tehničar elektronike </option>
@@ -244,7 +276,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Druga želja </label>
-                    <select id="drugistrani" className="form-select" >
+                    <select ref={second_choice_input} id="drugistrani" className="form-select" >
                         <option value=" "> </option>
                         <option value="Tehničar računarstva"> Tehničar računarstva</option>
                         <option value="Tehničar elektronike">Tehničar elektronike </option>
@@ -257,7 +289,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="fakultativni"> Treća želja </label>
-                    <select id="fakultativni" className="form-select" >
+                    <select ref={third_choice_input} id="fakultativni" className="form-select" >
                         <option value=" "> </option>
                         <option value="Tehničar računarstva"> Tehničar računarstva</option>
                         <option value="Tehničar elektronike">Tehničar elektronike </option>
