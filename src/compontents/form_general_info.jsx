@@ -1,43 +1,16 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useRef} from "react";
 
 import "bootstrap/dist/css/bootstrap.css"
 import "../compontents/styles/form.scss"
 
 
 
+
+
 const FormGeneralInfo = () => {
 
-    const [surnames, setSurnames] = React.useState({surname:"", father_surname:"", mother_surname:""});
-    const [candidate, setCandidate] = React.useState({
-        name:"",
-        surname:"",
-        birth_date:"",
-        birth_place:"",
-        birth_muncipality:"",
-        birth_republic:"",
-        citizenship:"",
-        father_name:"",
-        father_surname:"",
-        father_proffesion:"",
-        mother_name:"",
-        mother_surname:"",
-        mother_proffesion:"",
-        street:"",
-        house_number:0,
-        residence_place:"",
-        residence_muncipality:"",
-        phone:"",
-        email_contact:"",
-        elementary_school:"",
-        testimony_number:"",
-        testimony_date:"",
-        first_foriegn_language:"",
-        second_foriegn_language:"",
-        facultative_subject:"",
-        first_choice:"",
-        second_choice:"",
-        third_choice:""
-    })
+    const [surnames, setSurnames] = useState({surname:"", father_surname:"", mother_surname:""});
+
 
     //Ref
 
@@ -70,43 +43,72 @@ const FormGeneralInfo = () => {
     const second_choice_input = useRef(null);
     const third_choice_input = useRef(null);
 
+    const candidateObj = {
+        name:"",
+        surname:"",
+        birth_date:"",
+        birth_place:"",
+        birth_muncipality:"",
+        birth_republic:"",
+        citizenship:"",
+        father_name:"",
+        father_surname:"",
+        father_proffesion:"",
+        mother_name:"",
+        mother_surname:"",
+        mother_proffesion:"",
+        street:"",
+        house_number:0,
+        residence_place:"",
+        residence_muncipality:"",
+        phone:"",
+        email_contact:"",
+        elementary_school:"",
+        testimony_number:"",
+        testimony_date:"",
+        first_foriegn_language:"",
+        second_foriegn_language:"",
+        facultative_subject:"",
+        first_choice:"",
+        second_choice:"",
+        third_choice:""
+    }
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+             e.preventDefault();
 
-        setCandidate({
-            name : name_input.current.value,
-            surname: surname_input.current.value,
-            birth_date: birth_date_input.current.value,
-            birth_place: birth_place_input.current.value,
-            birth_muncipality: birth_muncipality_input.current.value,
-            birth_republic: birth_republic_input.current.value,
-            citizenship: citizenship_input.current.value,
-            father_name: father_name_input.current.value,
-            father_surname: father_surname_input.current.value,
-            father_proffesion: father_proffesion_input.current.value,
-            mother_name: mother_name_input.current.value,
-            mother_surname: mother_surname_input.current.value,
-            mother_proffesion: mother_proffesion_input.current.value,
-            street: street_input.current.value,
-            house_number: house_number_input.current.value,
-            residence_place: residence_place_input.current.value,
-            residence_muncipality: residence_muncipality_input.current.value,
-            phone: phone_input.current.value,
-            email_contact: email_contact_input.current.value,
-            elementary_school: elementary_school_input.current.value,
-            testimony_number: testimony_number_input.current.value,
-            testimony_date: testimony_date_input.current.value,
-            first_foriegn_language: first_foriegn_language_input.value,
-            second_foriegn_language: second_foriegn_language_input.current.value,
-            facultative_subject: facultative_subject_input.current.value,
-            first_choice:first_choice_input.current.value,
-            second_choice:second_choice_input.current.value,
-            third_choice: third_choice_input.current.value
 
-        });
+            candidateObj.name = name_input.current.value;
+            candidateObj.surname = surname_input.current.value;
+            candidateObj.birth_date = birth_date_input.current.value;
+            candidateObj.birth_place = birth_place_input.current.value;
+            candidateObj.birth_muncipality = birth_muncipality_input.current.value;
+            candidateObj.birth_republic = birth_republic_input.current.value;
+            candidateObj.citizenship = citizenship_input.current.value;
+            candidateObj.father_name = father_name_input.current.value;
+            candidateObj.father_surname = father_surname_input.current.value;
+            candidateObj.father_proffesion = father_proffesion_input.current.value;
+            candidateObj.mother_name = mother_name_input.current.value;
+            candidateObj.mother_surname = mother_surname_input.current.value;
+            candidateObj.mother_proffesion = mother_proffesion_input.current.value;
+            candidateObj.street = street_input.current.value;
+            candidateObj.house_number = house_number_input.current.value;
+            candidateObj.residence_place = residence_place_input.current.value;
+            candidateObj.residence_muncipality = residence_muncipality_input.current.value;
+            candidateObj.phone = phone_input.current.value;
+            candidateObj.email_contact = email_contact_input.current.value;
+            candidateObj.elementary_school = elementary_school_input.current.value;
+            candidateObj.testimony_number = testimony_number_input.current.value;
+            candidateObj.testimony_date = testimony_date_input.current.value;
+            candidateObj.first_foriegn_language = first_foriegn_language_input.current.value;
+            candidateObj.second_foriegn_language = second_foriegn_language_input.current.value;
+            candidateObj.facultative_subject = facultative_subject_input.current.value;
+            candidateObj.first_choice = first_choice_input.current.value;
+            candidateObj.second_choice = second_choice_input.current.value;
+            candidateObj.third_choice = third_choice_input.current.value;
 
-        console.log(candidate);
+            console.log(candidateObj);
+
     }
 
 
@@ -136,7 +138,7 @@ const FormGeneralInfo = () => {
 
     return(
         <div className="form-content">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={event => handleSubmit(event)}>
         <div className="input-container">
             <div className="input-container-header">
              <p>Informacije o kandidatu</p>
@@ -148,8 +150,10 @@ const FormGeneralInfo = () => {
 
             </div>
             <div className="one-input-container">
+
                 <label className="form-label" htmlFor="prezime-input" > Prezime </label>
                 <input ref={surname_input} className="form-control" id="prezime-input" onChange={handleSurnameOnChange} onBlur={handleSurnameOnBlur}/>
+
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Datum Rođenja </label>
@@ -337,7 +341,7 @@ const FormGeneralInfo = () => {
                     <p>Poslaji podatke</p>
                 </div>
                 <div className="one-input-container">
-                    <input className="btn-lg btn-primary" type="submit" value="Pošalji"  />
+                    <input className="btn-lg btn-primary" type="submit" value="Pošalji" />
                 </div>
 
             </div>
