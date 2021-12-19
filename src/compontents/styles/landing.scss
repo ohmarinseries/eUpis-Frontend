@@ -22,7 +22,7 @@
 .Text{
   color: white;
   width: 100%;
-  font-family: "Segoe UI ",sans-serif;
+  font-family: Bahnschrift, serif;
   line-height: 0.5;
   display: flex;
   justify-content: center;
@@ -36,14 +36,14 @@
 
 }
 .h1landingimage{
-  font-family: "Segoe UI ", sans-serif;
+  font-family: Bahnschrift, serif;
   color: white;
   font-size: 5rem;
   font-weight: 200;
 }
 
 .h1landingbutton{
-  font-family: "Segoe UI ", sans-serif;
+  font-family: Bahnschrift, serif;
   background-color: transparent;
   color: #191919;
   overflow: hidden;
@@ -52,15 +52,17 @@
 }
 
 .landingbutton{
-  font-family: "Segoe UI ",sans-serif;
+  font-family: Bahnschrift, serif;
 
 }
 
 .button-div{
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   font-size: 3em;
+  height: 100%;
+  width: 50%;
 
 }
 
@@ -82,12 +84,96 @@
 .landing-button-container{
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin: 10% 0 10% 0;
+  margin-top: 150px;
+  margin-bottom: 150px;
+  height: 100%;
+  width: 100%;
+  border-radius: 1rem;
+
 }
 
 .landing-button-header-container{
   text-align: center;
+  height: 100%;
+  width: 50%;
 
+}
+.tutorial-image-div{
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.tutorial-text-container-div{
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.tutorial-text-div{
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+}
+
+.image{
+  width: 75%;
+  height: 75%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px;
+
+}
+.email-image{
+  width: 60%;
+  height: 60%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px;
+
+}
+
+.landing{
+  height: 100%;
+  width: 100vw;
+
+}
+
+.line-separator-div{
+  width: 100%;
+  height: 5%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.line-separator{
+  border: 1px solid #5c5e5d;
+  width: 50%;
+}
+
+.h1-tutorial{
+  font-size: 4rem;
+  font-family: Bahnschrift, serif;
+  font-weight: lighter;
+}
+
+.p-tutorial{
+  font-size: 2rem;
+  font-family: Bahnschrift, serif;
+  font-weight: lighter;
+}
+
+.tutorial-block{
+  margin-bottom: 50px;
 }

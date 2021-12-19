@@ -9,7 +9,7 @@ const LandingImage = () => {
                 <div className="Text">
                  <div className="SplashText">
                   <h1 className="h1landingimage">eUpis</h1>
-                  <h1 className="h1landingimage">Elektrotehnicka Skola Tuzla</h1>
+                  <h1 className="h1landingimage">Elektrotehnička Škola Tuzla</h1>
                  </div>
                 </div>
 

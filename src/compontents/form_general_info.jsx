@@ -175,6 +175,10 @@ const FormGeneralInfo = () => {
                 <label className="form-label" htmlFor="prezime-input"> Državljanstvo </label>
                 <input ref={citizenship_input} className="form-control" id="prezime-input"/>
             </div>
+            <div className="one-input-container">
+                <label className="form-label" htmlFor="prezime-input"> JMBG </label>
+                <input ref={citizenship_input} className="form-control" id="prezime-input"/>
+            </div>
 
 
         </div>
@@ -296,7 +300,7 @@ const FormGeneralInfo = () => {
                     <p>Izbor usmjerenja</p>
                 </div>
                 <div className="one-input-container">
-                    <label className="form-label" htmlFor="prezime-input"> Prvi želja </label>
+                    <label className="form-label" htmlFor="prezime-input"> Prvi Želja </label>
                     <select ref={first_choice_input} id="drugistrani" className="form-select" >
                         <option value=" "> </option>
                         <option value="Tehničar računarstva"> Tehničar računarstva</option>
@@ -309,7 +313,7 @@ const FormGeneralInfo = () => {
                     </select>
                 </div>
                 <div className="one-input-container">
-                    <label className="form-label" htmlFor="prezime-input"> Druga želja </label>
+                    <label className="form-label" htmlFor="prezime-input"> Druga Želja (neobavezno) </label>
                     <select ref={second_choice_input} id="drugistrani" className="form-select" >
                         <option value=" "> </option>
                         <option value="Tehničar računarstva"> Tehničar računarstva</option>
@@ -322,7 +326,7 @@ const FormGeneralInfo = () => {
                     </select>
                 </div>
                 <div className="one-input-container">
-                    <label className="form-label" htmlFor="fakultativni"> Treća želja </label>
+                    <label className="form-label" htmlFor="fakultativni"> Treća Želja (neobavezno) </label>
                     <select ref={third_choice_input} id="fakultativni" className="form-select" >
                         <option value=" "> </option>
                         <option value="Tehničar računarstva"> Tehničar računarstva</option>
