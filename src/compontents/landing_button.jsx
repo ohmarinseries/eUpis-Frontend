@@ -17,7 +17,7 @@ const LandingButton = () => {
           <div className="tutorial-text-div">
               <h1 className="h1-tutorial">Forma</h1>
               <p className="p-tutorial">Unesite svoje podatke za upis </p>
-              <Link to="/form"><button className="btn-primary btn-lg ">Pošalji podatke</button></Link>
+              <Link to="/form"><button className="btn-primary btn-lg ">Forma za upis</button></Link>
           </div>
             </div>
         </div>
@@ -28,8 +28,10 @@ const LandingButton = () => {
                <div className="tutorial-image-div">
                    <div className="tutorial-text-container-div">
                        <h2 className="h1-tutorial">Email Rezultati</h2>
-                       <p className="p-tutorial">Unesite svoje podatke za upis</p>
-                       <Link to="/form"><button className="btn-primary btn-lg ">Pošalji podatke</button></Link>
+                       <p className="p-tutorial">
+                           Na email adresu koju ste unijeli u formi dobiti ćete
+                           vaš broj za upis i rezultate upisa
+                       </p>
                    </div>
                </div>
                <div className="tutorial-image-div"><img src={email_image} className="email-image" alt="Form"/></div>
@@ -43,8 +45,10 @@ const LandingButton = () => {
                <div className="tutorial-image-div">
                    <div className="tutorial-text-container-div">
                        <h2 className="h1-tutorial">Dokumenti</h2>
-                       <p className="p-tutorial">Unesite svoje podatke za upis</p>
-                       <Link to="/form"><button className="btn-primary btn-lg ">Pošalji podatke</button></Link>
+                       <p className="p-tutorial">
+                           Uz pomoć broja kojeg ste dobili na email nakon popunjavanja forme
+                           dolazite u objekat škole i predajete dokumente na validaciju
+                       </p>
                    </div>
                </div>
 
