@@ -1,115 +1,28 @@
-import React, { useState, useRef} from "react";
+import React, {useState} from "react";
+import {useForm} from "react-hook-form";
 
 import "bootstrap/dist/css/bootstrap.css"
 import "../compontents/styles/form.scss"
 
 
-
-
-
 const FormGeneralInfo = () => {
 
+    const {register, handleSubmit} = useForm();
+    const [result, setResult] = useState("");
+
+    const onSubmit = (data) => {
+        setResult(JSON.stringify(data));
+        console.log(data);
+        console.log(result);
+
+    }
+    const onError = (error) => {
+        console.log(error);
+
+    }
+
+
     const [surnames, setSurnames] = useState({surname:"", father_surname:"", mother_surname:""});
-
-
-    //Ref
-
-    const name_input = useRef(null);
-    const surname_input = useRef(null);
-    const birth_date_input = useRef(null);
-    const birth_place_input = useRef(null);
-    const birth_muncipality_input = useRef(null);
-    const birth_republic_input = useRef(null);
-    const citizenship_input = useRef(null);
-    const father_name_input = useRef(null);
-    const father_surname_input = useRef(null);
-    const father_proffesion_input = useRef(null);
-    const mother_name_input = useRef(null);
-    const mother_surname_input = useRef(null);
-    const mother_proffesion_input = useRef(null);
-    const street_input = useRef(null);
-    const house_number_input = useRef(null);
-    const residence_place_input = useRef(null);
-    const residence_muncipality_input = useRef(null);
-    const phone_input = useRef(null);
-    const email_contact_input = useRef(null);
-    const elementary_school_input = useRef(null);
-    const testimony_date_input = useRef(null);
-    const testimony_number_input = useRef(null);
-    const first_foriegn_language_input = useRef(null);
-    const second_foriegn_language_input = useRef(null);
-    const facultative_subject_input = useRef(null);
-    const first_choice_input = useRef(null);
-    const second_choice_input = useRef(null);
-    const third_choice_input = useRef(null);
-
-    const candidateObj = {
-        name:"",
-        surname:"",
-        birth_date:"",
-        birth_place:"",
-        birth_muncipality:"",
-        birth_republic:"",
-        citizenship:"",
-        father_name:"",
-        father_surname:"",
-        father_proffesion:"",
-        mother_name:"",
-        mother_surname:"",
-        mother_proffesion:"",
-        street:"",
-        house_number:0,
-        residence_place:"",
-        residence_muncipality:"",
-        phone:"",
-        email_contact:"",
-        elementary_school:"",
-        testimony_number:"",
-        testimony_date:"",
-        first_foriegn_language:"",
-        second_foriegn_language:"",
-        facultative_subject:"",
-        first_choice:"",
-        second_choice:"",
-        third_choice:""
-    }
-
-    const handleSubmit = (e) => {
-             e.preventDefault();
-
-
-            candidateObj.name = name_input.current.value;
-            candidateObj.surname = surname_input.current.value;
-            candidateObj.birth_date = birth_date_input.current.value;
-            candidateObj.birth_place = birth_place_input.current.value;
-            candidateObj.birth_muncipality = birth_muncipality_input.current.value;
-            candidateObj.birth_republic = birth_republic_input.current.value;
-            candidateObj.citizenship = citizenship_input.current.value;
-            candidateObj.father_name = father_name_input.current.value;
-            candidateObj.father_surname = father_surname_input.current.value;
-            candidateObj.father_proffesion = father_proffesion_input.current.value;
-            candidateObj.mother_name = mother_name_input.current.value;
-            candidateObj.mother_surname = mother_surname_input.current.value;
-            candidateObj.mother_proffesion = mother_proffesion_input.current.value;
-            candidateObj.street = street_input.current.value;
-            candidateObj.house_number = house_number_input.current.value;
-            candidateObj.residence_place = residence_place_input.current.value;
-            candidateObj.residence_muncipality = residence_muncipality_input.current.value;
-            candidateObj.phone = phone_input.current.value;
-            candidateObj.email_contact = email_contact_input.current.value;
-            candidateObj.elementary_school = elementary_school_input.current.value;
-            candidateObj.testimony_number = testimony_number_input.current.value;
-            candidateObj.testimony_date = testimony_date_input.current.value;
-            candidateObj.first_foriegn_language = first_foriegn_language_input.current.value;
-            candidateObj.second_foriegn_language = second_foriegn_language_input.current.value;
-            candidateObj.facultative_subject = facultative_subject_input.current.value;
-            candidateObj.first_choice = first_choice_input.current.value;
-            candidateObj.second_choice = second_choice_input.current.value;
-            candidateObj.third_choice = third_choice_input.current.value;
-
-            console.log(candidateObj);
-
-    }
 
 
     const handleSurnameOnChange = (e) => {
@@ -117,9 +30,9 @@ const FormGeneralInfo = () => {
 
     }
 
-    const handleSurnameOnBlur = (e) => {
+    /*const handleSurnameOnBlur = (e) => {
         setSurnames({surname:e.target.value, father_surname: e.target.value, mother_surname: e.target.value});
-    }
+    }*/
 
     const handleMotherSurnameOnChange = (e) => {
 
@@ -138,7 +51,7 @@ const FormGeneralInfo = () => {
 
     return(
         <div className="form-content">
-            <form onSubmit={event => handleSubmit(event)}>
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
         <div className="input-container">
             <div className="input-container-header">
              <p>Informacije o kandidatu</p>
@@ -146,38 +59,38 @@ const FormGeneralInfo = () => {
             <div className="one-input-container">
 
                 <label htmlFor="floatingTextarea2" > Ime </label>
-                <input ref={name_input} className="form-control" id="floatingTextarea2" autoFocus required />
+                <input type="text" {...register("name", { required: true })}  className="form-control" id="floatingTextarea2" autoFocus required />
 
             </div>
             <div className="one-input-container">
 
                 <label className="form-label" htmlFor="prezime-input" > Prezime </label>
-                <input ref={surname_input} className="form-control" id="prezime-input" onChange={handleSurnameOnChange} onBlur={handleSurnameOnBlur}/>
+                <input type="text" {...register("surname", { required: true })}  className="form-control" id="prezime-input" onChange={handleSurnameOnChange}/>
 
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Datum Rođenja </label>
-                <input ref={birth_date_input} type="date" className="form-control" id="prezime-input"/>
+                <input {...register("birth_date", { required: true })}  type="date" className="form-control" id="prezime-input"/>
             </div>
             <div className="one-input-container">
-                <label className="form-label" htmlFor="prezime-input"> Mjesto Rođenja </label>
-                <input ref={birth_place_input} className="form-control" id="prezime-input" required/>
+                <label className="form-label" htmlFor="birth_place-input"> Mjesto Rođenja </label>
+                <input type="text" {...register("birth_place", { required: true })}  className="form-control" id="birth_place-input" required/>
             </div>
             <div className="one-input-container">
-                <label className="form-label" htmlFor="ime-input"> Općina Rođenja </label>
-                <input ref={birth_muncipality_input} className="form-control" id="ime-input"/>
+                <label className="form-label" htmlFor="birth_muncipality-input"> Općina Rođenja </label>
+                <input type="text" {...register("birth_muncipality", { required: true })} className="form-control" id="birth_muncipality-input"/>
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Republika Rođenja </label>
-                <input ref={birth_republic_input} className="form-control" id="prezime-input"/>
+                <input type="text" {...register("birth_republic", { required: true })}  className="form-control" id="prezime-input"/>
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Državljanstvo </label>
-                <input ref={citizenship_input} className="form-control" id="prezime-input"/>
+                <input type="text" {...register("citizenship", { required: true })}  className="form-control" id="prezime-input"/>
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> JMBG </label>
-                <input ref={citizenship_input} className="form-control" id="prezime-input"/>
+                <input type="text" {...register("jmbg", { required: true })}  className="form-control" id="prezime-input"/>
             </div>
 
 
@@ -188,28 +101,28 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="ime-input"> Ime Oca </label>
-                    <input ref={father_name_input} className="form-control" id="imeoca-input"/>
+                    <input type="text" {...register("father_name", { required: true })}  className="form-control" id="imeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prezime Oca </label>
-                    <input ref={father_surname_input} className="form-control" id="prezimeoca-input" value={surnames.father_surname} onChange={handleFatherSurnameOnChange} />
+                    <input type="text" {...register("father_surname", { required: true })} className="form-control" id="prezimeoca-input" value={surnames.father_surname} onChange={handleFatherSurnameOnChange} />
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Oca </label>
-                    <input ref={father_proffesion_input} className="form-control" id="zanimanjeoca-input"/>
+                    <input type="text" {...register("father_profession", { required: true })} className="form-control" id="zanimanjeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="ime-input"> Ime Majke</label>
-                    <input ref={mother_name_input} className="form-control" id="imeoca-input"/>
+                    <input type="text" {...register("mother_name", { required: true })}  className="form-control" id="imeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prezime Majke</label>
-                    <input ref={mother_surname_input} className="form-control" id="prezimeoca-input" value={surnames.mother_surname}
+                    <input type="text" {...register("mother_surname", { required: true })} className="form-control" id="prezimeoca-input" value={surnames.mother_surname}
                            onChange={handleMotherSurnameOnChange}/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Majke</label>
-                    <input ref={mother_proffesion_input} className="form-control" id="zanimanjeoca-input"/>
+                    <input type="text" {...register("mother_profession", { required: true })}  className="form-control" id="zanimanjeoca-input"/>
                 </div>
 
 
@@ -220,27 +133,27 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Ulica </label>
-                    <input ref={street_input} className="form-control" id="prezimeoca-input"/>
+                    <input type="text" {...register("street", { required: true })}  className="form-control" id="prezimeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Broj </label>
-                    <input ref={house_number_input} type="number" className="form-control" id="zanimanjeoca-input"/>
+                    <input type="text" {...register("house_number", { required: true })}  className="form-control" id="zanimanjeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="ime-input"> Mjesto </label>
-                    <input ref={residence_place_input} className="form-control" id="imeoca-input"/>
+                    <input type="text" {...register("residence_place", { required: true })}  className="form-control" id="imeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Općina </label>
-                    <input ref={residence_muncipality_input} className="form-control" id="prezimeoca-input"/>
+                    <input {...register("residence_muncipality", { required: true })}  className="form-control" id="prezimeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Telefon </label>
-                    <input ref={phone_input} className="form-control" id="zanimanjeoca-input"/>
+                    <input type="text" {...register("phone", { required: true })}  className="form-control" id="zanimanjeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Email </label>
-                    <input ref={email_contact_input} type="email" className="form-control" id="prezimeoca-input"/>
+                    <input {...register("email_contact", { required: true })}  type="email" className="form-control" id="prezimeoca-input"/>
                 </div>
 
             </div>
@@ -250,15 +163,15 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Osnovna škola </label>
-                    <input ref={elementary_school_input} className="form-control" id="prezimeoca-input"/>
+                    <input {...register("elementary_school", { required: true })} className="form-control" id="prezimeoca-input"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Broj Svjedodžbe </label>
-                    <input ref={testimony_number_input} className="form-control" id="zanimanjeoca-input"/>
+                    <input {...register("testimony_number", { required: true })}  className="form-control" id="zanimanjeoca-input"/>
                 </div>
                 <div className="one-input-container">
-                    <label className="form-label" htmlFor="ime-input"> Datum svjedodžbe </label>
-                    <input ref={testimony_date_input} type="date" className="form-control" id="imeoca-input"/>
+                    <label className="form-label" htmlFor="ime-input"> Datum Svjedodžbe </label>
+                    <input {...register("testimony_date", { required: true })}  type="date" className="form-control" id="imeoca-input"/>
                 </div>
 
             </div>
@@ -268,7 +181,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prvi strani jezik </label>
-                    <select ref={first_foriegn_language_input} id="drugistrani" className="form-select" >
+                    <select {...register("first_foriegn_language", { required: true })}  id="drugistrani" className="form-select" >
                         <option value=" "> </option>
                         <option value="Engleski jezik">Engleski jezik </option>
                         <option value="Njemački jezik ">Njemački jezik </option>
@@ -276,7 +189,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Drugi strani jezik </label>
-                    <select ref={second_foriegn_language_input} id="drugistrani" className="form-select" >
+                    <select {...register("second_foriegn_language", { required: true })}  id="drugistrani" className="form-select" >
                         <option value=" "> </option>
                         <option value="Engleski jezik"> Engleski jezik</option>
                         <option value="Njemački jezik">Njemački jezik </option>
@@ -284,7 +197,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="fakultativni"> Izborno - Fakultativna nastava (obavezna) </label>
-                    <select ref={facultative_subject_input} id="fakultativni" className="form-select" >
+                    <select {...register("facultative_subject", { required: true })}  id="fakultativni" className="form-select" >
                         <option value=" "> </option>
                         <option value="Islamski vjeronauk">Islamski vjeronauk</option>
                         <option value="Katolički vjeronauk">Katolicki vjeronauk</option>
@@ -301,48 +214,48 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prvi Želja </label>
-                    <select ref={first_choice_input} id="drugistrani" className="form-select" >
+                    <select {...register("first_choice", { required: true })}  id="drugistrani" className="form-select" >
                         <option value=" "> </option>
-                        <option value="Tehničar računarstva"> Tehničar računarstva</option>
-                        <option value="Tehničar elektronike">Tehničar elektronike </option>
-                        <option value="Tehničar elektroenergetike">Tehničar elektroenergetike</option>
-                        <option value="Tehničar mehatronike">Tehničar mehatronike</option>
-                        <option value="Elektroničar telekomunikacija">Elektroničar telekomunikacija </option>
-                        <option value="Autoelektričar">Autoelektričar </option>
-                        <option value="Električar">Električar </option>
+                        <option value="A"> Tehničar računarstva</option>
+                        <option value="B">Tehničar elektronike</option>
+                        <option value="C">Tehničar elektroenergetike</option>
+                        <option value="D">Tehničar mehatronike</option>
+                        <option value="E">Elektroničar telekomunikacija</option>
+                        <option value="F">Autoelektričar</option>
+                        <option value="G">Električar</option>
                     </select>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Druga Želja (neobavezno) </label>
-                    <select ref={second_choice_input} id="drugistrani" className="form-select" >
-                        <option value=" "> </option>
-                        <option value="Tehničar računarstva"> Tehničar računarstva</option>
-                        <option value="Tehničar elektronike">Tehničar elektronike </option>
-                        <option value="Tehničar elektroenergetike">Tehničar elektroenergetike</option>
-                        <option value="Tehničar mehatronike">Tehničar mehatronike</option>
-                        <option value="Elektroničar telekomunikacija">Elektroničar telekomunikacija </option>
-                        <option value="Autoelektričar">Autoelektričar </option>
-                        <option value="Električar">Električar </option>
+                    <select {...register("second_choice")}  id="drugistrani" className="form-select" >
+                        <option value={null}> </option>
+                        <option value="A">Tehničar računarstva</option>
+                        <option value="B">Tehničar elektronike</option>
+                        <option value="C">Tehničar elektroenergetike</option>
+                        <option value="D">Tehničar mehatronike</option>
+                        <option value="E">Elektroničar telekomunikacija</option>
+                        <option value="F">Autoelektričar</option>
+                        <option value="G">Električar</option>
                     </select>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="fakultativni"> Treća Želja (neobavezno) </label>
-                    <select ref={third_choice_input} id="fakultativni" className="form-select" >
-                        <option value=" "> </option>
-                        <option value="Tehničar računarstva"> Tehničar računarstva</option>
-                        <option value="Tehničar elektronike">Tehničar elektronike </option>
-                        <option value="Tehničar elektroenergetike">Tehničar elektroenergetike</option>
-                        <option value="Tehničar mehatronike">Tehničar mehatronike</option>
-                        <option value="Elektroničar telekomunikacija">Elektroničar telekomunikacija </option>
-                        <option value="Autoelektričar">Autoelektričar </option>
-                        <option value="Električar">Električar </option>
+                    <select {...register("third_choice")}  id="fakultativni" className="form-select" >
+                        <option value={null}> </option>
+                        <option value="A">Tehničar računarstva</option>
+                        <option value="B">Tehničar elektronike</option>
+                        <option value="C">Tehničar elektroenergetike</option>
+                        <option value="D">Tehničar mehatronike</option>
+                        <option value="E">Elektroničar telekomunikacija</option>
+                        <option value="F">Autoelektričar</option>
+                        <option value="G">Električar</option>
                     </select>
                 </div>
 
             </div>
             <div className="input-container">
                 <div className="input-container-header">
-                    <p>Poslaji podatke</p>
+                    <p>Pošalji podatke</p>
                 </div>
                 <div className="one-input-container">
                     <input className="btn-lg btn-primary" type="submit" value="Pošalji" />

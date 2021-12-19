@@ -12,22 +12,22 @@ const Footer = () => {
         <footer className="bg-dark text-center text-white">
             <div className="container p-4 pb-0">
                 <section className="mb-4">
-                    <a className="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/ETSTZ" role="button" style={{backgroundColor:"#FFFFFF"}}>
+                    <a className="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/ETSTZ" target="_blank" rel="noreferrer" role="button" style={{backgroundColor:"#FFFFFF"}}>
                         <i className="fab fa-facebook-f"><img src={facebook_icon} alt="facebook icon" /></i>
                     </a>
 
-                    <a className="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/etstuzla/" role="button" style={{backgroundColor:"#FFFFFF"}}>
+                    <a className="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/etstuzla/" target="_blank" rel="noreferrer" role="button" style={{backgroundColor:"#FFFFFF"}}>
                     <i className="fab fa-instagram"><img src={instagram_icon} alt="instagram icon" /></i>
                     </a>
 
-                    <a className="btn btn btn-floating m-1" href="https://github.com/ohmarinseries" role="button" style={{backgroundColor:"#FFFFFF"}}>
+                    <a className="btn btn btn-floating m-1" href="https://github.com/ohmarinseries" target="_blank" rel="noreferrer" role="button" style={{backgroundColor:"#FFFFFF"}}>
                         <i className="fab fa-github"><img src={github_icon} alt="Github icon" /> </i>
                     </a>
                 </section>
             </div>
 
             <div className="text-center p-3" style={{backgroundColor:"rgba(0, 0, 0, 0.2)"}}>
-                © 2021 Copyright : @<a className="text-white" href="https://github.com/ohmarinseries">ohmarinseries</a>
+                © 2021 Creator : @<a className="text-white" href="https://github.com/ohmarinseries" target="_blank" rel="noreferrer">ohmarinseries</a>
             </div>
 
         </footer>

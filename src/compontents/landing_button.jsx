@@ -32,6 +32,7 @@ const LandingButton = () => {
                            Na email adresu koju ste unijeli u formi dobiti ćete
                            vaš broj za upis i rezultate upisa
                        </p>
+                       <Link to="/email-tutorial"><button className="btn-primary btn-lg ">Saznaj više</button></Link>
                    </div>
                </div>
                <div className="tutorial-image-div"><img src={email_image} className="email-image" alt="Form"/></div>
@@ -49,6 +50,7 @@ const LandingButton = () => {
                            Uz pomoć broja kojeg ste dobili na email nakon popunjavanja forme
                            dolazite u objekat škole i predajete dokumente na validaciju
                        </p>
+                       <Link to="/documents-tutorial"><button className="btn-primary btn-lg ">Saznaj više</button></Link>
                    </div>
                </div>
 
