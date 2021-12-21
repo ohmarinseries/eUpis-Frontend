@@ -8,17 +8,15 @@ import "../compontents/styles/form.scss"
 const FormGeneralInfo = () => {
 
     const {register, handleSubmit} = useForm();
-    const [result, setResult] = useState("");
+    let candidateObj
 
     const onSubmit = (data) => {
-        setResult(JSON.stringify(data));
-        console.log(data);
-        console.log(result);
-
+        candidateObj = JSON.stringify(data);
+        console.log(candidateObj);
     }
+
     const onError = (error) => {
         console.log(error);
-
     }
 
 
@@ -30,7 +28,7 @@ const FormGeneralInfo = () => {
 
     }
 
-    /*const handleSurnameOnBlur = (e) => {
+  /*const handleSurnameOnBlur = (e) => {
         setSurnames({surname:e.target.value, father_surname: e.target.value, mother_surname: e.target.value});
     }*/
 
@@ -51,15 +49,16 @@ const FormGeneralInfo = () => {
 
     return(
         <div className="form-content">
-        <form onSubmit={handleSubmit(onSubmit, onError)}>
+        <form onSubmit={handleSubmit(onSubmit, onError)} autoComplete="off">
         <div className="input-container">
             <div className="input-container-header">
              <p>Informacije o kandidatu</p>
             </div>
             <div className="one-input-container">
 
-                <label htmlFor="floatingTextarea2" > Ime </label>
-                <input type="text" {...register("name", { required: true })}  className="form-control" id="floatingTextarea2" autoFocus required />
+                <label htmlFor="floatingTextarea2" className="form-label" >Ime</label>
+                <input type="text" {...register("name", { required: true })}  className="form-control" id="floatingTextarea2"   />
+
 
             </div>
             <div className="one-input-container">
@@ -70,11 +69,11 @@ const FormGeneralInfo = () => {
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Datum Rođenja </label>
-                <input {...register("birth_date", { required: true })}  type="date" className="form-control" id="prezime-input"/>
+                <input type="date" {...register("birth_date", { required: true })}   className="form-control" id="prezime-input"/>
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="birth_place-input"> Mjesto Rođenja </label>
-                <input type="text" {...register("birth_place", { required: true })}  className="form-control" id="birth_place-input" required/>
+                <input type="text" {...register("birth_place", { required: true })}  className="form-control" id="birth_place-input" />
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="birth_muncipality-input"> Općina Rođenja </label>
@@ -216,7 +215,7 @@ const FormGeneralInfo = () => {
                     <label className="form-label" htmlFor="prezime-input"> Prvi Želja </label>
                     <select {...register("first_choice", { required: true })}  id="drugistrani" className="form-select" >
                         <option value=" "> </option>
-                        <option value="A"> Tehničar računarstva</option>
+                        <option value="A">Tehničar računarstva</option>
                         <option value="B">Tehničar elektronike</option>
                         <option value="C">Tehničar elektroenergetike</option>
                         <option value="D">Tehničar mehatronike</option>
@@ -253,6 +252,85 @@ const FormGeneralInfo = () => {
                 </div>
 
             </div>
+
+            <div className="input-container">
+                <div className="input-container-header pt-4 pb-3" >
+                    <p>Ocjene iz predmeta značajnih za struku po razredima (2 - 5)</p>
+                    <p>8. razred uspijeh</p>
+                </div>
+                <div className="one-input-container">
+                    <label className="form-label" htmlFor="prezime-input">Matematika</label>
+                    <input min={2} max={5} type="number" {...register("math_eight_grade", { required: true })} className="form-control" id="prezimeoca-input"/>
+                </div>
+                <div className="one-input-container">
+                    <label className="form-label" htmlFor="zanimanjeoca-input">Fizika</label>
+                    <input min={2} max={5} type="number" {...register("physics_eight_grade", { required: true })} className="form-control" id="zanimanjeoca-input"/>
+                </div>
+                <div className="one-input-container">
+                    <label className="form-label" htmlFor="ime-input">Informatika</label>
+                    <input min={2} max={5} type="number" {...register("informatics_eight_grade", { required: true })} className="form-control" id="imeoca-input"/>
+                </div>
+                <div className="input-container-header">
+                    <p>9. razred uspijeh</p>
+                </div>
+                <div className="one-input-container">
+                    <label className="form-label" htmlFor="prezime-input">Matematika</label>
+                    <input min={2} max={5} type="number" {...register("math_ninth_grade", { required: true })} className="form-control" id="prezimeoca-input"/>
+                </div>
+                <div className="one-input-container">
+                    <label className="form-label" htmlFor="zanimanjeoca-input">Fizika</label>
+                    <input min={2} max={5} type="number" {...register("physics_ninth_grade", { required: true })} className="form-control" id="zanimanjeoca-input"/>
+                </div>
+                <div className="one-input-container">
+                    <label className="form-label" htmlFor="ime-input">Informatika</label>
+                    <input min={2} max={5} type="number" {...register("informatics_ninth_grade", { required: true })} className="form-control" id="imeoca-input"/>
+                </div>
+
+            </div>
+
+            <div className="input-container">
+
+
+            </div>
+
+            <div className="input-container">
+                <div className="input-container-header">
+                    <p>Uspjeh po razredima (2.0 - 5.0)</p>
+                </div>
+                <div className="one-input-container">
+                    <label className="form-label" htmlFor="prezime-input">6. razred</label>
+                    <input type="number" step=".1" min={2.0} max={5.0} {...register("sixth_grade_mark", { required: true })} className="form-control" id="prezimeoca-input"/>
+                </div>
+                <div className="one-input-container">
+                    <label className="form-label" htmlFor="zanimanjeoca-input">7. razred</label>
+                    <input type="number" step=".1" min={2.0} max={5.0} {...register("seventh_grade_mark", { required: true })} className="form-control" id="zanimanjeoca-input"/>
+                </div>
+                <div className="one-input-container">
+                    <label className="form-label" htmlFor="ime-input">8. razred</label>
+                    <input type="number" step=".1" min={2.0} max={5.0} {...register("eight_grade_mark", { required: true })} className="form-control" id="imeoca-input"/>
+                </div>
+                <div className="one-input-container">
+                    <label className="form-label" htmlFor="ime-input">9. razred</label>
+                    <input type="number" step=".1" min={2.0} max={5.0} {...register("ninth_grade_mark", { required: true })} className="form-control" id="imeoca-input"/>
+                </div>
+
+            </div>
+
+            <div className="input-container">
+                <div className="input-container-header">
+                    <p>Dodatni bodovi</p>
+                </div>
+                <div className="one-input-container">
+                    <label className="form-label" htmlFor="prezime-input">Procenti na eksternoj maturi</label>
+                    <input type="number" min={0} max={100} {...register("k6", { required: true })} className="form-control" id="prezimeoca-input"/>
+                </div>
+                <div className="one-input-container">
+                    <label className="form-label" htmlFor="prezime-input">Učenik generacije</label>
+                    <input className="form-check-input" type="checkbox" value="" defaultChecked={false} id="flexCheckDefault" {...register("k5", { required: true })}/>
+                </div>
+
+            </div>
+
             <div className="input-container">
                 <div className="input-container-header">
                     <p>Pošalji podatke</p>
