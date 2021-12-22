@@ -49,23 +49,20 @@ const FormGeneralInfo = () => {
 
     return(
         <div className="form-content">
-        <form onSubmit={handleSubmit(onSubmit, onError)} autoComplete="off">
+        <form onSubmit={handleSubmit(onSubmit, onError)} autoComplete="off" >
         <div className="input-container">
             <div className="input-container-header">
              <p>Informacije o kandidatu</p>
             </div>
             <div className="one-input-container">
 
-                <label htmlFor="floatingTextarea2" className="form-label" >Ime</label>
-                <input type="text" {...register("name", { required: true })}  className="form-control" id="floatingTextarea2"   />
-
+                <label htmlFor="floatingTextarea2">Ime</label>
+                <input type="text" {...register("name", { required: true })}  className="form-control" id="floatingTextarea2" />
 
             </div>
             <div className="one-input-container">
-
                 <label className="form-label" htmlFor="prezime-input" > Prezime </label>
                 <input type="text" {...register("surname", { required: true })}  className="form-control" id="prezime-input" onChange={handleSurnameOnChange}/>
-
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Datum Rođenja </label>
@@ -253,7 +250,7 @@ const FormGeneralInfo = () => {
 
             </div>
 
-            <div className="input-container">
+            <div className="input-container pt-2">
                 <div className="input-container-header pt-4 pb-3" >
                     <p>Ocjene iz predmeta značajnih za struku po razredima (2 - 5)</p>
                     <p>8. razred uspijeh</p>

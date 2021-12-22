@@ -11,7 +11,8 @@ const LandingButton = () => {
 
     return(
        <div style={{backgroundColor: "white"}} className="tutorial-block">
-        <div className="landing-button-container">
+
+           <div className="landing-button-container">
           <div className="tutorial-image-div"><img src={form_image} className="image" alt="Form"/></div>
             <div className="tutorial-image-div">
           <div className="tutorial-text-div">
@@ -26,7 +27,7 @@ const LandingButton = () => {
            </div>
            <div className="landing-button-container">
                <div className="tutorial-image-div">
-                   <div className="tutorial-text-container-div">
+                   <div className="tutorial-text-div">
                        <h2 className="h1-tutorial">Email Rezultati</h2>
                        <p className="p-tutorial">
                            Na email adresu koju ste unijeli u formi dobiti ćete
@@ -44,7 +45,7 @@ const LandingButton = () => {
            <div className="landing-button-container">
                <div className="tutorial-image-div"><img src={documents_image} className="image" alt="Form"/></div>
                <div className="tutorial-image-div">
-                   <div className="tutorial-text-container-div">
+                   <div className="tutorial-text-div">
                        <h2 className="h1-tutorial">Dokumenti</h2>
                        <p className="p-tutorial">
                            Uz pomoć broja kojeg ste dobili na email nakon popunjavanja forme

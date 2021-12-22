@@ -1,49 +1,31 @@
-.landingimage{
+.landing-image-div{
   height: 100vh;
   width: 100vw;
-  background-image: url('../../assets/landingpic');
-  background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
-  background-color: #191919;
-
+  background: linear-gradient(256deg, #FFFFFF 0%, #9cbce3 100%) no-repeat;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.layer{
-  background-color: rgba(12,12,12, 0.5);
-  width: 100%;
+.landing-image{
   height: 100%;
-  overflow: hidden;
+  width: 50%;
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-text{
+  font-family: 'Montserrat', sans-serif;
   align-items: center;
   justify-content: center;
 }
 
-.Text{
-  color: white;
-  width: 100%;
-  font-family: Bahnschrift, serif;
-  line-height: 0.5;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  font-size: 300px;
-  font-weight: 200;
-
-}
-.SplashText{
-  text-align: center;
-
-}
-.h1landingimage{
-  font-family: Bahnschrift, serif;
-  color: white;
-  font-size: 5rem;
-  font-weight: 200;
-}
-
 .h1landingbutton{
-  font-family: Bahnschrift, serif;
+  font-family: 'Montserrat', sans-serif;
   background-color: transparent;
   color: #191919;
   overflow: hidden;
@@ -52,8 +34,7 @@
 }
 
 .landingbutton{
-  font-family: Bahnschrift, serif;
-
+  font-family: 'Montserrat', sans-serif;
 }
 
 .button-div{
@@ -64,21 +45,6 @@
   height: 100%;
   width: 50%;
 
-}
-
-.button-upis{
-  background: dodgerblue;
-  color: white;
-  opacity: 0.7;
-  border-radius: 10px;
-  border: 1px solid dodgerblue;
-}
-
-.button-upis:hover{
-  opacity: 1;
-  border: 1px solid dodgerblue;
-  background-color: transparent;
-  color: dodgerblue;
 }
 
 .landing-button-container{
@@ -100,6 +66,7 @@
   width: 50%;
 
 }
+
 .tutorial-image-div{
   height: 100%;
   width: 50%;
@@ -108,6 +75,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .tutorial-text-container-div{
   height: 100%;
   width: 50%;
@@ -119,7 +87,7 @@
 
 .tutorial-text-div{
   height: 100%;
-  width: 50%;
+  width: 75%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -134,6 +102,7 @@
   border-radius: 5px;
 
 }
+
 .email-image{
   width: 60%;
   height: 60%;
@@ -164,14 +133,15 @@
 
 .h1-tutorial{
   font-size: 4rem;
-  font-family: Bahnschrift, serif;
-  font-weight: lighter;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: normal;
 }
 
 .p-tutorial{
-  font-size: 2rem;
-  font-family: Bahnschrift, serif;
-  font-weight: lighter;
+  font-size: 1.5rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: normal;
+  text-align: center;
 }
 
 .tutorial-block{

@@ -1,20 +1,17 @@
 import React from "react";
 import './styles/landing.scss'
 
+import landing_pic from "../assets/ilustracija.svg"
+
 const LandingImage = () => {
     return(
-       <div className="landingimage">
-        <div className="layer">
-            <div className="container-lg">
-                <div className="Text">
-                 <div className="SplashText">
-                  <h1 className="h1landingimage">eUpis</h1>
-                  <h1 className="h1landingimage">Elektrotehnička Škola Tuzla</h1>
-                 </div>
-                </div>
-
-            </div>
-
+       <div className="landing-image-div">
+        <div className="landing-text">
+        <h1>eUpis</h1>
+        <h1>Elektrotehnicka skola Tuzla</h1>
+        </div>
+        <div className="landing-image">
+            <img src={landing_pic} alt="landing" className="img-fluid"/>
         </div>
        </div>
     );
