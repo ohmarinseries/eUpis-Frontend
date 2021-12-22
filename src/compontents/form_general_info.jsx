@@ -209,7 +209,7 @@ const FormGeneralInfo = () => {
                     <p>Izbor usmjerenja</p>
                 </div>
                 <div className="one-input-container">
-                    <label className="form-label" htmlFor="prezime-input"> Prvi Želja </label>
+                    <label className="form-label" htmlFor="prezime-input"> Prva Želja </label>
                     <select {...register("first_choice", { required: true })}  id="drugistrani" className="form-select" >
                         <option value=" "> </option>
                         <option value="A">Tehničar računarstva</option>
