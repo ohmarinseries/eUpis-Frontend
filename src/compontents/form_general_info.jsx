@@ -88,7 +88,14 @@ const FormGeneralInfo = () => {
                 <label className="form-label" htmlFor="prezime-input"> JMBG </label>
                 <input type="text" {...register("jmbg", { required: true })}  className="form-control" id="prezime-input"/>
             </div>
-
+            <div className="one-input-container">
+                <label className="form-label" htmlFor="zanimanjeoca-input"> Telefon </label>
+                <input type="text" {...register("phone", { required: true })}  className="form-control" id="zanimanjeoca-input"/>
+            </div>
+            <div className="one-input-container">
+                <label className="form-label" htmlFor="prezime-input"> Email </label>
+                <input {...register("email_contact", { required: true })}  type="email" className="form-control" id="prezimeoca-input"/>
+            </div>
 
         </div>
             <div className="input-container">
@@ -143,14 +150,7 @@ const FormGeneralInfo = () => {
                     <label className="form-label" htmlFor="prezime-input"> Općina </label>
                     <input {...register("residence_muncipality", { required: true })}  className="form-control" id="prezimeoca-input"/>
                 </div>
-                <div className="one-input-container">
-                    <label className="form-label" htmlFor="zanimanjeoca-input"> Telefon </label>
-                    <input type="text" {...register("phone", { required: true })}  className="form-control" id="zanimanjeoca-input"/>
-                </div>
-                <div className="one-input-container">
-                    <label className="form-label" htmlFor="prezime-input"> Email </label>
-                    <input {...register("email_contact", { required: true })}  type="email" className="form-control" id="prezimeoca-input"/>
-                </div>
+
 
             </div>
             <div className="input-container">
