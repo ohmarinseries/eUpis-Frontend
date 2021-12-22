@@ -11,7 +11,7 @@ const FormHeader = () => {
         </div>
 
         <div className="h1-form-header">
-        <h3>Forma za Upis u ETS</h3>
+        <h3>Forma za Upis</h3>
         </div>
         </div>
     );
