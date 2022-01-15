@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
+import {Link} from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.css"
 import "../compontents/styles/form.scss"
@@ -8,11 +9,13 @@ import "../compontents/styles/form.scss"
 const FormGeneralInfo = () => {
 
     const {register, handleSubmit} = useForm();
+    // eslint-disable-next-line no-unused-vars
     let candidateObj
 
     const onSubmit = (data) => {
         candidateObj = JSON.stringify(data);
-        console.log(candidateObj);
+        console.log(candidateObj)
+
     }
 
     const onError = (error) => {
@@ -333,7 +336,7 @@ const FormGeneralInfo = () => {
                     <p>Pošalji podatke</p>
                 </div>
                 <div className="one-input-container">
-                    <input className="btn-lg btn-primary" type="submit" value="Pošalji" />
+                  <Link to='/thank-you'>  <input className="btn-lg btn-primary" type="submit" value="Pošalji" /> </Link>
                 </div>
 
             </div>

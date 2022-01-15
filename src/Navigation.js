@@ -4,7 +4,7 @@ import {Route, Switch} from "react-router-dom";
 
 import Landing from "./pages/landing";
 import Form from "./pages/form";
-import AdminLogin from "./pages/admin_login";
+import DashboardLogin from "./pages/dashboard_login";
 import ThankYou from "./pages/thankyou";
 
 const Navigation = () => {
@@ -13,7 +13,7 @@ const Navigation = () => {
         <Route path="/" exact component={Landing}/>
         <Route path="/form" exact component={Form}/>
         <Route path="/thank-you" exact component={ThankYou}/>
-        <Route path="/admin" exact component={AdminLogin}/>
+        <Route path="/dashboard" exact component={DashboardLogin}/>
 
     </Switch>
     );
