@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 import "./styles/dashboard.scss"
 
@@ -15,18 +16,18 @@ const Login = () => {
                             <h3 className="mb-5">Prijava</h3>
 
                             <div className="form-outline mb-4 p-2">
-                                <input type="email" id="typeEmailX-2" className="form-control form-control-lg" placeholder="Email"/>
+                                <input type="email" id="email" className="form-control form-control-lg" placeholder="Email"/>
 
                             </div>
 
                             <div className="form-outline mb-4 p-2">
-                                <input type="password" id="typePasswordX-2" className="form-control form-control-lg" placeholder="Lozinka"/>
+                                <input type="password" id="password" className="form-control form-control-lg" placeholder="Lozinka"/>
 
                             </div>
 
                             <p className="small mb-5 pb-lg-2 text-black">Zaboravili ste loziniku?</p>
 
-                            <button className="btn btn-primary btn-lg btn-block" type="submit">Prijavi se!</button>
+                          <Link to="/dashboard"><button className="btn btn-primary btn-lg btn-block" type="submit">Prijavi se!</button></Link>
 
 
 
