@@ -22,62 +22,16 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import "./styles/dashboard.scss"
 
 
-const DashboardCandidateTable = () => {
+const DashboardCandidatesClassesTable = () => {
+
     const columns = [
-        {
-            title: "Upisni Br.",
-            field: "upisni_br"
-        },
-        {
-            title: "Prezime",
-            field: "prezime"
-        },
-        {
-            title: "Ime Oca",
-            field: "ime_oca"
-        },
-        {
-            title: "Ime",
-            field: "ime"
-        },
-        {
-            title: "Osnovna Škola",
-            field: "osnovna_skola"
-        },
-        {
-            title: "Opći Uspjeh Bodovi",
-            field: "opci_uspjeh_bodovi"
-        },
-        {
-            title: "Značajni Predmeti Bodovi",
-            field: "znacajni_predmeti_bodovi"
-        },
-        {
-            title: "Takmičenja",
-            field: "takmicenja"
-        },
-        {
-            title: "Diplome(čl.65)",
-            field: "diplome"
-        },
-        {
-            title: "Eksterna Matura",
-            field: "eksterna_matura"
-        },
-        {
-            title: "Učenik Generacije",
-            field: "ucenik_generacije"
-        },
-        {
-            title: "Ukupni Bodovi",
-            field: "bodovi"
-        },
+
     ];
 
     const data = [
-        {upisni_br:"A/11", prezime:"Hurem", ime_oca:"Haris", ime:"Omar", osnovna_skola:"Miladije", opci_uspjeh_bodovi: 15, znacajni_predmeti_bodovi:30, takmicenja:null, diplome:30, eksterna_matura:9.76, ucenik_generacije:"DA", bodovi: 99},
-        {upisni_br:"A/11", prezime:"Hurem", ime_oca:"Haris", ime:"Omar", osnovna_skola:"Solana", opci_uspjeh_bodovi: 15, znacajni_predmeti_bodovi:30, takmicenja:null, diplome:30, eksterna_matura:9.76, ucenik_generacije:"DA", bodovi: 99},
+
     ];
+
     const options = {
         paging : true,
         maxBodyHeight: '100%',
@@ -86,9 +40,7 @@ const DashboardCandidateTable = () => {
             top: 0
         },
         padding:'dense',
-        selection: true,
-        exportButton: true,
-        details:true
+        selection: true
 
     }
 
@@ -114,23 +66,9 @@ const DashboardCandidateTable = () => {
 
     return(
 
-           <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons}
-           actions={[
-               {
-                   icon: () => <button className="btn btn-outline-dark">Detalji</button>,
-                   tooltip:"Detalji o korisniku",
-                   isFreeAction:true,
-                   onClick:()=>console.log("Au!")
-               },
-               {
-                   icon: () => <button className="btn btn-outline-danger">Obrisi Kandidata</button>,
-                   tooltip:"Detalji o korisniku",
-                   isFreeAction:true,
-                   onClick:()=>console.log("Au!")
-               },
-           ]}/>
+        <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons} />
 
     );
 }
 
-export default DashboardCandidateTable
+    export default DashboardCandidatesClassesTable

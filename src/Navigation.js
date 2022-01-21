@@ -7,6 +7,8 @@ import Form from "./pages/form";
 import DashboardLogin from "./pages/dashboard_login";
 import DashboardHome from "./pages/dashboard_home";
 import ThankYou from "./pages/thankyou";
+import DashboardValidation from "./pages/dashboard_candidates_validation";
+import DashboardCandidatesClasses from "./pages/dashboard_candidates_classes";
 
 const Navigation = () => {
     return(
@@ -16,6 +18,8 @@ const Navigation = () => {
         <Route path="/thank-you" exact component={ThankYou}/>
         <Route path="/dashboard-login" exact component={DashboardLogin}/>
         <Route path="/dashboard" exact component={DashboardHome}/>
+        <Route path="/dashboard/validation" exact component={DashboardValidation}/>
+        <Route path="/dashboard/candidates-classes" exact component={DashboardCandidatesClasses}/>
     </Switch>
     );
 }

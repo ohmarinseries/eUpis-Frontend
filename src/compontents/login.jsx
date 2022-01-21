@@ -26,9 +26,12 @@ const Login = () => {
                             </div>
 
                             <p className="small mb-5 pb-lg-2 text-black">Zaboravili ste loziniku?</p>
+                            <div className="container-fluid d-flex flex-column justify-content-start align-content-center">
 
-                          <Link to="/dashboard"><button className="btn btn-primary btn-lg btn-block" type="submit">Prijavi se!</button></Link>
+                            <Link to="/dashboard"><button className="btn btn-success btn-lg btn-block mb-3" type="submit">Prijavi se!</button></Link>
+                            <Link to="/"><button className="btn btn-danger btn-lg btn-block" type="submit">Povratak</button></Link>
 
+                            </div>
 
 
                         </div>
