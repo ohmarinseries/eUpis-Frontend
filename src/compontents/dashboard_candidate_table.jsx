@@ -117,17 +117,23 @@ const DashboardCandidateTable = () => {
            <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons}
            actions={[
                {
-                   icon: () => <button className="btn btn-outline-dark">Detalji</button>,
+                   icon: () => <button className="btn btn-outline-dark rounded" style={{marginLeft:"50px"}}>Detalji</button>,
                    tooltip:"Detalji o korisniku",
                    isFreeAction:true,
                    onClick:()=>console.log("Au!")
                },
                {
-                   icon: () => <button className="btn btn-outline-danger">Obrisi Kandidata</button>,
-                   tooltip:"Detalji o korisniku",
+                   icon: () => <select className="form-select rounded btn-outline-dark">
+                    <option></option>
+                    <option>2021/2022</option>
+                    <option>2019/2020</option>
+
+                   </select>,
+                   tooltip:"Upisna Godina",
                    isFreeAction:true,
                    onClick:()=>console.log("Au!")
                },
+
            ]}/>
 
     );

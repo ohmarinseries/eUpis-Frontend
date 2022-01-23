@@ -21,12 +21,12 @@ const DashboardNavbar = () => {
                         <NavDropdown.Item href="/dashboard/candidates-classes">Razredi</NavDropdown.Item>
                     </NavDropdown>
                     <NavDropdown title="Podešavanja" id="navbarScrollingDropdown" style={{marginRight:"20px"}}>
-                        <NavDropdown.Item href="/">Upis</NavDropdown.Item>
-                        <NavDropdown.Item href="/">Smjerovi</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard/settings/year">Upis</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard/settings/choices">Smjerovi</NavDropdown.Item>
                     </NavDropdown>
-                    <Nav.Link href="/" style={{marginRight:"20px"}}>Komisija</Nav.Link>
+                    <Nav.Link href="/dashboard/commission" style={{marginRight:"20px"}}>Komisija</Nav.Link>
                     <NavDropdown title="Korisnik" id="navbarScrollingDropdown" >
-                        <NavDropdown.Item href="/">Detalji</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard/profile">Detalji</NavDropdown.Item>
                         <NavDropdown.Item href="/dashboard-login">Odjava</NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
