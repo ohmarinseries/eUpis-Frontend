@@ -18,13 +18,13 @@ const DashboardNavbar = () => {
                     <NavDropdown title="Kandidati" id="navbarScrollingDropdown" style={{marginRight:"20px"}}>
                         <NavDropdown.Item href="/dashboard/candidates/view">Pregled</NavDropdown.Item>
                         <NavDropdown.Item href="/dashboard/validation">Validacija</NavDropdown.Item>
-                        <NavDropdown.Item href="/dashboard/candidates-classes">Razredi</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard/candidates-classes">Razredi <span className="badge bg-dark text-light b-text-size">Admin</span></NavDropdown.Item>
                     </NavDropdown>
                     <NavDropdown title="Podešavanja" id="navbarScrollingDropdown" style={{marginRight:"20px"}}>
-                        <NavDropdown.Item href="/dashboard/settings/year">Upis</NavDropdown.Item>
-                        <NavDropdown.Item href="/dashboard/settings/choices">Smjerovi</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard/settings/year">Upis <span className="badge bg-dark text-light b-text-size">Admin</span></NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard/settings/choices">Smjerovi <span className="badge bg-dark text-light b-text-size">Admin</span></NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard/commission">Komisija <span className="badge bg-dark text-light b-text-size">Admin</span></NavDropdown.Item>
                     </NavDropdown>
-                    <Nav.Link href="/dashboard/commission" style={{marginRight:"20px"}}>Komisija</Nav.Link>
                     <NavDropdown title="Korisnik" id="navbarScrollingDropdown" >
                         <NavDropdown.Item href="/dashboard/profile">Detalji</NavDropdown.Item>
                         <NavDropdown.Item href="/dashboard-login">Odjava</NavDropdown.Item>
