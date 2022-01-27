@@ -19,7 +19,7 @@ const Navigation = () => {
     <Switch>
         <Route path="/" exact component={Landing}/>
         <Route path="/form" exact component={Form}/>
-        <Route path="/thank-you" exact component={ThankYou}/>
+        <Route path="/thank-you/:email/:name/:surname" exact component={ThankYou}/>
         <Route path="/dashboard-login" exact component={DashboardLogin}/>
         <Route path="/dashboard" exact component={DashboardHome}/>
         <Route path="/dashboard/validation" exact component={DashboardValidation}/>

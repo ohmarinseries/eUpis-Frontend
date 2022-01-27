@@ -1,20 +1,44 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useForm} from "react-hook-form";
-import {Link} from "react-router-dom";
+import {useHistory} from "react-router-dom";
+import axios from "axios";
+import urls from "../api-urls";
 
 import "bootstrap/dist/css/bootstrap.css"
 import "../compontents/styles/form.scss"
 
 
+
+
+
 const FormGeneralInfo = () => {
 
     const {register, handleSubmit} = useForm();
+    const navigation = useHistory();
+    const [choices, setChoices] = useState({})
+
+    useEffect(()=>{
+        axios.get()
+    },[])
+
+
     // eslint-disable-next-line no-unused-vars
     let candidateObj
 
     const onSubmit = (data) => {
         candidateObj = JSON.stringify(data);
         console.log(candidateObj)
+        axios
+            .post(urls.CANDIDATE_CREATE, candidateObj)
+            .then((res) =>{
+                console.log(res.data.name)
+                navigation.push(`/thank-you/${res.data.email_contact}/${res.data.name}/${res.data.surname}`)
+            })
+            .catch((error)=>{
+                console.error(error);
+            })
+
+
 
     }
 
@@ -336,7 +360,7 @@ const FormGeneralInfo = () => {
                     <p>Pošalji podatke</p>
                 </div>
                 <div className="one-input-container">
-                  <Link to='/thank-you'>  <input className="btn-lg btn-primary" type="submit" value="Pošalji" /> </Link>
+                  <input className="btn-lg btn-primary" type="submit" value="Pošalji" />
                 </div>
 
             </div>
