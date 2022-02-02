@@ -2,12 +2,10 @@ import React, {useState, useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
 import axios from "axios";
-import urls from "../api-urls";
+import url from "../api-urls";
 
 import "bootstrap/dist/css/bootstrap.css"
 import "../compontents/styles/form.scss"
-
-
 
 
 
@@ -16,9 +14,29 @@ const FormGeneralInfo = () => {
     const {register, handleSubmit} = useForm();
     const navigation = useHistory();
     const [choices, setChoices] = useState({})
+    const [year, setYear] = useState()
 
     useEffect(()=>{
-        axios.get()
+        let active_year = 0
+        axios
+            .get(url + '/candidates/year/active/')
+            .then((res) => {
+                active_year=res.data.id
+                console.log(active_year)
+                axios
+                    .get(url + `/candidates/yearchoice/${active_year}/`)
+                    .then((response)=>{
+                        setChoices(response.data)
+                        console.log(response.data)
+                    })
+                    .catch((error)=>{
+                        console.error(error)
+                    })
+            })
+            .catch((error)=>{
+                console.error(error)
+            })
+
     },[])
 
 
@@ -29,7 +47,7 @@ const FormGeneralInfo = () => {
         candidateObj = JSON.stringify(data);
         console.log(candidateObj)
         axios
-            .post(urls.CANDIDATE_CREATE, candidateObj)
+            .post(url.CANDIDATE_CREATE, candidateObj)
             .then((res) =>{
                 console.log(res.data.name)
                 navigation.push(`/thank-you/${res.data.email_contact}/${res.data.name}/${res.data.surname}`)

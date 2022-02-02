@@ -12,6 +12,7 @@ const DashboardProfile = () => {
             <DashboardProfileHeading />
             </div>
             <div className="container w-100 justify-content-center align-content-center">
+            <hr className="my-5"/>
             <DashboardProfileInfo />
             </div>
         </div>
