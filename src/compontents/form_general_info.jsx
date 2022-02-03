@@ -16,7 +16,7 @@ const FormGeneralInfo = () => {
     const [choices, setChoices] = useState({})
     const [year, setYear] = useState()
 
-    useEffect(()=>{
+   /* useEffect(()=>{
         let active_year = 0
         axios
             .get(url + '/candidates/year/active/')
@@ -38,7 +38,7 @@ const FormGeneralInfo = () => {
             })
 
     },[])
-
+  */
 
     // eslint-disable-next-line no-unused-vars
     let candidateObj
@@ -298,7 +298,7 @@ const FormGeneralInfo = () => {
             <div className="input-container pt-2">
                 <div className="input-container-header pt-4 pb-3" >
                     <p>Ocjene iz predmeta značajnih za struku po razredima (2 - 5)</p>
-                    <p>8. razred uspijeh</p>
+                    <p>VIII razred uspijeh</p>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input">Matematika</label>
@@ -313,7 +313,7 @@ const FormGeneralInfo = () => {
                     <input min={2} max={5} type="number" {...register("informatics_eight_grade", { required: true })} className="form-control" id="imeoca-input"/>
                 </div>
                 <div className="input-container-header">
-                    <p>9. razred uspijeh</p>
+                    <p>IX razred uspijeh</p>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input">Matematika</label>
@@ -340,19 +340,19 @@ const FormGeneralInfo = () => {
                     <p>Uspjeh po razredima (2.0 - 5.0)</p>
                 </div>
                 <div className="one-input-container">
-                    <label className="form-label" htmlFor="prezime-input">6. razred</label>
+                    <label className="form-label" htmlFor="prezime-input">VI razred</label>
                     <input type="number" step=".1" min={2.0} max={5.0} {...register("sixth_grade_mark", { required: true })} className="form-control" id="prezimeoca-input"/>
                 </div>
                 <div className="one-input-container">
-                    <label className="form-label" htmlFor="zanimanjeoca-input">7. razred</label>
+                    <label className="form-label" htmlFor="zanimanjeoca-input">VII razred</label>
                     <input type="number" step=".1" min={2.0} max={5.0} {...register("seventh_grade_mark", { required: true })} className="form-control" id="zanimanjeoca-input"/>
                 </div>
                 <div className="one-input-container">
-                    <label className="form-label" htmlFor="ime-input">8. razred</label>
+                    <label className="form-label" htmlFor="ime-input">VIII razred</label>
                     <input type="number" step=".1" min={2.0} max={5.0} {...register("eight_grade_mark", { required: true })} className="form-control" id="imeoca-input"/>
                 </div>
                 <div className="one-input-container">
-                    <label className="form-label" htmlFor="ime-input">9. razred</label>
+                    <label className="form-label" htmlFor="ime-input">IX razred</label>
                     <input type="number" step=".1" min={2.0} max={5.0} {...register("ninth_grade_mark", { required: true })} className="form-control" id="imeoca-input"/>
                 </div>
 

@@ -8,10 +8,10 @@ const Login = () => {
     return(
     <div className="container vh-100 vw-100 align-content-lg-center" >
         <div className="container py-5 h-100">
-            <div className="row d-flex justify-content-center align-items-center h-100">
-                <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-                    <div className="card shadow-2-strong" style={{borderRadius: '1rem'}}>
-                        <div className="card-body p-5 text-center shadow-sm">
+            <div className="row d-flex justify-content-center align-items-center h-100 ">
+                <div className="col-12 col-md-8 col-lg-6 col-xl-5 " style={{borderRadius: '1rem'}}>
+                    <div className="card shadow" style={{borderRadius: '1rem'}}>
+                        <div className="card-body p-5 text-center">
 
                             <h3 className="mb-5">Prijava</h3>
 

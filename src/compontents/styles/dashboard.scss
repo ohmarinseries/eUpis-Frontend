@@ -1,8 +1,9 @@
 .login-background{
   font-family: 'Montserrat', sans-serif;
-  background: #56CCF2;
-  background: -webkit-linear-gradient(to bottom, #2F80ED, #56CCF2);
-  background: linear-gradient(to bottom, #2F80ED, #56CCF2);
+  background: #485563;
+  background: -webkit-linear-gradient(to bottom, #29323c, #485563);
+  background: linear-gradient(to bottom, #29323c, #485563);
+
 }
 
 .head-navbar{
@@ -26,4 +27,9 @@
 
 .b-text-size{
   font-size: 0.6rem;
+}
+
+.line-separator{
+  border: 1px solid #5c5e5d;
+  width: 50%;
 }
