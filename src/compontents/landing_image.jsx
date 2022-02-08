@@ -1,7 +1,7 @@
 import React from "react";
 import './styles/landing.scss'
 
-import landing_pic from "../assets/ilustracija.svg"
+import landing_pic from "../assets/ilustracijaeupis.png"
 
 const LandingImage = () => {
     return(

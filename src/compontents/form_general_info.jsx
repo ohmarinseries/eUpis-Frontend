@@ -363,7 +363,7 @@ const FormGeneralInfo = () => {
                     <p>Dodatni bodovi</p>
                 </div>
                 <div className="one-input-container">
-                    <label className="form-label" htmlFor="prezime-input">Procenti na eksternoj maturi</label>
+                    <label className="form-label" htmlFor="prezime-input">Procenti na eksternoj maturi (0 - 100)</label>
                     <input type="number" min={0} max={100} {...register("k6", { required: true })} className="form-control" id="prezimeoca-input"/>
                 </div>
                 <div className="one-input-container">

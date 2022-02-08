@@ -1,4 +1,4 @@
-import React, {forwardRef} from "react";
+import React, {forwardRef, useState} from "react";
 import MaterialTable from 'material-table';
 
 import AddBox from '@material-ui/icons/AddBox';
@@ -23,6 +23,10 @@ import "./styles/dashboard.scss"
 
 
 const DashboardCandidateTable = () => {
+
+    const [selectedRow, setSelectedRow] = useState();
+    const [selectedRowData, setSelectedRowData] = useState();
+
     const columns = [
         {
             title: "Upisni Br.",
@@ -86,9 +90,11 @@ const DashboardCandidateTable = () => {
             top: 0
         },
         padding:'dense',
-        selection: true,
         exportButton: true,
-        details:true
+        details:true,
+        rowStyle: (rowData) => ({
+            backgroundColor: (rowData.tableData.id === selectedRow) ? '#ededed' : 'white',
+        }),
 
     }
 
@@ -114,22 +120,14 @@ const DashboardCandidateTable = () => {
 
     return(
 
-           <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons}
+           <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
+               setSelectedRow(rowData.tableData.id);
+               setSelectedRowData(rowData);
+           }}
            actions={[
                {
-                   icon: () => <button className="btn btn-outline-dark rounded" style={{marginLeft:"50px"}}>Detalji</button>,
+                   icon: () => <button className="btn btn-outline-dark rounded">Detalji</button>,
                    tooltip:"Detalji o korisniku",
-                   isFreeAction:true,
-                   onClick:()=>console.log("Au!")
-               },
-               {
-                   icon: () => <select className="form-select rounded btn-outline-dark">
-                    <option></option>
-                    <option>2021/2022</option>
-                    <option>2019/2020</option>
-
-                   </select>,
-                   tooltip:"Upisna Godina",
                    isFreeAction:true,
                    onClick:()=>console.log("Au!")
                },
