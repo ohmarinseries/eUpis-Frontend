@@ -20,6 +20,30 @@ const DashboardSettingsYearTables = () => {
     const [selectedRow, setSelectedRow] = useState();
     const [selectedRowData, setSelectedRowData] = useState();
 
+    const columns = [
+        {
+            title: "Godina",
+            field: "godina"
+        },
+        {
+            title: "Aktivna",
+            field: "aktivna"
+        },
+        {
+            title: "Prvi Rok Bodovi",
+            field: "prvi_rok"
+        },
+        {
+            title: "Drugi Rok Bodovi",
+            field: "drugi_rok"
+        },
+
+
+    ];
+
+    const data = [
+        {godina:"2021/2022", aktivna:"DA", prvi_rok:20, drugi_rok:10}
+    ];
 
     const options = {
         paging : true,
@@ -59,8 +83,8 @@ const DashboardSettingsYearTables = () => {
 
     return(
         <div className="container-lg vw-100 h-100 d-flex flex-row">
-            <div className="container-fluid p-0 mt-5">
-                <MaterialTable title={'Upisne godine'} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
+            <div className="container-fluid w-75 p-0 mt-5">
+                <MaterialTable columns={columns} data={data} title={'Upisne godine'} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
                     setSelectedRow(rowData.tableData.id);
                     setSelectedRowData(rowData);
                 }}
@@ -80,12 +104,6 @@ const DashboardSettingsYearTables = () => {
                                    {
                                        icon: () => <button className="btn btn-outline-dark rounded">Obrisi</button>,
                                        tooltip:"Obrisi Upisnu godinu",
-                                       isFreeAction:true,
-                                       onClick:()=>console.log("Au!")
-                                   },
-                                   {
-                                       icon: () => <button className="btn btn-outline-dark rounded">Detalji</button>,
-                                       tooltip:"Detalji za Upisnu godinu",
                                        isFreeAction:true,
                                        onClick:()=>console.log("Au!")
                                    },

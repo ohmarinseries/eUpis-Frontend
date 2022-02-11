@@ -9,7 +9,9 @@ const DashboardCandidatesClasses = () => {
     return(
         <div>
             <DashboardNavbar />
+            <div className="px-5 mt-4">
             <DashboardCandidatesClassesTable />
+            </div>
         </div>
     );
 
