@@ -42,7 +42,8 @@ const DashboardCommissionTable = () => {
     ];
 
     const data = [
-        {ime:"Edin", prezime:"Zulfic", email:"zulfa", admin:"DA"}
+        {ime:"Edin", prezime:"Zulfic", email:"example@example.com", admin:"DA"},
+        {ime:"Nekitamo", prezime:"Anonimus", email:"example@example.com", admin:"NE"}
     ];
     const options = {
         paging : true,
