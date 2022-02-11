@@ -13,8 +13,8 @@ const FormGeneralInfo = () => {
 
     const {register, handleSubmit} = useForm();
     const navigation = useHistory();
-    const [choices, setChoices] = useState({})
-    const [year, setYear] = useState()
+   // const [choices, setChoices] = useState({})
+  //  const [year, setYear] = useState()
 
    /* useEffect(()=>{
         let active_year = 0

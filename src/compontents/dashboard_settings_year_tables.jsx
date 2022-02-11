@@ -20,13 +20,7 @@ const DashboardSettingsYearTables = () => {
     const [selectedRow, setSelectedRow] = useState();
     const [selectedRowData, setSelectedRowData] = useState();
 
-    const columns = [
 
-    ];
-
-    const data = [
-
-    ];
     const options = {
         paging : true,
         maxBodyHeight: '100%',
@@ -66,7 +60,7 @@ const DashboardSettingsYearTables = () => {
     return(
         <div className="container-lg vw-100 h-100 d-flex flex-row">
             <div className="container-fluid p-0 mt-5">
-                <MaterialTable title={'Upisne godine'} columns={columns} data={data} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
+                <MaterialTable title={'Upisne godine'} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
                     setSelectedRow(rowData.tableData.id);
                     setSelectedRowData(rowData);
                 }}
