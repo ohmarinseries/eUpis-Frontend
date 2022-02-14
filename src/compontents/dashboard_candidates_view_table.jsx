@@ -1,5 +1,6 @@
 import React, {forwardRef, useState} from "react";
 import MaterialTable from 'material-table';
+import Modal from 'react-bootstrap/Modal'
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -26,13 +27,70 @@ const DashboardCandidatesViewTable = () => {
 
     const [selectedRow, setSelectedRow] = useState();
     const [selectedRowData, setSelectedRowData] = useState();
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+    function closeModal() {
+        setIsOpen(false);
+    }
 
     const columns = [
-
+        {
+            title: "Upisni Br.",
+            field: "upisni_br"
+        },
+        {
+            title: "Prezime",
+            field: "prezime"
+        },
+        {
+            title: "Ime Oca",
+            field: "ime_oca"
+        },
+        {
+            title: "Ime",
+            field: "ime"
+        },
+        {
+            title: "Osnovna Škola",
+            field: "osnovna_skola"
+        },
+        {
+            title: "Opći Uspjeh Bodovi",
+            field: "opci_uspjeh_bodovi"
+        },
+        {
+            title: "Značajni Predmeti Bodovi",
+            field: "znacajni_predmeti_bodovi"
+        },
+        {
+            title: "Takmičenja",
+            field: "takmicenja"
+        },
+        {
+            title: "Diplome(čl.65)",
+            field: "diplome"
+        },
+        {
+            title: "Eksterna Matura",
+            field: "eksterna_matura"
+        },
+        {
+            title: "Učenik Generacije",
+            field: "ucenik_generacije"
+        },
+        {
+            title: "Ukupni Bodovi",
+            field: "bodovi"
+        },
     ];
 
     const data = [
-
+        {upisni_br:"A/11", prezime:"Hurem", ime_oca:"Haris", ime:"Omar", osnovna_skola:"Miladije", opci_uspjeh_bodovi: 15, znacajni_predmeti_bodovi:30, takmicenja:null, diplome:30, eksterna_matura:9.76, ucenik_generacije:"DA", bodovi: 99},
+        {upisni_br:"A/11", prezime:"Hurem", ime_oca:"Haris", ime:"Omar", osnovna_skola:"Solana", opci_uspjeh_bodovi: 15, znacajni_predmeti_bodovi:30, takmicenja:null, diplome:30, eksterna_matura:9.76, ucenik_generacije:"DA", bodovi: 99},
     ];
 
     const options = {
@@ -43,6 +101,9 @@ const DashboardCandidatesViewTable = () => {
             top: 0
         },
         padding:'dense',
+        rowStyle: (rowData) => ({
+            backgroundColor: (rowData.tableData.id === selectedRow) ? '#ededed' : 'white',
+        }),
 
     }
 
@@ -67,6 +128,7 @@ const DashboardCandidatesViewTable = () => {
     };
 
     return(
+        <div>
         <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
             setSelectedRow(rowData.tableData.id);
             setSelectedRowData(rowData);
@@ -74,23 +136,33 @@ const DashboardCandidatesViewTable = () => {
           actions={[
             {
                 icon: () => <button className="btn btn-outline-dark rounded">Detalji</button>,
-                tooltip:"Detalji o korisniku",
+                tooltip:"Detalji o kandidatu",
                 isFreeAction:true,
-                 onClick:()=>console.log("Au!")
+                 onClick:()=>openModal()
             },
-              {
-                  icon: () => <select className="form-select rounded btn-outline-dark">
-                      <option></option>
-                      <option>2021/2022</option>
-                      <option>2019/2020</option>
+            {
+                icon: () => <select className="form-select rounded btn-outline-dark">
+                 <option></option>
+                 <option>2021/2022</option>
+                 <option>2019/2020</option>
 
                   </select>,
-                  tooltip:"Upisna Godina",
-                  isFreeAction:true,
-                  onClick:()=>console.log("Au!")
-              },
+                tooltip:"Upisna Godina",
+                isFreeAction:true,
+                onClick:()=>console.log("Au!")
+            },
 
             ]}/>
+
+            <Modal show={modalIsOpen} close={closeModal} size="xl" onHide={closeModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title id="example-custom-modal-styling-title">
+                      Detalji kandidata
+                    </Modal.Title>
+                </Modal.Header>
+            </Modal>
+
+        </div>
     );
 }
 
