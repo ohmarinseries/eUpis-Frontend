@@ -21,13 +21,15 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 
 
 import "./styles/dashboard.scss"
+import {useForm} from "react-hook-form";
 
 
 const DashboardCandidatesViewTable = () => {
 
     const [selectedRow, setSelectedRow] = useState();
     const [selectedRowData, setSelectedRowData] = useState();
-    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const {register, handleSubmit} = useForm();
 
     function openModal() {
         setIsOpen(true);
@@ -101,8 +103,8 @@ const DashboardCandidatesViewTable = () => {
             top: 0
         },
         padding:'dense',
-        rowStyle: (rowData) => ({
-            backgroundColor: (rowData.tableData.id === selectedRow) ? '#ededed' : 'white',
+        rowStyle: rowData => ({
+            backgroundColor: rowData.tableData.id === selectedRow ? '#ededed' : 'white',
         }),
 
     }
@@ -127,152 +129,239 @@ const DashboardCandidatesViewTable = () => {
         ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
     };
 
-    return(
-        <div>
-        <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
-            setSelectedRow(rowData.tableData.id);
-            setSelectedRowData(rowData);
-        }}
-          actions={[
-            {
-                icon: () => <button className="btn btn-outline-dark rounded">Detalji</button>,
-                tooltip:"Detalji o kandidatu",
-                isFreeAction:true,
-                 onClick:()=>openModal()
-            },
-            {
-                icon: () => <select className="form-select rounded btn-outline-dark">
-                 <option></option>
-                 <option>2021/2022</option>
-                 <option>2019/2020</option>
+    return<div>
+    <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
+        setSelectedRow(rowData.tableData.id);
+        setSelectedRowData(rowData);
+    }}
+      actions={[
+        {
+            icon: () => <button className="btn btn-outline-dark rounded">Detalji</button>,
+            tooltip:"Detalji o kandidatu",
+            isFreeAction:true,
+            onClick:()=>openModal()
+        },
+        {
+            icon: () => <select className="form-select rounded btn-outline-dark">
+             <option></option>
+             <option>2021/2022</option>
+             <option>2019/2020</option>
+             </select>,
+            tooltip:"Upisna Godina",
+            isFreeAction:true,
+            onClick:()=>console.log("Au!")
+        },
 
-                  </select>,
-                tooltip:"Upisna Godina",
-                isFreeAction:true,
-                onClick:()=>console.log("Au!")
-            },
+        ]}/>
 
-            ]}/>
-
-            <Modal show={modalIsOpen} close={closeModal} size="xl" onHide={closeModal} aria-labelledby="contained-modal-title-vcenter" centered>
-                <Modal.Header closeButton style={{paddingLeft:"30px"}}>
-                    <Modal.Title id="contained-modal-title-vcenter">
-                        Detalji kandidata
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <form className="container-sm d-flex flex-column justify-content-between">
-                        <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
+        <Modal show={modalIsOpen} close={closeModal} size="xl" onHide={closeModal} aria-labelledby="contained-modal-title-vcenter" centered>
+            <Modal.Header closeButton style={{paddingLeft:"30px"}}>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Detalji kandidata
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <form className="container-sm d-flex flex-column justify-content-between">
+                    <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
+                    <div className="one-input-container">
+                        <label className="form-label" htmlFor="name-input"> Ime </label>
+                        <input type="text" className="form-control" id="name-input"/>
+                    </div>
+                    <div className="one-input-container">
+                        <label className="form-label" htmlFor="name-input"> Prezime </label>
+                        <input type="text" className="form-control" id="name-input"/>
+                    </div>
+                    <div className="one-input-container">
+                        <label className="form-label" htmlFor="name-input"> Datum Rođenja </label>
+                        <input type="date" className="form-control" id="name-input"/>
+                    </div>
+                    <div className="one-input-container">
+                            <label className="form-label" htmlFor="name-input"> Mjesto Rođenja </label>
+                            <input type="text" className="form-control" id="name-input"/>
+                     </div>
                         <div className="one-input-container">
-                            <label className="form-label" htmlFor="name-input"> Ime </label>
+                            <label className="form-label" htmlFor="name-input"> Republika Rođenja </label>
                             <input type="text" className="form-control" id="name-input"/>
                         </div>
                         <div className="one-input-container">
-                            <label className="form-label" htmlFor="name-input"> Prezime </label>
+                            <label className="form-label" htmlFor="name-input"> Općina Rođenja </label>
                             <input type="text" className="form-control" id="name-input"/>
                         </div>
                         <div className="one-input-container">
-                            <label className="form-label" htmlFor="name-input"> Datum Rođenja </label>
+                            <label className="form-label" htmlFor="name-input"> Državljanstvo </label>
+                            <input type="text" className="form-control" id="name-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="prezime-input"> JMBG </label>
+                            <input type="text" className="form-control" id="prezime-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="name-input"> Adresa Stanovanja </label>
+                            <input type="text" className="form-control" id="name-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="name-input"> Broj Kuće </label>
+                            <input type="text" className="form-control" id="name-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="name-input"> Mjesto Rođenja </label>
+                            <input type="text" className="form-control" id="name-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="name-input"> Općina Rođenja </label>
+                            <input type="text" className="form-control" id="name-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="name-input"> Telefon </label>
+                            <input type="text" className="form-control" id="name-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="name-input"> Email </label>
+                            <input type="text" className="form-control" id="name-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="name-input"> Osnovna Škola </label>
+                            <input type="text" className="form-control" id="name-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="name-input"> Broj Svjedodžbe</label>
+                            <input type="text" className="form-control" id="name-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="name-input"> Datum Svjedodžbe </label>
                             <input type="date" className="form-control" id="name-input"/>
                         </div>
                         <div className="one-input-container">
-                                <label className="form-label" htmlFor="name-input"> Mjesto Rođenja </label>
-                                <input type="text" className="form-control" id="name-input"/>
-                         </div>
+                            <label className="form-label" htmlFor="ime-input"> Ime Oca </label>
+                            <input type="text" className="form-control" id="imeoca-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="prezime-input"> Prezime Oca </label>
+                            <input type="text" className="form-control" id="prezimeoca-input" />
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Oca </label>
+                            <input type="text" className="form-control" id="zanimanjeoca-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="ime-input"> Ime Majke</label>
+                            <input type="text" className="form-control" id="imeoca-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="prezime-input"> Prezime Majke</label>
+                            <input type="text"  className="form-control" id="prezimeoca-input" />
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Majke</label>
+                            <input type="text"  className="form-control" id="zanimanjeoca-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="ime-input"> Prvi Strani Jezik </label>
+                            <select id="drugistrani" className="form-select" >
+                                <option value=" "> </option>
+                                <option value="Engleski jezik">Engleski jezik </option>
+                                <option value="Njemački jezik ">Njemački jezik </option>
+                            </select>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="prezime-input"> Drugi Strani Jezik </label>
+                            <select id="drugistrani" className="form-select" >
+                                <option value=" "> </option>
+                                <option value="Engleski jezik">Engleski jezik </option>
+                                <option value="Njemački jezik ">Njemački jezik </option>
+                            </select>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="zanimanjeoca-input"> Fakultativna Nastava </label>
+                            <select id="fakultativni" className="form-select" >
+                                <option value=" "> </option>
+                                <option value="Islamski vjeronauk">Islamski vjeronauk</option>
+                                <option value="Katolički vjeronauk">Katolicki vjeronauk</option>
+                                <option value="Pravoslavni vjeronauk">Pravoslavni vjeronauk</option>
+                                <option value="Religijska kultura">Religijska kultura</option>
+                            </select>
+                        </div>
                         </div>
                         <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="name-input"> Republika Rođenja </label>
-                                <input type="text" className="form-control" id="name-input"/>
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="name-input"> Općina Rođenja </label>
-                                <input type="text" className="form-control" id="name-input"/>
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="name-input"> Državljanstvo </label>
-                                <input type="text" className="form-control" id="name-input"/>
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="prezime-input"> JMBG </label>
-                                <input type="text" className="form-control" id="prezime-input"/>
-                            </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="ime-input"> VI</label>
+                            <input type="number" className="form-control" id="imeoca-input"/>
                         </div>
-                        <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="name-input"> Adresa Stanovanja </label>
-                                <input type="text" className="form-control" id="name-input"/>
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="name-input"> Broj Kuće </label>
-                                <input type="text" className="form-control" id="name-input"/>
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="name-input"> Mjesto Rođenja </label>
-                                <input type="text" className="form-control" id="name-input"/>
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="name-input"> Općina Rođenja </label>
-                                <input type="text" className="form-control" id="name-input"/>
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="name-input"> Telefon </label>
-                                <input type="text" className="form-control" id="name-input"/>
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="name-input"> Email </label>
-                                <input type="text" className="form-control" id="name-input"/>
-                            </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="prezime-input"> VII </label>
+                            <input type="number"  className="form-control" id="prezimeoca-input" />
                         </div>
-                        <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="name-input"> Osnovna Škola </label>
-                                <input type="text" className="form-control" id="name-input"/>
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="name-input"> Broj Svjedodžbe</label>
-                                <input type="text" className="form-control" id="name-input"/>
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="name-input"> Datum Svjedodžbe </label>
-                                <input type="date" className="form-control" id="name-input"/>
-                            </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="zanimanjeoca-input"> VIII </label>
+                            <input type="number"  className="form-control" id="zanimanjeoca-input"/>
                         </div>
-                        <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="ime-input"> Ime Oca </label>
-                                <input type="text" className="form-control" id="imeoca-input"/>
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="prezime-input"> Prezime Oca </label>
-                                <input type="text" className="form-control" id="prezimeoca-input" />
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Oca </label>
-                                <input type="text" className="form-control" id="zanimanjeoca-input"/>
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="ime-input"> Ime Majke</label>
-                                <input type="text" className="form-control" id="imeoca-input"/>
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="prezime-input"> Prezime Majke</label>
-                                <input type="text"  className="form-control" id="prezimeoca-input" />
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Majke</label>
-                                <input type="text"  className="form-control" id="zanimanjeoca-input"/>
-                            </div>
+                        <div className="one-input-container">
+                             <label className="form-label" htmlFor="zanimanjeoca-input"> IX </label>
+                             <input type="number"  className="form-control" id="zanimanjeoca-input"/>
                         </div>
-                    </form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <button className="btn btn-success btn-lg btn-block">Validiraj</button>
-                </Modal.Footer>
-            </Modal>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Matematika VIII </label>
+                                <input type="number"  className="form-control" id="zanimanjeoca-input"/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Fizika VIII </label>
+                                <input type="number"  className="form-control" id="zanimanjeoca-input"/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Informatika VIII </label>
+                                <input type="number"  className="form-control" id="zanimanjeoca-input"/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Matematika IX </label>
+                                <input type="number"  className="form-control" id="zanimanjeoca-input"/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Fizika IX </label>
+                                <input type="number"  className="form-control" id="zanimanjeoca-input"/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Informatika IX </label>
+                                <input type="number"  className="form-control" id="zanimanjeoca-input"/>
+                            </div>
+                    </div>
+                    <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="prezime-input">Procenti na eksternoj maturi (0 - 100)</label>
+                            <input type="number" min={0} max={100} className="form-control" id="prezimeoca-input"/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="zanimanjeoca-input"> Takmičenja </label>
+                            <select id="fakultativni" className="form-select" >
+                                <option value=" "> </option>
+                                <option value="Islamski vjeronauk">5</option>
+                                <option value="Katolički vjeronauk">8</option>
+                                <option value="Pravoslavni vjeronauk">9</option>
+                                <option value="Religijska kultura">10</option>
+                            </select>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="prezime-input">Učenik generacije</label>
+                            <input className="form-check-input" type="checkbox" value=""  id="flexCheckDefault" />
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="prezime-input">Posebna diploma čl.65</label>
+                            <input className="form-check-input" type="checkbox" value=""  id="flexCheckDefault" />
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="prezime-input">Vojska</label>
+                            <input className="form-check-input" type="checkbox" value=""  id="flexCheckDefault" />
+                        </div>
 
-        </div>
-    );
+
+                    </div>
+                </form>
+            </Modal.Body>
+            <Modal.Footer>
+                <button className="btn btn-success btn-lg btn-block">Validiraj</button>
+            </Modal.Footer>
+        </Modal>
+
+    </div>;
 }
 
 export default DashboardCandidatesViewTable

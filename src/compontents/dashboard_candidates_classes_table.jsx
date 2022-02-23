@@ -24,6 +24,8 @@ import "./styles/dashboard.scss"
 
 const DashboardCandidatesClassesTable = () => {
 
+
+
     const columns = [
 
     ];
@@ -71,4 +73,4 @@ const DashboardCandidatesClassesTable = () => {
     );
 }
 
-    export default DashboardCandidatesClassesTable
+export default DashboardCandidatesClassesTable;

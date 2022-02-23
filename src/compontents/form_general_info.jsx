@@ -56,8 +56,6 @@ const FormGeneralInfo = () => {
                 console.error(error);
             })
 
-
-
     }
 
     const onError = (error) => {
