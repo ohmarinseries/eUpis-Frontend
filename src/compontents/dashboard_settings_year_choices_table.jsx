@@ -78,12 +78,6 @@ const DashboardSettingsYearChoicesTable = () => {
 
     return(
         <MaterialTable title='Smjerovi za Godinu' columns={columns} data={data} options={options} icons={tableIcons} actions={[
-            {
-                icon: () => <button className="btn btn-outline-dark rounded" style={{marginLeft:"10px"}}>Uredi</button>,
-                tooltip:"Uredi Broj Kandidata",
-                isFreeAction:true,
-                onClick:()=>console.log("Au!")
-            },
 
             {
                 icon: () => <button className="btn btn-outline-dark rounded">Izbaci</button>,

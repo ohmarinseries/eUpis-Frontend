@@ -139,7 +139,14 @@ const FormGeneralInfo = () => {
                 <label className="form-label" htmlFor="prezime-input"> Email </label>
                 <input {...register("email_contact", { required: true })}  type="email" className="form-control" id="prezimeoca-input"/>
             </div>
-
+            <div className="one-input-container">
+                <label className="form-label" htmlFor="prezime-input"> Spol </label>
+                <select {...register("sex", { required: true })}  id="drugistrani" className="form-select" >
+                    <option value=" "> </option>
+                    <option value="M">Muško </option>
+                    <option value="Z"> Žensko </option>
+                </select>
+            </div>
         </div>
             <div className="input-container">
                 <div className="input-container-header">
@@ -191,7 +198,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Općina </label>
-                    <input {...register("residence_muncipality", { required: true })}  className="form-control" id="prezimeoca-input"/>
+                    <input type="text" {...register("residence_muncipality", { required: true })}  className="form-control" id="prezimeoca-input"/>
                 </div>
 
 

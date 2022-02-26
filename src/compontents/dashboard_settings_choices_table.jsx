@@ -1,6 +1,8 @@
-import React, {forwardRef} from "react";
+import React, {forwardRef, useState} from "react";
 
 import MaterialTable from "material-table";
+import Modal from 'react-bootstrap/Modal';
+import {useForm} from "react-hook-form";
 
 import "./styles/dashboard.scss"
 import AddBox from "@material-ui/icons/AddBox";
@@ -19,7 +21,45 @@ import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Remove from "@material-ui/icons/Remove";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 
+
 const DashboardSettingsChoicesTable = () => {
+
+    const [selectedRow, setSelectedRow] = useState();
+    const [selectedRowData, setSelectedRowData] = useState();
+    const [createModalIsOpen, setCreateIsOpen] = useState(false);
+    const [editModalIsOpen, setEditIsOpen] = useState(false);
+    const {register, handleSubmit, setValue} = useForm();
+
+
+    const openCreateModal = () => {
+        setCreateIsOpen(true);
+    }
+
+
+    const closeCreateModal = () => {
+        setCreateIsOpen(false);
+    }
+
+    const openEditModal = () => {
+        setEditIsOpen(true);
+    }
+
+
+    const closeEditModal = () => {
+        setEditIsOpen(false);
+    }
+
+    const onCreate = (data) => {
+        console.log(data);
+    }
+
+    const onEdit = (data) => {
+       console.log(data);
+    }
+
+    const onError = (error) =>{
+        console.error(error);
+    }
 
     const columns = [
         {
@@ -72,18 +112,19 @@ const DashboardSettingsChoicesTable = () => {
 
 
     return(
+        <div>
         <MaterialTable title='Smjerovi' columns={columns} data={data} options={options} icons={tableIcons} actions={[
             {
                 icon: () => <button className="btn btn-outline-dark rounded" style={{marginLeft:"40px"}}>Kreiraj</button>,
                 tooltip:"Kreiraj Smjer",
                 isFreeAction:true,
-                onClick:()=>console.log("Au!")
+                onClick:()=>openCreateModal()
             },
             {
                 icon: () => <button className="btn btn-outline-dark rounded">Uredi</button>,
                 tooltip:"Uredi Smjer",
                 isFreeAction:true,
-                onClick:()=>console.log("Au!")
+                onClick:()=>openEditModal()
             },
             {
                 icon: () => <button className="btn btn-outline-dark rounded">Obrisi</button>,
@@ -100,6 +141,42 @@ const DashboardSettingsChoicesTable = () => {
 
 
         ]}/>
+
+        <Modal show={createModalIsOpen} close={closeCreateModal} size="xl" onHide={closeCreateModal} aria-labelledby="contained-modal-title-vcenter" centered>
+            <Modal.Header closeButton >
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Kreiraj Smjer
+                </Modal.Title>
+            </Modal.Header>
+            <form className="container-sm d-flex flex-column justify-content-between" onSubmit={handleSubmit(onCreate, onError)}>
+                <Modal.Body>
+                    <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
+
+
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Kreiraj</button>
+                </Modal.Footer>
+            </form>
+        </Modal>
+
+        <Modal show={editModalIsOpen} close={closeEditModal} size="xl" onHide={closeEditModal} aria-labelledby="contained-modal-title-vcenter" centered>
+            <Modal.Header closeButton >
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Uredi Smjer
+                </Modal.Title>
+            </Modal.Header>
+            <form className="container-sm d-flex flex-column justify-content-between" onSubmit={handleSubmit(onEdit, onError)}>
+                <Modal.Body>
+
+                </Modal.Body>
+                <Modal.Footer>
+                    <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Uredi</button>
+                </Modal.Footer>
+            </form>
+        </Modal>
+        </div>
     );
 }
 
