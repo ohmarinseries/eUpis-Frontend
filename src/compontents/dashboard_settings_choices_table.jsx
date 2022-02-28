@@ -61,6 +61,18 @@ const DashboardSettingsChoicesTable = () => {
         console.error(error);
     }
 
+    const onEject = (id) => {
+        
+    }
+
+    const onDelete = (id) => {
+        
+    }
+    
+    const onAdd = (data) => {
+
+    }
+
     const columns = [
         {
             title: "Naziv",
@@ -87,6 +99,9 @@ const DashboardSettingsChoicesTable = () => {
         },
         details:true,
         padding:'dense',
+        rowStyle: rowData => ({
+            backgroundColor: rowData.tableData.id === selectedRow ? '#ededed' : 'white',
+        }),
 
     }
 
@@ -113,9 +128,14 @@ const DashboardSettingsChoicesTable = () => {
 
     return(
         <div>
-        <MaterialTable title='Smjerovi' columns={columns} data={data} options={options} icons={tableIcons} actions={[
+        <MaterialTable title='Smjerovi' columns={columns} data={data} options={options} icons={tableIcons}
+          onRowClick={(event, rowData) => {
+            setSelectedRow(rowData.tableData.id);
+            setSelectedRowData(rowData);
+            }}
+          actions={[
             {
-                icon: () => <button className="btn btn-outline-dark rounded" style={{marginLeft:"40px"}}>Kreiraj</button>,
+                icon: () => <button className="btn btn-outline-dark rounded">Kreiraj</button>,
                 tooltip:"Kreiraj Smjer",
                 isFreeAction:true,
                 onClick:()=>openCreateModal()
@@ -148,11 +168,17 @@ const DashboardSettingsChoicesTable = () => {
                     Kreiraj Smjer
                 </Modal.Title>
             </Modal.Header>
-            <form className="container-sm d-flex flex-column justify-content-between" onSubmit={handleSubmit(onCreate, onError)}>
+            <form className="container-sm d-flex flex-column justify-content-around" onSubmit={handleSubmit(onCreate, onError)}>
                 <Modal.Body>
                     <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
-
-
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="full_choice_name-input"> Naziv Smjera</label>
+                            <input type="text"  className="form-control" id="full_choice_name-input" {...register("full_choice_name", { required: true })}/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="letter-input"> Oznaka Smjera</label>
+                            <input type="text"  className="form-control" id="letter-input" {...register("letter", { required: true })}/>
+                        </div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
@@ -169,13 +195,25 @@ const DashboardSettingsChoicesTable = () => {
             </Modal.Header>
             <form className="container-sm d-flex flex-column justify-content-between" onSubmit={handleSubmit(onEdit, onError)}>
                 <Modal.Body>
-
+                    <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="full_choice_name-input"> Naziv Smjera</label>
+                            <input type="text"  className="form-control" id="full_choice_name-input" {...register("full_choice_name", { required: true })}/>
+                        </div>
+                        <div className="one-input-container">
+                            <label className="form-label" htmlFor="letter-input"> Oznaka Smjera</label>
+                            <input type="text"  className="form-control" id="letter-input" {...register("letter", { required: true })}/>
+                        </div>
+                    </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Uredi</button>
                 </Modal.Footer>
             </form>
         </Modal>
+
+
+
         </div>
     );
 }

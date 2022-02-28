@@ -1,4 +1,4 @@
-import React, {forwardRef} from "react";
+import React, {forwardRef, useState} from "react";
 import MaterialTable from 'material-table';
 
 import AddBox from '@material-ui/icons/AddBox';
@@ -24,7 +24,8 @@ import "./styles/dashboard.scss"
 
 const DashboardCandidatesClassesTable = () => {
 
-
+    const [selectedRow, setSelectedRow] = useState();
+    const [selectedRowData, setSelectedRowData] = useState();
 
     const columns = [
 
@@ -42,7 +43,10 @@ const DashboardCandidatesClassesTable = () => {
             top: 0
         },
         padding:'dense',
-        selection: true
+        selection: true,
+        rowStyle: rowData => ({
+            backgroundColor: rowData.tableData.id === selectedRow ? '#ededed' : 'white',
+        }),
 
     }
 
@@ -68,7 +72,12 @@ const DashboardCandidatesClassesTable = () => {
 
     return(
 
-        <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons} />
+        <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons}
+        onRowClick={(event, rowData) => {
+          setSelectedRow(rowData.tableData.id);
+          setSelectedRowData(rowData);
+        }}
+        />
 
     );
 }

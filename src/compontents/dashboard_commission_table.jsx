@@ -1,4 +1,4 @@
-import React, {forwardRef} from "react";
+import React, {forwardRef, useState} from "react";
 
 import AddBox from "@material-ui/icons/AddBox";
 import Check from "@material-ui/icons/Check";
@@ -16,10 +16,49 @@ import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Remove from "@material-ui/icons/Remove";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import MaterialTable from "material-table";
+import Modal from 'react-bootstrap/Modal';
+import {useForm} from "react-hook-form";
 
 
 
 const DashboardCommissionTable = () => {
+
+    const [selectedRow, setSelectedRow] = useState();
+    const [selectedRowData, setSelectedRowData] = useState();
+    const [createModalIsOpen, setCreateIsOpen] = useState(false);
+    const [editModalIsOpen, setEditIsOpen] = useState(false);
+    const {register, handleSubmit, setValue} = useForm();
+
+    const openCreateModal = () => {
+        setCreateIsOpen(true);
+    }
+
+
+    const closeCreateModal = () => {
+        setCreateIsOpen(false);
+    }
+
+    const openEditModal = () => {
+        setEditIsOpen(true);
+    }
+
+
+    const closeEditModal = () => {
+        setEditIsOpen(false);
+    }
+
+    const onCreate = (data) => {
+        console.log(data);
+    }
+
+    const onEdit = (data) => {
+        console.log(data);
+    }
+
+    const onError = (error) =>{
+        console.error(error);
+    }
+
     const columns = [
         {
             title: "Ime",
@@ -52,7 +91,10 @@ const DashboardCommissionTable = () => {
             position: "sticky",
             top: 0
         },
-        details:true
+        details:true,
+        rowStyle: rowData => ({
+            backgroundColor: rowData.tableData.id === selectedRow ? '#ededed' : 'white',
+        }),
 
     }
 
@@ -79,28 +121,98 @@ const DashboardCommissionTable = () => {
     return(
         <div>
             <MaterialTable title={'Komisija'} columns={columns} data={data} options={options} icons={tableIcons}
+                           onRowClick={(event, rowData) => {
+                               setSelectedRow(rowData.tableData.id);
+                               setSelectedRowData(rowData);
+                           }}
                            actions={[
-                               {
-                                   icon: () => <button className="btn btn-outline-dark rounded">Detalji</button>,
-                                   tooltip:"Detalji o korisniku",
-                                   isFreeAction:true,
-                                   onClick:()=>console.log("Au!")
-                               },
                                {
                                    icon: () => <button className="btn btn-outline-dark rounded">Kreiraj</button>,
                                    tooltip:"Kreiraj korisnika",
                                    isFreeAction:true,
-                                   onClick:()=>console.log("Au!")
+                                   onClick:()=>openCreateModal()
                                },
                                {
                                    icon: () => <button className="btn btn-outline-dark rounded">Uredi</button>,
                                    tooltip:"Uredi korisnika",
                                    isFreeAction:true,
-                                   onClick:()=>console.log("Au!")
+                                   onClick:()=>openEditModal()
                                },
 
 
-                           ]}/>
+                           ]}
+            />
+
+            <Modal show={createModalIsOpen} close={closeCreateModal} size="xl" onHide={closeCreateModal} aria-labelledby="contained-modal-title-vcenter" centered>
+                <Modal.Header closeButton >
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        Kreiraj Korisnika
+                    </Modal.Title>
+                </Modal.Header>
+                <form className="container-sm d-flex flex-column justify-content-around" onSubmit={handleSubmit(onCreate, onError)}>
+                    <Modal.Body>
+                        <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="full_choice_name-input"> Ime </label>
+                                <input type="text"  className="form-control" id="full_choice_name-input" {...register("first_name", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="letter-input"> Prezime </label>
+                                <input type="text"  className="form-control" id="letter-input" {...register("last_name", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="full_choice_name-input"> Email </label>
+                                <input type="text"  className="form-control" id="full_choice_name-input" {...register("email", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="letter-input"> Lozinka </label>
+                                <input type="text"  className="form-control" id="letter-input" {...register("password", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="prezime-input"> Admin </label>
+                                <input className="form-check-input" type="checkbox" value="" {...register("is_admin")}  id="flexCheckDefault" />
+                            </div>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Kreiraj</button>
+                    </Modal.Footer>
+                </form>
+            </Modal>
+
+            <Modal show={editModalIsOpen} close={closeEditModal} size="xl" onHide={closeEditModal} aria-labelledby="contained-modal-title-vcenter" centered>
+                <Modal.Header closeButton >
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        Uredi Korisnika
+                    </Modal.Title>
+                </Modal.Header>
+                <form className="container-sm d-flex flex-column justify-content-between" onSubmit={handleSubmit(onEdit, onError)}>
+                    <Modal.Body>
+                        <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="full_choice_name-input"> Ime </label>
+                                <input type="text"  className="form-control" id="full_choice_name-input" {...register("first_name", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="letter-input"> Prezime </label>
+                                <input type="text"  className="form-control" id="letter-input" {...register("last_name", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="full_choice_name-input"> Email </label>
+                                <input type="text"  className="form-control" id="full_choice_name-input" {...register("email", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="prezime-input"> Admin </label>
+                                <input className="form-check-input" type="checkbox" value="" {...register("is_admin")}  id="flexCheckDefault" />
+                            </div>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Uredi</button>
+                    </Modal.Footer>
+                </form>
+            </Modal>
+
         </div>
     );
 }

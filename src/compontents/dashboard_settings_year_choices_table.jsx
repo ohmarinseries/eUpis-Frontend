@@ -1,4 +1,4 @@
-import React, {forwardRef} from "react";
+import React, {forwardRef, useState} from "react";
 
 import AddBox from "@material-ui/icons/AddBox";
 import Check from "@material-ui/icons/Check";
@@ -18,6 +18,9 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 import MaterialTable from "material-table";
 
 const DashboardSettingsYearChoicesTable = () => {
+
+    const [selectedRow, setSelectedRow] = useState();
+    const [selectedRowData, setSelectedRowData] = useState();
 
     const columns = [
         {
@@ -53,6 +56,9 @@ const DashboardSettingsYearChoicesTable = () => {
         },
         details:true,
         padding:'dense',
+        rowStyle: rowData => ({
+            backgroundColor: rowData.tableData.id === selectedRow ? '#ededed' : 'white',
+        }),
 
     }
 
@@ -77,8 +83,12 @@ const DashboardSettingsYearChoicesTable = () => {
     };
 
     return(
-        <MaterialTable title='Smjerovi za Godinu' columns={columns} data={data} options={options} icons={tableIcons} actions={[
-
+        <MaterialTable title='Smjerovi za Godinu' columns={columns} data={data} options={options} icons={tableIcons}
+           onRowClick={(event, rowData) => {
+            setSelectedRow(rowData.tableData.id);
+            setSelectedRowData(rowData);
+           }}
+           actions={[
             {
                 icon: () => <button className="btn btn-outline-dark rounded">Izbaci</button>,
                 tooltip:"Izbaci Smjer",
