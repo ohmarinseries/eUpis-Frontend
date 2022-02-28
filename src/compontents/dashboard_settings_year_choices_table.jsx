@@ -16,11 +16,38 @@ import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Remove from "@material-ui/icons/Remove";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import MaterialTable from "material-table";
+import Modal from 'react-bootstrap/Modal';
+import {useForm} from "react-hook-form";
+
 
 const DashboardSettingsYearChoicesTable = () => {
 
     const [selectedRow, setSelectedRow] = useState();
     const [selectedRowData, setSelectedRowData] = useState();
+    const [editModalIsOpen, setEditIsOpen] = useState(false);
+    const {register, handleSubmit, setValue} = useForm();
+
+
+
+    const openEditModal = () => {
+        setEditIsOpen(true);
+    }
+
+    const closeEditModal = () => {
+        setEditIsOpen(false);
+    }
+
+    const onEdit = (data) => {
+        console.log(data);
+    }
+
+    const onEject = (id) => {
+
+    }
+
+    const onError = (error) =>{
+        console.error(error);
+    }
 
     const columns = [
         {
@@ -83,6 +110,7 @@ const DashboardSettingsYearChoicesTable = () => {
     };
 
     return(
+        <div>
         <MaterialTable title='Smjerovi za Godinu' columns={columns} data={data} options={options} icons={tableIcons}
            onRowClick={(event, rowData) => {
             setSelectedRow(rowData.tableData.id);
@@ -93,22 +121,52 @@ const DashboardSettingsYearChoicesTable = () => {
                 icon: () => <button className="btn btn-outline-dark rounded">Izbaci</button>,
                 tooltip:"Izbaci Smjer",
                 isFreeAction:true,
-                onClick:()=>console.log("Au!")
+                onClick:()=>onEject()
+            },
+            {
+                icon: () => <button className="btn btn-outline-dark rounded">Uredi</button>,
+                tooltip:"Uredi Smjer",
+                isFreeAction:true,
+                onClick:()=>openEditModal()
             },
             {
                 icon: () => <select className="form-select rounded btn-outline-dark">
                     <option></option>
                     <option>2021/2022</option>
                     <option>2019/2020</option>
-
-                </select>,
+                    </select>,
                 tooltip:"Upisna Godina",
                 isFreeAction:true,
                 onClick:()=>console.log("Au!")
             },
-
-
         ]}/>
+
+            <Modal show={editModalIsOpen} close={closeEditModal} size="xl" onHide={closeEditModal} aria-labelledby="contained-modal-title-vcenter" centered>
+                <Modal.Header closeButton >
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        Uredi Smjer
+                    </Modal.Title>
+                </Modal.Header>
+                <form className="container-sm d-flex flex-column justify-content-between" onSubmit={handleSubmit(onEdit, onError)}>
+                    <Modal.Body>
+                        <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="full_choice_name-input"> Broj Razreda</label>
+                                <input type="number"  className="form-control" id="full_choice_name-input" {...register("full_choice_name", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="letter-input"> Broj Učenika</label>
+                                <input type="number"  className="form-control" id="letter-input" {...register("letter", { required: true })}/>
+                            </div>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Uredi</button>
+                    </Modal.Footer>
+                </form>
+            </Modal>
+
+        </div>
     );
 }
 

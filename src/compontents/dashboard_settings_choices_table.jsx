@@ -4,7 +4,7 @@ import MaterialTable from "material-table";
 import Modal from 'react-bootstrap/Modal';
 import {useForm} from "react-hook-form";
 
-import "./styles/dashboard.scss"
+import "./styles/dashboard.scss";
 import AddBox from "@material-ui/icons/AddBox";
 import Check from "@material-ui/icons/Check";
 import Clear from "@material-ui/icons/Clear";
@@ -27,6 +27,7 @@ const DashboardSettingsChoicesTable = () => {
     const [selectedRow, setSelectedRow] = useState();
     const [selectedRowData, setSelectedRowData] = useState();
     const [createModalIsOpen, setCreateIsOpen] = useState(false);
+    const [addModalIsOpen, setAddIsOpen] = useState(false);
     const [editModalIsOpen, setEditIsOpen] = useState(false);
     const {register, handleSubmit, setValue} = useForm();
 
@@ -49,6 +50,15 @@ const DashboardSettingsChoicesTable = () => {
         setEditIsOpen(false);
     }
 
+    const openAddModal = () => {
+        setAddIsOpen(true);
+    }
+
+
+    const closeAddModal = () => {
+        setAddIsOpen(false);
+    }
+
     const onCreate = (data) => {
         console.log(data);
     }
@@ -61,14 +71,11 @@ const DashboardSettingsChoicesTable = () => {
         console.error(error);
     }
 
-    const onEject = (id) => {
-        
-    }
 
     const onDelete = (id) => {
         
     }
-    
+
     const onAdd = (data) => {
 
     }
@@ -156,7 +163,7 @@ const DashboardSettingsChoicesTable = () => {
                 icon: () => <button className="btn btn-outline-dark rounded">Ubaci</button>,
                 tooltip:"Dodaj Smjer na Godinu",
                 isFreeAction:true,
-                onClick:()=>console.log("Au!")
+                onClick:()=>openAddModal()
             },
 
 
@@ -210,6 +217,31 @@ const DashboardSettingsChoicesTable = () => {
                     <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Uredi</button>
                 </Modal.Footer>
             </form>
+        </Modal>
+
+        <Modal show={addModalIsOpen} close={closeAddModal} size="xl" onHide={closeAddModal} aria-labelledby="contained-modal-title-vcenter" centered>
+                <Modal.Header closeButton >
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        Ubaci Smjer na godinu
+                    </Modal.Title>
+                </Modal.Header>
+                <form className="container-sm d-flex flex-column justify-content-between" onSubmit={handleSubmit(onAdd, onError)}>
+                    <Modal.Body>
+                        <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="full_choice_name-input"> Broj Razreda</label>
+                                <input type="number"  className="form-control" id="full_choice_name-input" {...register("full_choice_name", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="letter-input"> Broj Učenika</label>
+                                <input type="number"  className="form-control" id="letter-input" {...register("letter", { required: true })}/>
+                            </div>
+                        </div>
+                    </Modal.Body>
+                 <Modal.Footer>
+                     <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Uredi</button>
+                 </Modal.Footer>
+              </form>
         </Modal>
 
 
