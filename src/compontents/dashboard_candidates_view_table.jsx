@@ -1,6 +1,8 @@
-import React, {forwardRef, useState} from "react";
+import React, {forwardRef, useState, useEffect} from "react";
 import MaterialTable from 'material-table';
 import Modal from 'react-bootstrap/Modal';
+
+import {useForm} from "react-hook-form";
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -21,7 +23,6 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 
 
 import "./styles/dashboard.scss"
-import {useForm} from "react-hook-form";
 
 
 const DashboardCandidatesViewTable = () => {
@@ -30,6 +31,10 @@ const DashboardCandidatesViewTable = () => {
     const [selectedRowData, setSelectedRowData] = useState();
     const [modalIsOpen, setIsOpen] = useState(false);
     const {register, handleSubmit, setValue} = useForm();
+
+    useEffect(() => {
+
+    }, [])
 
     const openModal = () => {
         setIsOpen(true);
@@ -53,6 +58,10 @@ const DashboardCandidatesViewTable = () => {
             field: "upisni_br"
         },
         {
+            title: "Ime",
+            field: "ime"
+        },
+        {
             title: "Prezime",
             field: "prezime"
         },
@@ -60,10 +69,7 @@ const DashboardCandidatesViewTable = () => {
             title: "Ime Oca",
             field: "ime_oca"
         },
-        {
-            title: "Ime",
-            field: "ime"
-        },
+
         {
             title: "Osnovna Škola",
             field: "osnovna_skola"
