@@ -28,7 +28,55 @@ const DashboardCandidatesClassesTable = () => {
     const [selectedRowData, setSelectedRowData] = useState();
 
     const columns = [
+        {
+            title: "Upisni Br.",
+            field: "upisni_br"
+        },
+        {
+            title: "Ime",
+            field: "ime"
+        },
+        {
+            title: "Prezime",
+            field: "prezime"
+        },
+        {
+            title: "Ime Oca",
+            field: "ime_oca"
+        },
 
+        {
+            title: "Osnovna Škola",
+            field: "osnovna_skola"
+        },
+        {
+            title: "Opći Uspjeh Bodovi",
+            field: "opci_uspjeh_bodovi"
+        },
+        {
+            title: "Značajni Predmeti Bodovi",
+            field: "znacajni_predmeti_bodovi"
+        },
+        {
+            title: "Takmičenja",
+            field: "takmicenja"
+        },
+        {
+            title: "Diplome(čl.65)",
+            field: "diplome"
+        },
+        {
+            title: "Eksterna Matura",
+            field: "eksterna_matura"
+        },
+        {
+            title: "Učenik Generacije",
+            field: "ucenik_generacije"
+        },
+        {
+            title: "Ukupni Bodovi",
+            field: "bodovi"
+        },
     ];
 
     const data = [

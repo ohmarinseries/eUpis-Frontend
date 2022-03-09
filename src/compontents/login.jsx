@@ -1,10 +1,20 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 import "./styles/dashboard.scss"
 
 const Login = () => {
 
+    //const dispatch=useDispatch();
+    //const loading = useSelector((state)=>state.authReducer.loading)
+
+    //const navigation = useHistory();
+
+    if(false){
+
+    }
+    else {
     return(
     <div className="container vh-100 vw-100 align-content-lg-center" >
         <div className="container py-5 h-100">
@@ -32,8 +42,6 @@ const Login = () => {
                             <Link to="/"><button className="btn btn-danger btn-lg btn-block" type="submit">Povratak</button></Link>
 
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -42,7 +50,7 @@ const Login = () => {
 
         </div>
         )
-
+    }
 
 }
 

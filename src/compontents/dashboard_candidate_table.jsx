@@ -1,4 +1,4 @@
-import React, {forwardRef, useState} from "react";
+import React, {forwardRef, useState, useEffect} from "react";
 import MaterialTable from 'material-table';
 
 import AddBox from '@material-ui/icons/AddBox';
@@ -27,10 +27,18 @@ const DashboardCandidateTable = () => {
     const [selectedRow, setSelectedRow] = useState();
     const [selectedRowData, setSelectedRowData] = useState();
 
+    useEffect(() => {
+
+    }, [])
+
     const columns = [
         {
             title: "Upisni Br.",
             field: "upisni_br"
+        },
+        {
+            title: "Ime",
+            field: "ime"
         },
         {
             title: "Prezime",
@@ -40,10 +48,7 @@ const DashboardCandidateTable = () => {
             title: "Ime Oca",
             field: "ime_oca"
         },
-        {
-            title: "Ime",
-            field: "ime"
-        },
+
         {
             title: "Osnovna Škola",
             field: "osnovna_skola"
