@@ -21,9 +21,10 @@ const DashboardNavbar = () => {
                         <NavDropdown.Item href="/dashboard/candidates-classes">Razredi <span className="badge bg-dark text-light b-text-size">Admin</span></NavDropdown.Item>
                     </NavDropdown>
                     <NavDropdown title="Podešavanja" id="navbarScrollingDropdown" style={{marginRight:"20px"}}>
-                        <NavDropdown.Item href="/dashboard/settings/year">Upis <span className="badge bg-dark text-light b-text-size ">Admin</span></NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard/settings/year">Godina <span className="badge bg-dark text-light b-text-size ">Admin</span></NavDropdown.Item>
                         <NavDropdown.Item href="/dashboard/settings/choices">Smjerovi <span className="badge bg-dark text-light b-text-size">Admin</span></NavDropdown.Item>
                         <NavDropdown.Item href="/dashboard/commission">Komisija <span className="badge bg-dark text-light b-text-size">Admin</span></NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard/settings/classes">Razredi <span className="badge bg-dark text-light b-text-size">Admin</span></NavDropdown.Item>
                     </NavDropdown>
                     <NavDropdown title="Korisnik" id="navbarScrollingDropdown" >
                         <NavDropdown.Item href="/dashboard/profile">Detalji</NavDropdown.Item>
@@ -31,9 +32,6 @@ const DashboardNavbar = () => {
                     </NavDropdown>
                 </Nav>
                 </Navbar.Collapse>
-
-
-
             </div>
 
         </Navbar>

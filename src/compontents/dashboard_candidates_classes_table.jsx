@@ -24,8 +24,17 @@ import "./styles/dashboard.scss"
 
 const DashboardCandidatesClassesTable = () => {
 
-    const [selectedRow, setSelectedRow] = useState();
-    const [selectedRowData, setSelectedRowData] = useState();
+    const [selectedRowFirst, setSelectedRowFirst] = useState();
+    const [selectedRowDataFirst, setSelectedRowDataFirst] = useState();
+    const [selectedRowSecond, setSelectedRowSecond] = useState();
+    const [selectedRowDataSecond, setSelectedRowDataSecond] = useState();
+
+    const columnsClasses = [
+        {
+            title: "Naziv Odjeljenja",
+            field: "title"
+        }
+    ]
 
     const columns = [
         {
@@ -91,9 +100,8 @@ const DashboardCandidatesClassesTable = () => {
             top: 0
         },
         padding:'dense',
-        selection: true,
         rowStyle: rowData => ({
-            backgroundColor: rowData.tableData.id === selectedRow ? '#ededed' : 'white',
+            backgroundColor: rowData.tableData.id === selectedRowDataFirst ? '#ededed' : 'white',
         }),
 
     }
@@ -119,13 +127,24 @@ const DashboardCandidatesClassesTable = () => {
     };
 
     return(
-
+      <div>
+          <div className="container">
         <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons}
         onRowClick={(event, rowData) => {
-          setSelectedRow(rowData.tableData.id);
-          setSelectedRowData(rowData);
+          setSelectedRowFirst(rowData.tableData.id);
+          setSelectedRowDataFirst(rowData);
         }}
         />
+          </div>
+          <div className="container mt-5">
+        <MaterialTable title={'Razredi'} columns={columnsClasses} data={data} options={options} icons={tableIcons}
+        onRowClick={(event, rowData) => {
+          setSelectedRowSecond(rowData.tableData.id);
+          setSelectedRowDataSecond(rowData);
+        }}
+        />
+          </div>
+      </div>
 
     );
 }

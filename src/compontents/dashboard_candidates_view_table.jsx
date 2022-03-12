@@ -418,7 +418,7 @@ const DashboardCandidatesViewTable = () => {
 
             </Modal.Body>
             <Modal.Footer>
-                <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Validiraj</button>
+                <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Izmjeni</button>
             </Modal.Footer>
         </form>
         </Modal>

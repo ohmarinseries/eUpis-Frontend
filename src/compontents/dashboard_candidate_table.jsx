@@ -1,5 +1,7 @@
 import React, {forwardRef, useState, useEffect} from "react";
 import MaterialTable from 'material-table';
+import Modal from "react-bootstrap/Modal";
+import {useForm} from "react-hook-form";
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -26,10 +28,28 @@ const DashboardCandidateTable = () => {
 
     const [selectedRow, setSelectedRow] = useState();
     const [selectedRowData, setSelectedRowData] = useState();
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const {register, handleSubmit, setValue} = useForm();
 
     useEffect(() => {
 
     }, [])
+
+    const openModal = () => {
+        setIsOpen(true);
+    }
+
+    const closeModal = () => {
+        setIsOpen(false);
+    }
+
+    const onValidate = (data) => {
+        console.log(data);
+    }
+
+    const onError = (error) =>{
+        console.error(error);
+    }
 
     const columns = [
         {
@@ -124,7 +144,7 @@ const DashboardCandidateTable = () => {
     };
 
     return(
-
+        <div>
            <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
                setSelectedRow(rowData.tableData.id);
                setSelectedRowData(rowData);
@@ -134,11 +154,265 @@ const DashboardCandidateTable = () => {
                    icon: () => <button className="btn btn-outline-dark rounded">Detalji</button>,
                    tooltip:"Detalji o korisniku",
                    isFreeAction:true,
-                   onClick:()=>console.log("Au!")
+                   onClick:()=>openModal()
                },
 
            ]}/>
+            <Modal show={modalIsOpen} close={closeModal} size="xl" onHide={closeModal} aria-labelledby="contained-modal-title-vcenter" centered>
+                <Modal.Header closeButton style={{paddingLeft:"30px"}}>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        Detalji kandidata
+                    </Modal.Title>
+                </Modal.Header>
+                <form className="container-sm d-flex flex-column justify-content-between" onSubmit={handleSubmit(onValidate, onError)}>
+                    <Modal.Body>
+                        <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input" > Ime </label>
+                                <input type="text" className="form-control" id="name-input" {...register("name", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input" > Prezime </label>
+                                <input type="text" className="form-control" id="name-input" {...register("surname", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input" > Datum Rođenja </label>
+                                <input type="date" className="form-control" id="name-input" {...register("birth_date", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input"> Mjesto Rođenja </label>
+                                <input type="text" className="form-control" id="name-input" {...register("birth_place", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input"> Republika Rođenja </label>
+                                <input type="text" className="form-control" id="name-input" {...register("birth_republic", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input"> Općina Rođenja </label>
+                                <input type="text" className="form-control" id="name-input" {...register("birth_muncipality", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input"> Državljanstvo </label>
+                                <input type="text" className="form-control" id="name-input" {...register("citizenship", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="prezime-input"> JMBG </label>
+                                <input type="text" className="form-control" id="prezime-input" {...register("jmbg", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="prezime-input"> Spol </label>
+                                <select {...register("sex", { required: true })}  id="drugistrani" className="form-select" >
+                                    <option value=" "> </option>
+                                    <option value="M">Muško </option>
+                                    <option value="Z"> Žensko </option>
+                                </select>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input"> Adresa Stanovanja </label>
+                                <input type="text" className="form-control" id="name-input" {...register("street", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input"> Broj Kuće </label>
+                                <input type="text" className="form-control" id="name-input" {...register("house_number", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input"> Mjesto </label>
+                                <input type="text" className="form-control" id="name-input" {...register("residence_place", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input"> Općina  </label>
+                                <input type="text" className="form-control" id="name-input" {...register("residence_muncipality", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input"> Telefon </label>
+                                <input type="text" className="form-control" id="name-input" {...register("phone", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input"> Email </label>
+                                <input type="text" className="form-control" id="name-input" {...register("email_contact", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input"> Osnovna Škola </label>
+                                <input type="text" className="form-control" id="name-input" {...register("elementary_school", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input"> Broj Svjedodžbe</label>
+                                <input type="text" className="form-control" id="name-input" {...register("testimony_number", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="name-input"> Datum Svjedodžbe </label>
+                                <input type="date" className="form-control" id="name-input" {...register("testimony_date", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="ime-input"> Ime Oca </label>
+                                <input type="text" className="form-control" id="imeoca-input" {...register("father_name", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="prezime-input"> Prezime Oca </label>
+                                <input type="text" className="form-control" id="prezimeoca-input" {...register("father_surname", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Oca </label>
+                                <input type="text" className="form-control" id="zanimanjeoca-input" {...register("father_profession", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="ime-input"> Ime Majke</label>
+                                <input type="text" className="form-control" id="imeoca-input" {...register("mother_name", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="prezime-input"> Prezime Majke</label>
+                                <input type="text"  className="form-control" id="prezimeoca-input" {...register("mother_surname", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Majke</label>
+                                <input type="text"  className="form-control" id="zanimanjeoca-input" {...register("mother_profession", { required: true })}/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="ime-input"> Prvi Strani Jezik </label>
+                                <select id="drugistrani" className="form-select" {...register("first_foriegn_language", { required: true })}>
+                                    <option value=" "> </option>
+                                    <option value="Engleski jezik">Engleski jezik </option>
+                                    <option value="Njemački jezik ">Njemački jezik </option>
+                                </select>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="prezime-input"> Drugi Strani Jezik </label>
+                                <select id="drugistrani" className="form-select" {...register("second_foriegn_language", { required: true })}>
+                                    <option value=" "> </option>
+                                    <option value="Engleski jezik">Engleski jezik </option>
+                                    <option value="Njemački jezik ">Njemački jezik </option>
+                                </select>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Fakultativna Nastava </label>
+                                <select id="fakultativni" className="form-select" {...register("facultative_subject", { required: true })}>
+                                    <option value=" "> </option>
+                                    <option value="Islamski vjeronauk">Islamski vjeronauk</option>
+                                    <option value="Katolički vjeronauk">Katolicki vjeronauk</option>
+                                    <option value="Pravoslavni vjeronauk">Pravoslavni vjeronauk</option>
+                                    <option value="Religijska kultura">Religijska kultura</option>
+                                </select>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="prezime-input"> Prva Želja </label>
+                                <select {...register("first_choice", { required: true })}  id="drugistrani" className="form-select" >
+                                    <option value=" "> </option>
+                                    <option value="A">Tehničar računarstva</option>
+                                    <option value="B">Tehničar elektronike</option>
+                                    <option value="C">Tehničar elektroenergetike</option>
+                                    <option value="D">Tehničar mehatronike</option>
+                                    <option value="E">Elektroničar telekomunikacija</option>
+                                    <option value="F">Autoelektričar</option>
+                                    <option value="G">Električar</option>
+                                </select>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="prezime-input"> Druga Želja (neobavezno) </label>
+                                <select {...register("second_choice")}  id="drugistrani" className="form-select" >
+                                    <option value={null}> </option>
+                                    <option value="A">Tehničar računarstva</option>
+                                    <option value="B">Tehničar elektronike</option>
+                                    <option value="C">Tehničar elektroenergetike</option>
+                                    <option value="D">Tehničar mehatronike</option>
+                                    <option value="E">Elektroničar telekomunikacija</option>
+                                    <option value="F">Autoelektričar</option>
+                                    <option value="G">Električar</option>
+                                </select>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="fakultativni"> Treća Želja (neobavezno) </label>
+                                <select {...register("third_choice")}  id="fakultativni" className="form-select" >
+                                    <option value={null}> </option>
+                                    <option value="A">Tehničar računarstva</option>
+                                    <option value="B">Tehničar elektronike</option>
+                                    <option value="C">Tehničar elektroenergetike</option>
+                                    <option value="D">Tehničar mehatronike</option>
+                                    <option value="E">Elektroničar telekomunikacija</option>
+                                    <option value="F">Autoelektričar</option>
+                                    <option value="G">Električar</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="ime-input"> VI</label>
+                                <input type="number" step=".1" min={2.0} max={5.0} {...register("sixth_grade_mark", { required: true })} className="form-control" id="imeoca-input"/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="prezime-input"> VII </label>
+                                <input type="number" step=".1" min={2.0} max={5.0} {...register("seventh_grade_mark", { required: true })} className="form-control" id="prezimeoca-input" />
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> VIII </label>
+                                <input type="number" step=".1" min={2.0} max={5.0} {...register("eight_grade_mark", { required: true })} className="form-control" id="zanimanjeoca-input"/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> IX </label>
+                                <input type="number" step=".1" min={2.0} max={5.0} {...register("eight_grade_mark", { required: true })} className="form-control" id="zanimanjeoca-input"/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Matematika VIII </label>
+                                <input min={2} max={5} type="number" {...register("math_eight_grade", { required: true })} className="form-control" id="zanimanjeoca-input"/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Fizika VIII </label>
+                                <input min={2} max={5} type="number" {...register("physics_eight_grade", { required: true })} className="form-control" id="zanimanjeoca-input"/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Informatika VIII </label>
+                                <input min={2} max={5} type="number" {...register("informatics_eight_grade", { required: true })} className="form-control" id="zanimanjeoca-input"/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Matematika IX </label>
+                                <input min={2} max={5} type="number" {...register("math_ninth_grade", { required: true })} className="form-control" id="zanimanjeoca-input"/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Fizika IX </label>
+                                <input min={2} max={5} type="number" {...register("physics_ninth_grade", { required: true })} className="form-control" id="zanimanjeoca-input"/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Informatika IX </label>
+                                <input min={2} max={5} type="number" {...register("informatics_ninth_grade", { required: true })} className="form-control" id="zanimanjeoca-input"/>
+                            </div>
+                        </div>
+                        <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="prezime-input">Procenti na eksternoj maturi (0 - 100)</label>
+                                <input type="number" min={0} max={100} {...register("k6", { required: true })} className="form-control" id="prezimeoca-input"/>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="zanimanjeoca-input"> Takmičenja </label>
+                                <select id="fakultativni" className="form-select" {...register("k3", { required: true })} >
+                                    <option value={null}>{null}</option>
+                                    <option value={5}>5</option>
+                                    <option value={8}>8</option>
+                                    <option value={9}>9</option>
+                                    <option value={10}>10</option>
+                                </select>
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="prezime-input">Učenik generacije</label>
+                                <input className="form-check-input" type="checkbox" {...register("k5")} value=""  id="flexCheckDefault" />
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="prezime-input">Posebna diploma čl.65</label>
+                                <input className="form-check-input" type="checkbox" {...register("k4")} value=""  id="flexCheckDefault" />
+                            </div>
+                            <div className="one-input-container">
+                                <label className="form-label" htmlFor="prezime-input">Vojska</label>
+                                <input className="form-check-input" type="checkbox" value="" {...register("military_privileges")}  id="flexCheckDefault" />
+                            </div>
 
+                        </div>
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Validiraj</button>
+                    </Modal.Footer>
+                </form>
+            </Modal>
+
+        </div>
     );
 }
 

@@ -2,7 +2,7 @@ import React from "react";
 
 import DashboardNavbar from "../compontents/dashboard_navbar";
 import "../compontents/styles/dashboard.scss";
-import DashboardCandidatesClassesTable from "../compontents/dashboard_candidate_table";
+import DashboardCandidatesClassesTable from "../compontents/dashboard_candidates_classes_table";
 
 const DashboardCandidatesClasses = () => {
 
