@@ -171,7 +171,7 @@ const DashboardSettingsYearTables = () => {
                                        onClick:()=>console.log("Au!")
                                    },
                                    {
-                                       icon: () => <button className="btn btn-outline-dark rounded">Opcije</button>,
+                                       icon: () => <button className="btn btn-outline-dark rounded">Rang</button>,
                                        tooltip:"Opcije za Upisnu godinu",
                                        isFreeAction:true,
                                        onClick:()=>openSettingsModal()
@@ -254,7 +254,10 @@ const DashboardSettingsYearTables = () => {
                 <Modal.Body>
                     <div className="container d-flex flex-row align-content-center justify-content-around ">
                         <div className="container d-flex flex-row justify-content-center align-content-center">
-                            <button className="btn btn-lg btn-outline-dark rounded">Rangiraj</button>
+                            <button className="btn btn-lg btn-outline-dark rounded">Rang Prvi Rok</button>
+                        </div>
+                        <div className="container d-flex flex-row justify-content-center align-content-center">
+                            <button className="btn btn-lg btn-outline-dark rounded">Rang Drugi Rok</button>
                         </div>
                         <div className="container d-flex flex-row justify-content-center align-content-center">
                             <button className="btn btn-lg btn-outline-dark rounded">Resetiraj Rang</button>

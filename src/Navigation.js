@@ -11,6 +11,7 @@ import DashboardValidation from "./pages/dashboard_candidates_validation";
 import DashboardCandidatesClasses from "./pages/dashboard_candidates_classes";
 import DashboardSettingsChoices from "./pages/dashboard_settings_choices";
 import DashboardSettingsYear from "./pages/dashboard_settings_year";
+import DashboardSettingsClasses from "./pages/dashboard_settings_classes";
 import DashboardCommission from "./pages/dashboard_commission";
 import DashboardProfile from "./pages/dashboard_profile";
 import DashboardCandidatesView from "./pages/dashboard_candidates_view";
@@ -30,6 +31,7 @@ const Navigation = () => {
         <Route path="/dashboard/settings/year" exact component={DashboardSettingsYear} />
         <Route path="/dashboard/commission" exact component={DashboardCommission} />
         <Route path="/dashboard/profile" exact component={DashboardProfile} />
+        <Route path="/dashboard/settings/classes" exact component={DashboardSettingsClasses} />
     </Switch>
     );
 }
