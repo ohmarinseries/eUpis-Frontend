@@ -115,7 +115,6 @@ const DashboardCandidateTable = () => {
             top: 0
         },
         padding:'dense',
-        exportButton: true,
         details:true,
         rowStyle: (rowData) => ({
             backgroundColor: (rowData.tableData.id === selectedRow) ? '#ededed' : 'white',
