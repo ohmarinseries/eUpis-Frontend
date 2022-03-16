@@ -1,4 +1,4 @@
-import React, {forwardRef, useState} from "react";
+import React, {forwardRef, useEffect, useState} from "react";
 
 import MaterialTable from "material-table";
 import Modal from 'react-bootstrap/Modal';
@@ -31,6 +31,9 @@ const DashboardSettingsChoicesTable = () => {
     const [editModalIsOpen, setEditIsOpen] = useState(false);
     const {register, handleSubmit, setValue} = useForm();
 
+    useEffect(() => {
+
+    }, [])
 
     const openCreateModal = () => {
         setCreateIsOpen(true);

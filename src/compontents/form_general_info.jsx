@@ -3,6 +3,8 @@ import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
 import axios from "axios";
 import url from "../api-urls";
+import Select from "react-select";
+import instance from "../utils/axiosNonAuthInstance"
 
 import "bootstrap/dist/css/bootstrap.css"
 import "../compontents/styles/form.scss"
@@ -13,6 +15,8 @@ const FormGeneralInfo = () => {
 
     const {register, handleSubmit} = useForm();
     const navigation = useHistory();
+    const [elementarySchoolOptions, setElementarySchoolOptions] = useState({});
+    const [choicesOptions, setChoicesOptions] = useState({});
    // const [choices, setChoices] = useState({})
   //  const [year, setYear] = useState()
 
@@ -42,6 +46,21 @@ const FormGeneralInfo = () => {
 
     // eslint-disable-next-line no-unused-vars
     let candidateObj
+    let optionsSex = [
+        { value: 'M', label: 'Musko' },
+        { value: 'Z', label: 'Zensko' }
+    ]
+    let optionsFirstLanguage = [
+        { value: 'ENG', label: 'Engleski Jezik' },
+        { value: 'NJE', label: 'Njemacki Jezik' }
+    ]
+
+    let optionsFacultativeSubject = [
+        { value: 'ISL', label: 'Islamski Vjeronauk' },
+        { value: 'PRA', label: 'Pravoslavni Vjeronauk' },
+        { value: 'KAT', label: 'Katolicki Vjeronauk' },
+        { value: 'RKT', label: 'Religijska Kultura' }
+    ]
 
     const onSubmit = (data) => {
         candidateObj = JSON.stringify(data);
@@ -141,11 +160,7 @@ const FormGeneralInfo = () => {
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Spol </label>
-                <select {...register("sex", { required: true })}  id="drugistrani" className="form-select" >
-                    <option value=" "> </option>
-                    <option value="M">Muško </option>
-                    <option value="Z"> Žensko </option>
-                </select>
+                <Select {...register("sex", { required: true })}  id="drugistrani" options={optionsSex} onChange={console.log("A")}/>
             </div>
         </div>
             <div className="input-container">
@@ -209,7 +224,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Osnovna škola </label>
-                    <input {...register("elementary_school", { required: true })} className="form-control" id="prezimeoca-input"/>
+                    <Select options={elementarySchoolOptions} {...register("elementary_school", { required: true })} onChange={console.log("O")}/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Broj Svjedodžbe </label>
@@ -227,29 +242,15 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prvi strani jezik </label>
-                    <select {...register("first_foriegn_language", { required: true })}  id="drugistrani" className="form-select" >
-                        <option value=" "> </option>
-                        <option value="Engleski jezik">Engleski jezik </option>
-                        <option value="Njemački jezik ">Njemački jezik </option>
-                    </select>
+                    <Select {...register("first_foriegn_language", { required: true })} options={optionsFirstLanguage} onChange={console.log("o")}/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Drugi strani jezik </label>
-                    <select {...register("second_foriegn_language", { required: true })}  id="drugistrani" className="form-select" >
-                        <option value=" "> </option>
-                        <option value="Engleski jezik"> Engleski jezik</option>
-                        <option value="Njemački jezik">Njemački jezik </option>
-                    </select>
+                    <Select {...register("second_foriegn_language", { required: true })} options={optionsFirstLanguage} onChange={console.log("o")}/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="fakultativni"> Izborno - Fakultativna nastava (obavezna) </label>
-                    <select {...register("facultative_subject", { required: true })}  id="fakultativni" className="form-select" >
-                        <option value=" "> </option>
-                        <option value="Islamski vjeronauk">Islamski vjeronauk</option>
-                        <option value="Katolički vjeronauk">Katolicki vjeronauk</option>
-                        <option value="Pravoslavni vjeronauk">Pravoslavni vjeronauk</option>
-                        <option value="Religijska kultura">Religijska kultura</option>
-                    </select>
+                    <Select {...register("facultative_subject", { required: true })} options={optionsFacultativeSubject} onChange={console.log("O")}/>
                 </div>
 
             </div>
@@ -260,42 +261,15 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prva Želja </label>
-                    <select {...register("first_choice", { required: true })}  id="drugistrani" className="form-select" >
-                        <option value=" "> </option>
-                        <option value="A">Tehničar računarstva</option>
-                        <option value="B">Tehničar elektronike</option>
-                        <option value="C">Tehničar elektroenergetike</option>
-                        <option value="D">Tehničar mehatronike</option>
-                        <option value="E">Elektroničar telekomunikacija</option>
-                        <option value="F">Autoelektričar</option>
-                        <option value="G">Električar</option>
-                    </select>
+                    <Select {...register("first_choice", { required: true })} options={choicesOptions} onChange={console.log("o")}/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Druga Želja (neobavezno) </label>
-                    <select {...register("second_choice")}  id="drugistrani" className="form-select" >
-                        <option value={null}> </option>
-                        <option value="A">Tehničar računarstva</option>
-                        <option value="B">Tehničar elektronike</option>
-                        <option value="C">Tehničar elektroenergetike</option>
-                        <option value="D">Tehničar mehatronike</option>
-                        <option value="E">Elektroničar telekomunikacija</option>
-                        <option value="F">Autoelektričar</option>
-                        <option value="G">Električar</option>
-                    </select>
+                    <Select {...register("second_choice", { required: true })} options={choicesOptions} onChange={console.log("o")}/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="fakultativni"> Treća Želja (neobavezno) </label>
-                    <select {...register("third_choice")}  id="fakultativni" className="form-select" >
-                        <option value={null}> </option>
-                        <option value="A">Tehničar računarstva</option>
-                        <option value="B">Tehničar elektronike</option>
-                        <option value="C">Tehničar elektroenergetike</option>
-                        <option value="D">Tehničar mehatronike</option>
-                        <option value="E">Elektroničar telekomunikacija</option>
-                        <option value="F">Autoelektričar</option>
-                        <option value="G">Električar</option>
-                    </select>
+                    <Select {...register("third_choice", { required: true })} options={choicesOptions} onChange={console.log("o")}/>
                 </div>
 
             </div>

@@ -1,4 +1,4 @@
-import React, {forwardRef, useState} from "react";
+import React, {forwardRef, useEffect, useState} from "react";
 import MaterialTable from 'material-table';
 
 import AddBox from '@material-ui/icons/AddBox';
@@ -28,6 +28,10 @@ const DashboardCandidatesClassesTable = () => {
     const [selectedRowDataFirst, setSelectedRowDataFirst] = useState();
     const [selectedRowSecond, setSelectedRowSecond] = useState();
     const [selectedRowDataSecond, setSelectedRowDataSecond] = useState();
+
+    useEffect(() => {
+
+    }, [])
 
     const columnsClasses = [
         {
@@ -128,22 +132,13 @@ const DashboardCandidatesClassesTable = () => {
 
     return(
       <div>
-          <div className="container">
         <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons}
         onRowClick={(event, rowData) => {
           setSelectedRowFirst(rowData.tableData.id);
           setSelectedRowDataFirst(rowData);
         }}
         />
-          </div>
-          <div className="container mt-5">
-        <MaterialTable title={'Razredi'} columns={columnsClasses} data={data} options={options} icons={tableIcons}
-        onRowClick={(event, rowData) => {
-          setSelectedRowSecond(rowData.tableData.id);
-          setSelectedRowDataSecond(rowData);
-        }}
-        />
-          </div>
+
       </div>
 
     );

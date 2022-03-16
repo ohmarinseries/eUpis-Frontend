@@ -1,10 +1,14 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {set, useForm} from "react-hook-form";
 
 const DashboardProfileInfo = () => {
 
     const {register, handleSubmit, setValue} = useForm();
     const [readOnly, setReadOnly] = useState(true);
+
+    useEffect(() => {
+
+    }, [])
 
     const onWrite = () => {
         setReadOnly(false)

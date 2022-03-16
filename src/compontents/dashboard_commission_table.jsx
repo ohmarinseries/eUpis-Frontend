@@ -1,4 +1,4 @@
-import React, {forwardRef, useState} from "react";
+import React, {forwardRef, useEffect, useState} from "react";
 
 import AddBox from "@material-ui/icons/AddBox";
 import Check from "@material-ui/icons/Check";
@@ -28,6 +28,10 @@ const DashboardCommissionTable = () => {
     const [createModalIsOpen, setCreateIsOpen] = useState(false);
     const [editModalIsOpen, setEditIsOpen] = useState(false);
     const {register, handleSubmit, setValue} = useForm();
+
+    useEffect(() => {
+
+    }, [])
 
     const openCreateModal = () => {
         setCreateIsOpen(true);

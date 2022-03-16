@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Link, useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -10,6 +10,10 @@ const Login = () => {
     //const loading = useSelector((state)=>state.authReducer.loading)
 
     //const navigation = useHistory();
+
+    useEffect(() => {
+
+    }, [])
 
     if(false){
 

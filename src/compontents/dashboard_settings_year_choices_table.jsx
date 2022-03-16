@@ -1,4 +1,4 @@
-import React, {forwardRef, useState} from "react";
+import React, {forwardRef, useEffect, useState} from "react";
 
 import AddBox from "@material-ui/icons/AddBox";
 import Check from "@material-ui/icons/Check";
@@ -27,7 +27,9 @@ const DashboardSettingsYearChoicesTable = () => {
     const [editModalIsOpen, setEditIsOpen] = useState(false);
     const {register, handleSubmit, setValue} = useForm();
 
+    useEffect(() => {
 
+    }, [])
 
     const openEditModal = () => {
         setEditIsOpen(true);
