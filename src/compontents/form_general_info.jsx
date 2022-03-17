@@ -17,32 +17,47 @@ const FormGeneralInfo = () => {
     const navigation = useHistory();
     const [elementarySchoolOptions, setElementarySchoolOptions] = useState({});
     const [choicesOptions, setChoicesOptions] = useState({});
-   // const [choices, setChoices] = useState({})
-  //  const [year, setYear] = useState()
+    const [year, setYear] = useState(0)
+    let choices, choicesRenamed = [], elementarySchools, elementarySchoolsRenamed = [];
 
-   /* useEffect(()=>{
+    useEffect(()=>{
         let active_year = 0
         axios
             .get(url + '/candidates/year/active/')
             .then((res) => {
-                active_year=res.data.id
+                active_year = res.data.id;
                 console.log(active_year)
                 axios
                     .get(url + `/candidates/yearchoice/${active_year}/`)
                     .then((response)=>{
-                        setChoices(response.data)
-                        console.log(response.data)
+                        choices = response.data;
+                        for(let i = 0 ; i < choices.length ; i++){
+                            choices[i] = choices[i].choice;
+                            choicesRenamed.push({value: choices[i].id, label: choices[i].full_choice_name})
+                        }
+                        setChoicesOptions(choicesRenamed);
                     })
                     .catch((error)=>{
                         console.error(error)
                     })
+                console.log(year);
+                console.log(choicesOptions);
             })
             .catch((error)=>{
                 console.error(error)
             })
 
+        axios.get(url + '/candidates/schools/')
+             .then((response => {
+                elementarySchools = response.data;
+                for(let i = 0 ; i < elementarySchools.length ; i++){
+                    elementarySchoolsRenamed.push({value: elementarySchools[i].id, label: elementarySchools[i].school_name});
+                }
+                setElementarySchoolOptions(elementarySchoolsRenamed);
+                console.log(elementarySchoolOptions)
+             }))
+
     },[])
-  */
 
     // eslint-disable-next-line no-unused-vars
     let candidateObj
@@ -66,7 +81,7 @@ const FormGeneralInfo = () => {
         candidateObj = JSON.stringify(data);
         console.log(candidateObj)
         axios
-            .post(url.CANDIDATE_CREATE, candidateObj)
+            .post(url + '/', candidateObj)
             .then((res) =>{
                 console.log(res.data.name)
                 navigation.push(`/thank-you/${res.data.email_contact}/${res.data.name}/${res.data.surname}`)
