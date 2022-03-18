@@ -18,6 +18,8 @@ import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Remove from "@material-ui/icons/Remove";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import {useForm} from "react-hook-form";
+import axios from "axios";
+import url from "../api-urls";
 
 const DashboardSettingsYearTables = () => {
     const [selectedRow, setSelectedRow] = useState();
@@ -26,11 +28,23 @@ const DashboardSettingsYearTables = () => {
     const [editModalIsOpen, setEditIsOpen] = useState(false);
     const [settingsModalIsOpen, setSettingsIsOpen] = useState(false);
     const [exportModalIsOpen, setExportIsOpen] = useState(false);
-    const {register, handleSubmit, setValue} = useForm();
+    const [tableData, setTableData] = useState([]);
+    const {register, handleSubmit, setValue, reset} = useForm();
 
     useEffect(() => {
-
+        fetchYears();
     }, [])
+
+    const fetchYears = () => {
+        axios.get(url + '/candidates/year/')
+             .then((response) => {
+                 console.log(response.data);
+                 setTableData(response.data);
+             })
+             .catch((error) => {
+                 console.log(error);
+             })
+    }
 
     const openCreateModal = () => {
         setCreateIsOpen(true);
@@ -38,6 +52,9 @@ const DashboardSettingsYearTables = () => {
 
 
     const closeCreateModal = () => {
+        reset({engage_year : null});
+        reset({first_deadline_min_points: null});
+        reset({second_deadline_min_points: null});
         setCreateIsOpen(false);
     }
 
@@ -51,11 +68,16 @@ const DashboardSettingsYearTables = () => {
     }
 
     const openEditModal = () => {
+        setValue('engage_year', selectedRowData.engage_year, {shouldValidate: false});
+        setValue('first_deadline_min_points', selectedRowData.first_deadline_min_points, {shouldValidate: false});
+        setValue('second_deadline_min_points', selectedRowData.second_deadline_min_points, {shouldValidate: false});
         setEditIsOpen(true);
     }
 
-
     const closeEditModal = () => {
+        reset({engage_year : null});
+        reset({first_deadline_min_points: null});
+        reset({second_deadline_min_points: null});
         setEditIsOpen(false);
     }
 
@@ -67,13 +89,48 @@ const DashboardSettingsYearTables = () => {
         setSettingsIsOpen(false);
     }
 
-
     const onCreate = (data) => {
-        console.log(data);
+        let yearObj = {engage_year: data.engage_year, first_deadline_min_points: data.first_deadline_min_points,
+            second_deadline_min_points: data.second_deadline_min_points}
+        axios.post(url + '/candidates/year/', yearObj)
+             .then((response) => {
+                 console.log(response.data);
+                 fetchYears();
+                 closeCreateModal();
+              })
+             .catch((error) => {
+                 console.log(error);
+             })
     }
 
     const onEdit = (data) => {
+        let yearObj = {engage_year: data.engage_year, first_deadline_min_points: data.first_deadline_min_points,
+            second_deadline_min_points: data.second_deadline_min_points, first_deadline_status: selectedRowData.first_deadline_status,
+            second_deadline_status: selectedRowData.second_deadline_status, year_status: selectedRowData.year_status
+        }
         console.log(data);
+        console.log(selectedRowData);
+        console.log(yearObj);
+        axios.patch(url + `/candidates/year/details/${selectedRowData.id}/`, yearObj)
+             .then((response) => {
+                 console.log(response);
+                 fetchYears();
+                 closeEditModal();
+              })
+             .catch((error) => {
+                 console.log(error);
+              })
+
+    }
+
+    const onDelete = (id) => {
+        axios.delete(url + `/candidates/year/details/${id}/`)
+             .then((response) => {
+                 fetchYears();
+              })
+             .catch((error) => {
+                 console.log(error);
+             })
     }
 
     const onError = (error) =>{
@@ -83,34 +140,29 @@ const DashboardSettingsYearTables = () => {
     const columns = [
         {
             title: "Godina",
-            field: "godina"
+            field: "engage_year"
         },
         {
             title: "Aktivna",
-            field: "aktivna"
+            field: "year_status"
         },
         {
             title: "Prvi Rok Bodovi",
-            field: "prvi_rok"
+            field: "first_deadline_min_points"
         },
         {
             title: "Drugi Rok Bodovi",
-            field: "drugi_rok"
+            field: "second_deadline_min_points"
         },
         {
             title: "Prvi Rok Status",
-            field: "prvi_rok_status"
+            field: "first_deadline_status"
         },
         {
             title: "Drugi Rok Status",
-            field: "drugi_rok_status"
-        },
+            field: "second_deadline_status"
+        }
 
-
-    ];
-
-    const data = [
-        {godina:"2021/2022", aktivna:"DA", prvi_rok:20, drugi_rok:10, drugi_rok_status:true}
     ];
 
     const options = {
@@ -151,7 +203,7 @@ const DashboardSettingsYearTables = () => {
     return(
         <div className="container-lg vw-100 h-100 d-flex flex-row">
             <div className="container-fluid w-100 p-0 mt-5">
-                <MaterialTable columns={columns} data={data} title={'Upisne godine'} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
+                <MaterialTable title={'Upisne godine'} columns={columns} data={tableData} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
                     setSelectedRow(rowData.tableData.id);
                     setSelectedRowData(rowData);
                 }}
@@ -172,7 +224,7 @@ const DashboardSettingsYearTables = () => {
                                        icon: () => <button className="btn btn-outline-dark rounded">Obrisi</button>,
                                        tooltip:"Obrisi Upisnu godinu",
                                        isFreeAction:true,
-                                       onClick:()=>console.log("Au!")
+                                       onClick:()=>onDelete(selectedRowData.id)
                                    },
                                    {
                                        icon: () => <button className="btn btn-outline-dark rounded">Rang</button>,

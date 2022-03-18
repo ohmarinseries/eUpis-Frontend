@@ -15,6 +15,7 @@ import DashboardSettingsClasses from "./pages/dashboard_settings_classes";
 import DashboardCommission from "./pages/dashboard_commission";
 import DashboardProfile from "./pages/dashboard_profile";
 import DashboardCandidatesView from "./pages/dashboard_candidates_view";
+import DashboardSettingsElementarySchools from "./pages/dashboard_settings_elementaryschool";
 
 const Navigation = () => {
     return(
@@ -32,6 +33,7 @@ const Navigation = () => {
         <Route path="/dashboard/commission" exact component={DashboardCommission} />
         <Route path="/dashboard/profile" exact component={DashboardProfile} />
         <Route path="/dashboard/settings/classes" exact component={DashboardSettingsClasses} />
+        <Route path="/dashboard/settings/elementaryschools" exact component={DashboardSettingsElementarySchools} />
     </Switch>
     );
 }

@@ -25,6 +25,7 @@ const DashboardNavbar = () => {
                         <NavDropdown.Item href="/dashboard/settings/choices">Smjerovi <span className="badge bg-dark text-light b-text-size">Admin</span></NavDropdown.Item>
                         <NavDropdown.Item href="/dashboard/commission">Komisija <span className="badge bg-dark text-light b-text-size">Admin</span></NavDropdown.Item>
                         <NavDropdown.Item href="/dashboard/settings/classes">Razredi <span className="badge bg-dark text-light b-text-size">Admin</span></NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard/settings/elementaryschools">Skole <span className="badge bg-dark text-light b-text-size">Admin</span></NavDropdown.Item>
                     </NavDropdown>
                     <NavDropdown title="Korisnik" id="navbarScrollingDropdown" >
                         <NavDropdown.Item href="/dashboard/profile">Detalji</NavDropdown.Item>
