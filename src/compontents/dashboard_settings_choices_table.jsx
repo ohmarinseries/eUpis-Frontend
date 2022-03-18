@@ -99,9 +99,9 @@ const DashboardSettingsChoicesTable = () => {
     }
 
     const onCreate = (data) => {
+
        axios.post(url + "/candidates/choices/", data)
             .then((response) => {
-               console.log(data);
                setCreateIsOpen(false);
                reset({full_choice_name : null});
                reset({letter: null});

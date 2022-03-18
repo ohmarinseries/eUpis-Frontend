@@ -2,6 +2,7 @@ import React, {forwardRef, useEffect, useState} from "react";
 
 import MaterialTable from "material-table";
 import Modal from "react-bootstrap/Modal";
+import Select from "react-select";
 
 import AddBox from "@material-ui/icons/AddBox";
 import Check from "@material-ui/icons/Check";
@@ -19,6 +20,8 @@ import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Remove from "@material-ui/icons/Remove";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import {useForm} from "react-hook-form";
+import axios from "axios";
+import url from "../api-urls";
 
 
 const DashboardSettingsClassesTable = () => {
@@ -27,13 +30,63 @@ const DashboardSettingsClassesTable = () => {
     const [selectedRowData, setSelectedRowData] = useState();
     const [editModalIsOpen, setEditIsOpen] = useState(false);
     const [createModalIsOpen, setCreateIsOpen] = useState(false);
-    const {register, handleSubmit, setValue} = useForm();
+    const [yearOptions, setYearOptions] = useState({});
+    const [selectedYear, setSelectedYear] = useState(null);
+    const [choiceOptions, setChoiceOptions] = useState({});
+    const [selectedChoice, setSelectedChoice] = useState(null);
+    const [tableData, setTableData] = useState([]);
+    const {register, handleSubmit, setValue, reset} = useForm();
 
     useEffect(() => {
-
+        fetchYears();
     }, [])
 
-    const openEditModal = () => {
+    const fetchYears = () => {
+        let year, yearRenamed = [];
+        axios.get(url + '/candidates/year/')
+             .then((response) => {
+                 year = response.data;
+                 for(let i = 0 ; i < year.length; i++){
+                     yearRenamed.push({value:year[i].id, label:year[i].engage_year});
+                 }
+                 setYearOptions(yearRenamed)
+             })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
+    const fetchYearClasses = (id, choice_id) => {
+        axios.get(url + `/candidates/grade/year/${id}/${choice_id}/`)
+             .then((response) => {
+                 console.log(response.data);
+                 setTableData(response.data);
+             })
+             .catch((error) => {
+                 console.log(error);
+             })
+    }
+
+    const fetchYearChoices = (id) => {
+        let choices, choicesRenamed = [];
+        axios.get(url + `/candidates/yearchoice/${id}/`)
+             .then((response) => {
+                choices = response.data;
+                console.log(response.data);
+                for(let i = 0 ; i < choices.length; i++){
+                    choicesRenamed.push({value:choices[i].choice.id, label: choices[i].choice.full_choice_name});
+                }
+                console.log(choicesRenamed)
+                setChoiceOptions(choicesRenamed);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+    const openEditModal = (data) => {
+        setValue('title', data.title, {shouldValidate: false});
+        setValue('students_number', data.students_number, {shouldValidate: false});
         setEditIsOpen(true);
     }
 
@@ -46,16 +99,46 @@ const DashboardSettingsClassesTable = () => {
     }
 
     const closeCreateModal = () => {
+        reset({title : null});
+        reset({students_number: null});
         setCreateIsOpen(false);
     }
 
-    const onEdit = () => {
+    const onEdit = (data) => {
+        let classObj = {title: data.title, students_number: data.students_number};
+        axios.patch(url + `/candidates/grade/details/${selectedRowData.id}/`, classObj)
+             .then((response) => {
+                console.log(response.data);
+                fetchYearClasses(selectedYear, selectedChoice);
+                closeEditModal();
+             })
+             .catch((error) => {
+                 console.log(error);
+             })
     }
 
-    const onCreate = () => {
-
+    const onCreate = (data) => {
+        let gradeObj = {title: data.title, students_number: data.students_number, engage_year: selectedYear, choice: selectedChoice}
+        axios.post(url + '/candidates/grade/', gradeObj)
+             .then((response) => {
+                 console.log(response.data);
+                 fetchYearClasses(selectedYear, selectedChoice);
+                 closeCreateModal();
+             })
+             .catch((error) => {
+                 console.log(error);
+             })
     }
 
+    const onDelete = (id) => {
+        axios.delete(url + `/candidates/grade/details/${id}/`)
+             .then((response) => {
+                 fetchYearClasses(selectedYear, selectedChoice);
+             })
+             .catch((error) => {
+                 console.log(error);
+             })
+    }
 
     const onError = (error) =>{
         console.error(error);
@@ -71,9 +154,6 @@ const DashboardSettingsClassesTable = () => {
             field: "students_number"
         },
 
-    ];
-
-    const data = [
     ];
 
     const options = {
@@ -113,10 +193,12 @@ const DashboardSettingsClassesTable = () => {
 
     return(
         <div>
-            <MaterialTable title='Razredi za Godinu' columns={columns} data={data} options={options} icons={tableIcons}
+
+            <MaterialTable title='Razredi za Godinu' columns={columns} data={tableData} options={options} icons={tableIcons}
                            onRowClick={(event, rowData) => {
                                setSelectedRow(rowData.tableData.id);
                                setSelectedRowData(rowData);
+                               console.log(rowData);
                            }}
                            actions={[
                                {
@@ -129,26 +211,26 @@ const DashboardSettingsClassesTable = () => {
                                    icon: () => <button className="btn btn-outline-dark rounded">Uredi</button>,
                                    tooltip:"Uredi Razred",
                                    isFreeAction:true,
-                                   onClick:()=>openEditModal()
+                                   onClick:()=>openEditModal(selectedRowData)
                                },
                                {
                                    icon: () => <button className="btn btn-outline-dark rounded">Obrisi</button>,
                                    tooltip:"Uredi Razred",
                                    isFreeAction:true,
-                                   onClick:()=>console.log('Au!')
-                               },
-                               {
-                                   icon: () => <select className="form-select rounded btn-outline-dark">
-                                       <option></option>
-                                       <option>2021/2022</option>
-                                       <option>2019/2020</option>
-                                   </select>,
-                                   tooltip:"Upisna Godina",
-                                   isFreeAction:true,
-                                   onClick:()=>console.log("Au!")
+                                   onClick:()=>onDelete(selectedRowData.id)
                                },
                            ]}/>
+            <div className="container d-flex flex-row justify-content-around align-content-center w-100 mt-5">
+                <Select options={yearOptions} onChange={e => {
+                    fetchYearChoices(e.value);
+                    setSelectedYear(e.value);
+                }}/>
+                <Select options={choiceOptions} onChange={e => {
+                    setSelectedChoice(e.value);
+                    fetchYearClasses(selectedYear, e.value);
+                }}/>
 
+            </div>
             <Modal show={editModalIsOpen} close={closeEditModal} size="xl" onHide={closeEditModal} aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton >
                     <Modal.Title id="contained-modal-title-vcenter">
@@ -159,11 +241,11 @@ const DashboardSettingsClassesTable = () => {
                     <Modal.Body>
                         <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
                             <div className="one-input-container">
-                                <label className="form-label" htmlFor="full_choice_name-input"> Naziv Razreda</label>
-                                <input type="number"  className="form-control" id="full_choice_name-input" {...register("title", { required: true })}/>
+                                <label className="form-label" htmlFor="full_choice_name-input"> Naziv Razreda </label>
+                                <input type="text"  className="form-control" id="full_choice_name-input" {...register("title", { required: true })}/>
                             </div>
                             <div className="one-input-container">
-                                <label className="form-label" htmlFor="letter-input"> Broj Učenika</label>
+                                <label className="form-label" htmlFor="letter-input"> Broj Učenika </label>
                                 <input type="number"  className="form-control" id="letter-input" {...register("students_number", { required: true })}/>
                             </div>
                         </div>
@@ -185,19 +267,11 @@ const DashboardSettingsClassesTable = () => {
                         <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="full_choice_name-input"> Naziv Razreda</label>
-                                <input type="number"  className="form-control" id="full_choice_name-input" {...register("title", { required: true })}/>
+                                <input type="text"  className="form-control" id="full_choice_name-input" {...register("title", { required: true })}/>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="letter-input"> Broj Učenika</label>
                                 <input type="number"  className="form-control" id="letter-input" {...register("students_number", { required: true })}/>
-                            </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="letter-input"> Upisna Godina</label>
-                                <select className="form-select rounded btn-outline-dark" {...register("engage_year", { required: true })}>
-                                    <option></option>
-                                    <option>2021/2022</option>
-                                    <option>2019/2020</option>
-                                </select>
                             </div>
                         </div>
                     </Modal.Body>
