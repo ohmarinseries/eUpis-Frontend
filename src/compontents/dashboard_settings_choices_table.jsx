@@ -3,6 +3,8 @@ import React, {forwardRef, useEffect, useState} from "react";
 import MaterialTable from "material-table";
 import Modal from 'react-bootstrap/Modal';
 import {useForm} from "react-hook-form";
+import axios from "axios";
+import url from "../api-urls";
 
 import "./styles/dashboard.scss";
 import AddBox from "@material-ui/icons/AddBox";
@@ -29,27 +31,61 @@ const DashboardSettingsChoicesTable = () => {
     const [createModalIsOpen, setCreateIsOpen] = useState(false);
     const [addModalIsOpen, setAddIsOpen] = useState(false);
     const [editModalIsOpen, setEditIsOpen] = useState(false);
-    const {register, handleSubmit, setValue} = useForm();
+    const [activeYear, setActiveYear] = useState(null);
+    const [tableData, setTableData] = useState([{}]);
+    const {register, handleSubmit, setValue, reset} = useForm();
+
 
     useEffect(() => {
-
+        fetchActiveYear();
+        fetchChoices();
     }, [])
 
+    const fetchChoices = () => {
+        axios.get(url + '/candidates/choices/')
+            .then((response) => {
+                setTableData(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+    const fetchActiveYear = () => {
+        let year;
+        axios.get(url + '/candidates/year/active/')
+            .then((response) => {
+                year = response.data.id;
+                setActiveYear(year);
+                console.log(year)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
     const openCreateModal = () => {
+        reset({full_choice_name : null});
+        reset({letter: null});
         setCreateIsOpen(true);
     }
 
-
     const closeCreateModal = () => {
         setCreateIsOpen(false);
+
     }
 
     const openEditModal = () => {
         setEditIsOpen(true);
+        console.log(selectedRowData);
+        setValue('full_choice_name', selectedRowData.full_choice_name, {shouldValidate: false});
+        setValue('letter', selectedRowData.letter, {shouldValidate: false})
     }
 
 
     const closeEditModal = () => {
+        reset({full_choice_name : null});
+        reset({letter: null});
         setEditIsOpen(false);
     }
 
@@ -63,11 +99,54 @@ const DashboardSettingsChoicesTable = () => {
     }
 
     const onCreate = (data) => {
-        console.log(data);
+       axios.post(url + "/candidates/choices/", data)
+            .then((response) => {
+               console.log(data);
+               setCreateIsOpen(false);
+               reset({full_choice_name : null});
+               reset({letter: null});
+               fetchChoices();
+            })
+           .catch((error) => {
+               console.log(error);
+           })
     }
 
     const onEdit = (data) => {
-       console.log(data);
+        axios.patch(url + `/candidates/choices/details/${selectedRowData.id}/`, data)
+             .then((response) => {
+                 console.log(response.data);
+                 fetchChoices();
+                 closeEditModal();
+             })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+    const onDelete = (id) => {
+        axios.delete(url + `/candidates/choices/details/${id}/`)
+             .then((response) => {
+                 fetchChoices();
+             })
+             .catch((error) => {
+                 console.log(error);
+             })
+    }
+
+    const onAdd = (data) => {
+        let choiceObj={choice: selectedRowData.id, engage_year: activeYear, students_number: data.full_choice_name, class_number: data.letter}
+        console.log(data);
+        axios.post(url + '/candidates/yearchoice/', choiceObj)
+             .then((response) => {
+                 console.log(response.data);
+                 reset({full_choice_name : null});
+                 reset({letter: null});
+                 setAddIsOpen(false);
+             })
+             .catch((error) => {
+                 console.log(error);
+             })
     }
 
     const onError = (error) =>{
@@ -75,30 +154,18 @@ const DashboardSettingsChoicesTable = () => {
     }
 
 
-    const onDelete = (id) => {
-        
-    }
-
-    const onAdd = (data) => {
-
-    }
-
     const columns = [
         {
             title: "Naziv",
-            field: "naziv"
+            field: "full_choice_name"
         },
         {
             title: "Oznaka",
-            field: "oznaka"
+            field: "letter"
         },
 
     ];
 
-    const data = [
-        {naziv:"Tehnicar Racunarstva", oznaka:"A"},
-        {naziv:"Elektricar", oznaka: "G"},
-    ];
 
     const options = {
         paging : true,
@@ -138,7 +205,7 @@ const DashboardSettingsChoicesTable = () => {
 
     return(
         <div>
-        <MaterialTable title='Smjerovi' columns={columns} data={data} options={options} icons={tableIcons}
+        <MaterialTable title='Smjerovi' columns={columns} data={tableData} options={options} icons={tableIcons}
           onRowClick={(event, rowData) => {
             setSelectedRow(rowData.tableData.id);
             setSelectedRowData(rowData);
@@ -160,7 +227,7 @@ const DashboardSettingsChoicesTable = () => {
                 icon: () => <button className="btn btn-outline-dark rounded">Obrisi</button>,
                 tooltip:"Obrisi Smjer",
                 isFreeAction:true,
-                onClick:()=>console.log("Au!")
+                onClick:()=>onDelete(selectedRowData.id)
             },
             {
                 icon: () => <button className="btn btn-outline-dark rounded">Ubaci</button>,
@@ -171,6 +238,7 @@ const DashboardSettingsChoicesTable = () => {
 
 
         ]}/>
+
 
         <Modal show={createModalIsOpen} close={closeCreateModal} size="xl" onHide={closeCreateModal} aria-labelledby="contained-modal-title-vcenter" centered>
             <Modal.Header closeButton >
@@ -233,16 +301,16 @@ const DashboardSettingsChoicesTable = () => {
                         <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="full_choice_name-input"> Broj Razreda</label>
-                                <input type="number"  className="form-control" id="full_choice_name-input" {...register("full_choice_name", { required: true })}/>
+                                <input type="number"  className="form-control" id="full_choice_name-input" {...register("letter", { required: true })}/>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="letter-input"> Broj Učenika</label>
-                                <input type="number"  className="form-control" id="letter-input" {...register("letter", { required: true })}/>
+                                <input type="number"  className="form-control" id="letter-input" {...register("full_choice_name", { required: true })}/>
                             </div>
                         </div>
                     </Modal.Body>
                  <Modal.Footer>
-                     <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Uredi</button>
+                     <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Ubaci</button>
                  </Modal.Footer>
               </form>
         </Modal>

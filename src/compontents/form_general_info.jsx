@@ -9,8 +9,6 @@ import instance from "../utils/axiosNonAuthInstance"
 import "bootstrap/dist/css/bootstrap.css"
 import "../compontents/styles/form.scss"
 
-
-
 const FormGeneralInfo = () => {
 
     const {register, handleSubmit} = useForm();
@@ -26,6 +24,7 @@ const FormGeneralInfo = () => {
             .get(url + '/candidates/year/active/')
             .then((res) => {
                 active_year = res.data.id;
+                setYear(active_year);
                 console.log(active_year)
                 axios
                     .get(url + `/candidates/yearchoice/${active_year}/`)
@@ -56,6 +55,9 @@ const FormGeneralInfo = () => {
                 setElementarySchoolOptions(elementarySchoolsRenamed);
                 console.log(elementarySchoolOptions)
              }))
+            .catch((error) =>{
+                console.log(error);
+            })
 
     },[])
 

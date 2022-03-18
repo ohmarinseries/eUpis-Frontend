@@ -1,6 +1,8 @@
 import React, {forwardRef, useState, useEffect} from "react";
 import MaterialTable from 'material-table';
 import Modal from 'react-bootstrap/Modal';
+import axios from "axios";
+import url from '../api-urls'
 
 import {useForm} from "react-hook-form";
 
@@ -23,6 +25,7 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 
 
 import "./styles/dashboard.scss"
+import Select from "react-select";
 
 
 const DashboardCandidatesViewTable = () => {
@@ -30,9 +33,24 @@ const DashboardCandidatesViewTable = () => {
     const [selectedRow, setSelectedRow] = useState();
     const [selectedRowData, setSelectedRowData] = useState();
     const [modalIsOpen, setIsOpen] = useState(false);
+    const [tableData, setTableData] = useState({});
+    const [yearOptions, setYearOptions] = useState({});
     const {register, handleSubmit, setValue} = useForm();
+    let year, yearRename = [];
 
     useEffect(() => {
+        axios.get(url + '/candidates/year/')
+            .then((response) => {
+                year = response.data;
+                for(let i = 0; i < year.length ; i++){
+                    yearRename.push({value: year[i].id, label: year[i].engage_year})
+                }
+                setYearOptions(yearRename);
+                console.log(yearRename)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
 
     }, [])
 
@@ -144,6 +162,7 @@ const DashboardCandidatesViewTable = () => {
     };
 
     return<div>
+      <div className="container d-flex flex-row justify-content-between align-content-center w-100 mb-4">  <Select options={yearOptions} onChange={console.log(0)} /> </div>
     <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
         setSelectedRow(rowData.tableData.id);
         setSelectedRowData(rowData);
@@ -154,16 +173,6 @@ const DashboardCandidatesViewTable = () => {
             tooltip:"Detalji o kandidatu",
             isFreeAction:true,
             onClick:()=>openModal()
-        },
-        {
-            icon: () => <select className="form-select rounded btn-outline-dark">
-             <option></option>
-             <option>2021/2022</option>
-             <option>2019/2020</option>
-             </select>,
-            tooltip:"Upisna Godina",
-            isFreeAction:true,
-            onClick:()=>console.log("Au!")
         },
 
         ]}/>

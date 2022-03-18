@@ -2,6 +2,8 @@ import React, {forwardRef, useState, useEffect} from "react";
 import MaterialTable from 'material-table';
 import Modal from "react-bootstrap/Modal";
 import {useForm} from "react-hook-form";
+import axios from "axios";
+import url from "../api-urls"
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -24,16 +26,26 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import "./styles/dashboard.scss"
 
 
+
 const DashboardCandidateTable = () => {
 
     const [selectedRow, setSelectedRow] = useState();
     const [selectedRowData, setSelectedRowData] = useState();
     const [modalIsOpen, setIsOpen] = useState(false);
+    const [tableData, setTableData] = useState({});
     const {register, handleSubmit, setValue} = useForm();
+    let active_year;
 
     useEffect(() => {
-
-    }, [])
+        axios.get(url + '/candidates/year/active/')
+             .then((response) => {
+                 active_year = response.data.id;
+                 console.log(active_year)
+             })
+            .catch((error) => {
+                console.log(error);
+            })
+    },[])
 
     const openModal = () => {
         setIsOpen(true);
@@ -58,15 +70,15 @@ const DashboardCandidateTable = () => {
         },
         {
             title: "Ime",
-            field: "ime"
+            field: "name"
         },
         {
             title: "Prezime",
-            field: "prezime"
+            field: "surname"
         },
         {
             title: "Ime Oca",
-            field: "ime_oca"
+            field: "father_name"
         },
 
         {
@@ -75,15 +87,15 @@ const DashboardCandidateTable = () => {
         },
         {
             title: "Opći Uspjeh Bodovi",
-            field: "opci_uspjeh_bodovi"
+            field: "k1"
         },
         {
             title: "Značajni Predmeti Bodovi",
-            field: "znacajni_predmeti_bodovi"
+            field: "k2"
         },
         {
             title: "Takmičenja",
-            field: "takmicenja"
+            field: ""
         },
         {
             title: "Diplome(čl.65)",
@@ -99,7 +111,7 @@ const DashboardCandidateTable = () => {
         },
         {
             title: "Ukupni Bodovi",
-            field: "bodovi"
+            field: "points"
         },
     ];
 

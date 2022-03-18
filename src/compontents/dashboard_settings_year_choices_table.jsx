@@ -18,62 +18,115 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 import MaterialTable from "material-table";
 import Modal from 'react-bootstrap/Modal';
 import {useForm} from "react-hook-form";
+import axios from "axios";
+import url from "../api-urls";
 
 
-const DashboardSettingsYearChoicesTable = () => {
+const DashboardSettingsYearChoicesTable = ({selYear}) => {
 
     const [selectedRow, setSelectedRow] = useState();
     const [selectedRowData, setSelectedRowData] = useState();
     const [editModalIsOpen, setEditIsOpen] = useState(false);
-    const {register, handleSubmit, setValue} = useForm();
+    const [activeYear, setActiveYear] = useState(null);
+    const [yearTitle, setYearTitle] = useState("");
+    const [tableData, setTableData] = useState([]);
+    const {register, handleSubmit, setValue, reset} = useForm();
 
     useEffect(() => {
-
+        fetchActiveYear();
     }, [])
 
-    const openEditModal = () => {
+    const fetchActiveYear = () => {
+        let year;
+
+        axios.get(url + '/candidates/year/active/')
+            .then((response) => {
+                setActiveYear(response.data.id);
+                setYearTitle("Godina: " + response.data.engage_year)
+                console.log(year)
+                fetchYearChoices(response.data.id);
+            })
+            .catch((error) => {
+                console.log(error);
+             })}
+
+
+    const fetchYearChoices = (id) => {
+        axios.get(url + `/candidates/yearchoice/${id}/`)
+             .then((response) => {
+                 setTableData(response.data);
+             })
+             .catch((error) => {
+                console.log(error);
+             })
+
+    }
+
+    const openEditModal = (data) => {
+        setValue('class_number', data.class_number, {shouldValidate: false});
+        setValue('students_number', data.students_number, {shouldValidate: false})
         setEditIsOpen(true);
     }
 
     const closeEditModal = () => {
+        reset({full_choice_name : null});
+        reset({letter: null});
         setEditIsOpen(false);
+
     }
 
     const onEdit = (data) => {
-        console.log(data);
+        let choiceObj = {students_number: data.students_number, class_number: data.class_number}
+        axios.patch(url + `/candidates/yearchoice/details/${selectedRowData.id}/`, choiceObj)
+             .then((response) => {
+                 console.log(response.data);
+                 fetchYearChoices(activeYear);
+                 closeEditModal();
+              })
+             .catch((error) => {
+                 console.log(error);
+              })
     }
 
     const onEject = (id) => {
-
+        axios.delete(url + `/candidates/yearchoice/details/${id}/`)
+             .then((response) => {
+                console.log(response)
+                fetchYearChoices(activeYear);
+             })
+             .catch((error) => {
+                console.log(error);
+             })
     }
 
-    const onError = (error) =>{
+    const onRefresh = () => {
+        fetchYearChoices(activeYear);
+    }
+
+    const onError = (error) => {
         console.error(error);
     }
 
     const columns = [
+
         {
             title: "Naziv",
-            field: "naziv"
+            field: "choice.full_choice_name"
         },
         {
             title: "Oznaka",
-            field: "oznaka"
+            field: "choice.letter"
         },
         {
             title: "Broj Razreda",
-            field: "broj_razreda"
+            field: "class_number"
         },
         {
             title: "Broj Ucenika",
-            field: "broj_ucenika"
-        },
+            field: "students_number"
+        }
 
-    ];
 
-    const data = [
-        {naziv:"Tehnicar Racunarstva", oznaka:"A", broj_ucenika: 75, broj_razreda: 3},
-        {naziv:"Elektricar", oznaka: "G", broj_ucenika: 25, broj_razreda: 1},
     ];
 
     const options = {
@@ -113,7 +166,8 @@ const DashboardSettingsYearChoicesTable = () => {
 
     return(
         <div>
-        <MaterialTable title='Smjerovi za Godinu' columns={columns} data={data} options={options} icons={tableIcons}
+
+        <MaterialTable title={yearTitle} columns={columns} data={tableData} options={options} icons={tableIcons}
            onRowClick={(event, rowData) => {
             setSelectedRow(rowData.tableData.id);
             setSelectedRowData(rowData);
@@ -123,23 +177,19 @@ const DashboardSettingsYearChoicesTable = () => {
                 icon: () => <button className="btn btn-outline-dark rounded">Izbaci</button>,
                 tooltip:"Izbaci Smjer",
                 isFreeAction:true,
-                onClick:()=>onEject()
+                onClick:()=>onEject(selectedRowData.id)
             },
             {
                 icon: () => <button className="btn btn-outline-dark rounded">Uredi</button>,
                 tooltip:"Uredi Smjer",
                 isFreeAction:true,
-                onClick:()=>openEditModal()
+                onClick:()=>openEditModal(selectedRowData)
             },
             {
-                icon: () => <select className="form-select rounded btn-outline-dark">
-                    <option></option>
-                    <option>2021/2022</option>
-                    <option>2019/2020</option>
-                    </select>,
-                tooltip:"Upisna Godina",
+                icon: () => <button className="btn btn-outline-dark rounded">Osvjezi</button>,
+                tooltip:"Uredi Smjer",
                 isFreeAction:true,
-                onClick:()=>console.log("Au!")
+                onClick:()=>onRefresh()
             },
         ]}/>
 
@@ -154,11 +204,11 @@ const DashboardSettingsYearChoicesTable = () => {
                         <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="full_choice_name-input"> Broj Razreda</label>
-                                <input type="number"  className="form-control" id="full_choice_name-input" {...register("full_choice_name", { required: true })}/>
+                                <input type="number"  className="form-control" id="full_choice_name-input" {...register("class_number", { required: true })}/>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="letter-input"> Broj Učenika</label>
-                                <input type="number"  className="form-control" id="letter-input" {...register("letter", { required: true })}/>
+                                <input type="number"  className="form-control" id="letter-input" {...register("students_number", { required: true })}/>
                             </div>
                         </div>
                     </Modal.Body>
