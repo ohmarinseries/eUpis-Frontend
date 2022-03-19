@@ -29,48 +29,56 @@ const FormGeneralInfo = () => {
     let choices, choicesRenamed = [], elementarySchools, elementarySchoolsRenamed = [];
 
     useEffect(()=>{
+        fetchActiveYear();
+        fetchYearChoices();
+        fetchElementarySchools();
+    },[])
 
+    const fetchActiveYear = () => {
         axios
             .get(url + '/candidates/year/active/')
             .then((res) => {
                 console.log(res.data.id);
                 setYear(res.data.id);
-                axios
-                    .get(url + `/candidates/yearchoice/${res.data.id}/`)
-                    .then((response)=>{
-                        choices = response.data;
-                        for(let i = 0 ; i < choices.length ; i++){
-                            choices[i] = choices[i].choice;
-                            choicesRenamed.push({value: choices[i].id, label: choices[i].full_choice_name})
-                        }
-                        setChoicesOptions(choicesRenamed);
-                    })
-                    .catch((error)=>{
-                        console.error(error)
-                    })
+
                 console.log(year);
                 console.log(choicesOptions);
             })
             .catch((error)=>{
                 console.error(error)
             })
+    }
 
+    const fetchYearChoices = () => {
+        axios
+            .get(url + `/candidates/yearchoice/${year}/`)
+            .then((response)=>{
+                choices = response.data;
+                for(let i = 0 ; i < choices.length ; i++){
+                    choices[i] = choices[i].choice;
+                    choicesRenamed.push({value: choices[i].id, label: choices[i].full_choice_name})
+                }
+                setChoicesOptions(choicesRenamed);
+            })
+            .catch((error)=>{
+                console.error(error)
+            })
+    }
+
+    const fetchElementarySchools = () => {
         axios.get(url + '/candidates/schools/')
-             .then((response => {
+            .then((response => {
                 elementarySchools = response.data;
                 for(let i = 0 ; i < elementarySchools.length ; i++){
                     elementarySchoolsRenamed.push({value: elementarySchools[i].id, label: elementarySchools[i].school_name});
                 }
                 setElementarySchoolOptions(elementarySchoolsRenamed);
                 console.log(elementarySchoolOptions)
-             }))
+            }))
             .catch((error) =>{
                 console.log(error);
             })
-
-    },[])
-
-    // eslint-disable-next-line no-unused-vars
+    }
 
     let optionsSex = [
         { value: 'M', label: 'Musko' },
@@ -111,6 +119,7 @@ const FormGeneralInfo = () => {
             .post(url + '/candidates/', data)
             .then((response) =>{
                 console.log(response.data);
+                navigation.push(`/thank-you/${response.data.email_contact}/${response.data.name}/${response.data.surname}`)
             })
             .catch((error)=>{
                 console.error(error);
@@ -171,7 +180,9 @@ const FormGeneralInfo = () => {
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Spol </label>
+                <div style={{width:"200px"}}>
                 <Select {...register("sex", { required: false })}  id="drugistrani" options={optionsSex} onChange={e => setSelectedSex(e.value)}/>
+                </div>
             </div>
         </div>
             <div className="input-container">
@@ -231,9 +242,11 @@ const FormGeneralInfo = () => {
                 <div className="input-container-header">
                     <p>Osnovno obrazovanje</p>
                 </div>
-                <div className="one-input-container">
+                <div className="one-input-container" >
                     <label className="form-label" htmlFor="prezime-input"> Osnovna škola </label>
-                    <Select options={elementarySchoolOptions} {...register("elementary_school", { required: false })} onChange={e => setSelectedElementary(e.value)}/>
+                    <div style={{width:"200px"}}>
+                    <Select options={elementarySchoolOptions} {...register("elementary_school", { required: false })} onChange={e => setSelectedElementary(e.value)} menuPlacement="auto" menuPosition="fixed"/>
+                    </div>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Broj Svjedodžbe </label>
@@ -252,15 +265,21 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prvi strani jezik </label>
+                    <div style={{width:"200px"}}>
                     <Select {...register("first_foriegn_language", { required: false })} options={optionsFirstLanguage} onChange={e => setSelectedFirstLanguage(e.value)}/>
+                    </div>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Drugi strani jezik (neobavezna) </label>
+                    <div style={{width:"200px"}}>
                     <Select {...register("second_foriegn_language", { required: false })} options={optionsFirstLanguage} onChange={e => setSelectedSecondLanguage(e.value)}/>
+                    </div>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="fakultativni"> Izborno - Fakultativna nastava (obavezna) </label>
+                    <div style={{width:"200px"}}>
                     <Select {...register("facultative_subject", { required: false })} options={optionsFacultativeSubject} onChange={e => setSelectedFacultativeSubject(e.value)}/>
+                    </div>
                 </div>
 
             </div>
@@ -271,15 +290,21 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prva Želja </label>
+                    <div style={{width:"200px"}}>
                     <Select {...register("first_choice", { required: false })} options={choicesOptions} onChange={e => setSelectedFirstChoice(e.value)} />
+                    </div>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Druga Želja (neobavezno) </label>
+                    <div style={{width:"200px"}}>
                     <Select {...register("second_choice", { required: false })} options={choicesOptions} onChange={e => setSelectedSecondChoice(e.value)} />
+                    </div>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="fakultativni"> Treća Želja (neobavezno) </label>
+                    <div style={{width:"200px"}}>
                     <Select {...register("third_choice", { required: false })} options={choicesOptions} onChange={e => setSelectedThirdChoice(e.value)} />
+                    </div>
                 </div>
 
             </div>
