@@ -16,6 +16,16 @@ const FormGeneralInfo = () => {
     const [elementarySchoolOptions, setElementarySchoolOptions] = useState({});
     const [choicesOptions, setChoicesOptions] = useState({});
     const [year, setYear] = useState(0)
+
+    const [selectedSex, setSelectedSex] = useState(null);
+    const [selectedElementary, setSelectedElementary] = useState(null);
+    const [selectedFirstChoice, setSelectedFirstChoice] = useState(null);
+    const [selectedSecondChoice, setSelectedSecondChoice] = useState(null);
+    const [selectedThirdChoice, setSelectedThirdChoice] = useState(null);
+    const [selectedFirstLanguage, setSelectedFirstLanguage] = useState(null);
+    const [selectedSecondLanguage, setSelectedSecondLanguage] = useState(null);
+    const [selectedFacultativeSubject, setSelectedFacultativeSubject] = useState(null);
+
     let choices, choicesRenamed = [], elementarySchools, elementarySchoolsRenamed = [];
 
     useEffect(()=>{
@@ -62,7 +72,7 @@ const FormGeneralInfo = () => {
     },[])
 
     // eslint-disable-next-line no-unused-vars
-    let candidateObj
+
     let optionsSex = [
         { value: 'M', label: 'Musko' },
         { value: 'Z', label: 'Zensko' }
@@ -80,13 +90,28 @@ const FormGeneralInfo = () => {
     ]
 
     const onSubmit = (data) => {
+        let candidateObj
+        data.sex = selectedSex;
+        data.elementary_school = selectedElementary;
+        data.facultative_subject =selectedFacultativeSubject;
+        data.first_foriegn_language = selectedFirstLanguage;
+        data.second_foriegn_language = selectedSecondLanguage;
+        data.first_choice = selectedFirstChoice;
+        data.second_choice = selectedSecondChoice;
+        data.third_choice = selectedThirdChoice;
+        data.engage_year = year;
+        data.k1 = 0;
+        data.k2 = 0;
+        data.validation_status = false;
+        data.validation_email = false;
+
         candidateObj = JSON.stringify(data);
-        console.log(candidateObj)
-        axios
-            .post(url + '/', candidateObj)
-            .then((res) =>{
-                console.log(res.data.name)
-                navigation.push(`/thank-you/${res.data.email_contact}/${res.data.name}/${res.data.surname}`)
+        console.log(candidateObj);
+        console.log(data);
+      axios
+            .post(url + '/candidates/', data)
+            .then((response) =>{
+                console.log(response.data);
             })
             .catch((error)=>{
                 console.error(error);
@@ -98,34 +123,6 @@ const FormGeneralInfo = () => {
         console.log(error);
     }
 
-
-    const [surnames, setSurnames] = useState({surname:"", father_surname:"", mother_surname:""});
-
-
-    const handleSurnameOnChange = (e) => {
-        setSurnames({surname:e.target.value, father_surname: surnames.father_surname, mother_surname: surnames.mother_surname});
-
-    }
-
-  /*const handleSurnameOnBlur = (e) => {
-        setSurnames({surname:e.target.value, father_surname: e.target.value, mother_surname: e.target.value});
-    }*/
-
-    const handleMotherSurnameOnChange = (e) => {
-
-        setSurnames({surname:surnames.surname, father_surname: surnames.father_surname, mother_surname: e.target.value});
-
-    }
-
-    const handleFatherSurnameOnChange = (e) => {
-
-        setSurnames({surname:surnames.surname, father_surname: e.target.value, mother_surname: surnames.mother_surname});
-
-    }
-
-    
-
-
     return(
         <div className="form-content">
         <form onSubmit={handleSubmit(onSubmit, onError)} autoComplete="off" >
@@ -134,18 +131,16 @@ const FormGeneralInfo = () => {
              <p>Informacije o kandidatu</p>
             </div>
             <div className="one-input-container">
-
                 <label htmlFor="floatingTextarea2">Ime</label>
                 <input type="text" {...register("name", { required: true })}  className="form-control" id="floatingTextarea2" />
-
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input" > Prezime </label>
-                <input type="text" {...register("surname", { required: true })}  className="form-control" id="prezime-input" onChange={handleSurnameOnChange}/>
+                <input type="text" {...register("surname", { required: true })}  className="form-control" id="prezime-input" />
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Datum Rođenja </label>
-                <input type="date" {...register("birth_date", { required: true })}   className="form-control" id="prezime-input"/>
+                <input type="date" {...register("birth_date", { required: true })}   className="form-control" id="prezime-input" />
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="birth_place-input"> Mjesto Rođenja </label>
@@ -169,20 +164,20 @@ const FormGeneralInfo = () => {
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="zanimanjeoca-input"> Telefon </label>
-                <input type="text" {...register("phone", { required: true })}  className="form-control" id="zanimanjeoca-input"/>
+                <input type="text" {...register("phone", { required: true })}  className="form-control" id="zanimanjeoca-input" placeholder="06xxxxxxx"/>
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Email </label>
-                <input {...register("email_contact", { required: true })}  type="email" className="form-control" id="prezimeoca-input"/>
+                <input {...register("email_contact", { required: true })}  type="email" className="form-control" id="prezimeoca-input" placeholder="primjer@primjer.com"/>
             </div>
             <div className="one-input-container">
                 <label className="form-label" htmlFor="prezime-input"> Spol </label>
-                <Select {...register("sex", { required: true })}  id="drugistrani" options={optionsSex} onChange={console.log("A")}/>
+                <Select {...register("sex", { required: false })}  id="drugistrani" options={optionsSex} onChange={e => setSelectedSex(e.value)}/>
             </div>
         </div>
             <div className="input-container">
                 <div className="input-container-header">
-                    <p>Informacije o roditeljima</p>
+                    <p>Informacije o roditeljima </p>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="ime-input"> Ime Oca </label>
@@ -190,7 +185,7 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prezime Oca </label>
-                    <input type="text" {...register("father_surname", { required: true })} className="form-control" id="prezimeoca-input" value={surnames.father_surname} onChange={handleFatherSurnameOnChange} />
+                    <input type="text" {...register("father_surname", { required: true })} className="form-control" id="prezimeoca-input"  />
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Oca </label>
@@ -202,14 +197,12 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prezime Majke</label>
-                    <input type="text" {...register("mother_surname", { required: true })} className="form-control" id="prezimeoca-input" value={surnames.mother_surname}
-                           onChange={handleMotherSurnameOnChange}/>
+                    <input type="text" {...register("mother_surname", { required: true })} className="form-control" id="prezimeoca-input" />
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Zanimanje Majke</label>
                     <input type="text" {...register("mother_profession", { required: true })}  className="form-control" id="zanimanjeoca-input"/>
                 </div>
-
 
             </div>
             <div className="input-container">
@@ -233,19 +226,19 @@ const FormGeneralInfo = () => {
                     <input type="text" {...register("residence_muncipality", { required: true })}  className="form-control" id="prezimeoca-input"/>
                 </div>
 
-
             </div>
+
             <div className="input-container">
                 <div className="input-container-header">
                     <p>Osnovno obrazovanje</p>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Osnovna škola </label>
-                    <Select options={elementarySchoolOptions} {...register("elementary_school", { required: true })} onChange={console.log("O")}/>
+                    <Select options={elementarySchoolOptions} {...register("elementary_school", { required: false })} onChange={e => setSelectedElementary(e.value)}/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="zanimanjeoca-input"> Broj Svjedodžbe </label>
-                    <input {...register("testimony_number", { required: true })}  className="form-control" id="zanimanjeoca-input"/>
+                    <input {...register("testimony_number", { required: true })}  className="form-control" id="zanimanjeoca-input" placeholder="xx-xxx-x/xx"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="ime-input"> Datum Svjedodžbe </label>
@@ -253,21 +246,22 @@ const FormGeneralInfo = () => {
                 </div>
 
             </div>
+
             <div className="input-container">
                 <div className="input-container-header">
                     <p>Izbor predmeta</p>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prvi strani jezik </label>
-                    <Select {...register("first_foriegn_language", { required: true })} options={optionsFirstLanguage} onChange={console.log("o")}/>
+                    <Select {...register("first_foriegn_language", { required: false })} options={optionsFirstLanguage} onChange={e => setSelectedFirstLanguage(e.value)}/>
                 </div>
                 <div className="one-input-container">
-                    <label className="form-label" htmlFor="prezime-input"> Drugi strani jezik </label>
-                    <Select {...register("second_foriegn_language", { required: true })} options={optionsFirstLanguage} onChange={console.log("o")}/>
+                    <label className="form-label" htmlFor="prezime-input"> Drugi strani jezik (neobavezna) </label>
+                    <Select {...register("second_foriegn_language", { required: false })} options={optionsFirstLanguage} onChange={e => setSelectedSecondLanguage(e.value)}/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="fakultativni"> Izborno - Fakultativna nastava (obavezna) </label>
-                    <Select {...register("facultative_subject", { required: true })} options={optionsFacultativeSubject} onChange={console.log("O")}/>
+                    <Select {...register("facultative_subject", { required: false })} options={optionsFacultativeSubject} onChange={e => setSelectedFacultativeSubject(e.value)}/>
                 </div>
 
             </div>
@@ -278,15 +272,15 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prva Želja </label>
-                    <Select {...register("first_choice", { required: true })} options={choicesOptions} onChange={console.log("o")}/>
+                    <Select {...register("first_choice", { required: false })} options={choicesOptions} onChange={e => setSelectedFirstChoice(e.value)} />
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Druga Želja (neobavezno) </label>
-                    <Select {...register("second_choice", { required: true })} options={choicesOptions} onChange={console.log("o")}/>
+                    <Select {...register("second_choice", { required: false })} options={choicesOptions} onChange={e => setSelectedSecondChoice(e.value)} />
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="fakultativni"> Treća Želja (neobavezno) </label>
-                    <Select {...register("third_choice", { required: true })} options={choicesOptions} onChange={console.log("o")}/>
+                    <Select {...register("third_choice", { required: false })} options={choicesOptions} onChange={e => setSelectedThirdChoice(e.value)} />
                 </div>
 
             </div>
@@ -360,11 +354,11 @@ const FormGeneralInfo = () => {
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input">Procenti na eksternoj maturi (0 - 100)</label>
-                    <input type="number" min={0} max={100} {...register("k6", { required: true })} className="form-control" id="prezimeoca-input"/>
+                    <input type="number" min={0} max={100} {...register("k6", { required: true })} className="form-control" id="prezimeoca-input" placeholder="87"/>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input">Učenik generacije</label>
-                    <input className="form-check-input" type="checkbox" value="" defaultChecked={false} id="flexCheckDefault" {...register("k5", { required: true })}/>
+                    <input className="form-check-input" type="checkbox" value="" defaultChecked={false} id="flexCheckDefault" {...register("k5", { required: false })}/>
                 </div>
 
             </div>

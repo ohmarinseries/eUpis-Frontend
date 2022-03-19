@@ -37,15 +37,19 @@ const DashboardCandidateTable = () => {
     let active_year;
 
     useEffect(() => {
+        fetchActiveYear();
+    },[])
+
+    const fetchActiveYear = () => {
         axios.get(url + '/candidates/year/active/')
-             .then((response) => {
-                 active_year = response.data.id;
-                 console.log(active_year)
-             })
+            .then((response) => {
+                active_year = response.data.id;
+                console.log(active_year)
+            })
             .catch((error) => {
                 console.log(error);
             })
-    },[])
+    }
 
     const openModal = () => {
         setIsOpen(true);
@@ -179,7 +183,7 @@ const DashboardCandidateTable = () => {
                     <Modal.Body>
                         <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
                             <div className="one-input-container">
-                                <label className="form-label" htmlFor="name-input" > Ime </label>
+                                <label className="form-label" htmlFor="name-input"> Ime </label>
                                 <input type="text" className="form-control" id="name-input" {...register("name", { required: true })}/>
                             </div>
                             <div className="one-input-container">
