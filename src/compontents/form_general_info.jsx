@@ -29,16 +29,14 @@ const FormGeneralInfo = () => {
     let choices, choicesRenamed = [], elementarySchools, elementarySchoolsRenamed = [];
 
     useEffect(()=>{
-        let active_year = 0
+
         axios
             .get(url + '/candidates/year/active/')
             .then((res) => {
                 console.log(res.data.id);
-                active_year = res.data.id;
-                setYear(active_year);
-                console.log(active_year)
+                setYear(res.data.id);
                 axios
-                    .get(url + `/candidates/yearchoice/${active_year}/`)
+                    .get(url + `/candidates/yearchoice/${res.data.id}/`)
                     .then((response)=>{
                         choices = response.data;
                         for(let i = 0 ; i < choices.length ; i++){
