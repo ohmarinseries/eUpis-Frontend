@@ -30,7 +30,6 @@ const FormGeneralInfo = () => {
 
     useEffect(()=>{
         fetchActiveYear();
-        fetchYearChoices();
         fetchElementarySchools();
     },[])
 
@@ -40,7 +39,19 @@ const FormGeneralInfo = () => {
             .then((res) => {
                 console.log(res.data.id);
                 setYear(res.data.id);
-
+                axios
+                    .get(url + `/candidates/yearchoice/${res.data.id}/`)
+                    .then((response)=>{
+                        choices = response.data;
+                        for(let i = 0 ; i < choices.length ; i++){
+                            choices[i] = choices[i].choice;
+                            choicesRenamed.push({value: choices[i].id, label: choices[i].full_choice_name})
+                        }
+                        setChoicesOptions(choicesRenamed);
+                    })
+                    .catch((error)=>{
+                        console.error(error)
+                    })
                 console.log(year);
                 console.log(choicesOptions);
             })
@@ -49,21 +60,6 @@ const FormGeneralInfo = () => {
             })
     }
 
-    const fetchYearChoices = () => {
-        axios
-            .get(url + `/candidates/yearchoice/${year}/`)
-            .then((response)=>{
-                choices = response.data;
-                for(let i = 0 ; i < choices.length ; i++){
-                    choices[i] = choices[i].choice;
-                    choicesRenamed.push({value: choices[i].id, label: choices[i].full_choice_name})
-                }
-                setChoicesOptions(choicesRenamed);
-            })
-            .catch((error)=>{
-                console.error(error)
-            })
-    }
 
     const fetchElementarySchools = () => {
         axios.get(url + '/candidates/schools/')
