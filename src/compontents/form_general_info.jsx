@@ -33,6 +33,7 @@ const FormGeneralInfo = () => {
         axios
             .get(url + '/candidates/year/active/')
             .then((res) => {
+                console.log(res.data.id);
                 active_year = res.data.id;
                 setYear(active_year);
                 console.log(active_year)

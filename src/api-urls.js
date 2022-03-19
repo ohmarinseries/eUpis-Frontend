@@ -1,3 +1,3 @@
-const url = "https://eupis.netlify.app";
+const url = "https://eupis.herokuapp.com";
 
 export default url;
