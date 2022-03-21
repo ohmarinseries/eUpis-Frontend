@@ -119,6 +119,8 @@ const DashboardSettingsClassesTable = () => {
 
     const onCreate = (data) => {
         let gradeObj = {title: data.title, students_number: data.students_number, engage_year: selectedYear, choice: selectedChoice}
+        console.log(selectedYear);
+        console.log(selectedChoice);
         axios.post(url + '/candidates/grade/', gradeObj)
              .then((response) => {
                  console.log(response.data);
@@ -221,14 +223,18 @@ const DashboardSettingsClassesTable = () => {
                                },
                            ]}/>
             <div className="container d-flex flex-row justify-content-around align-content-center w-100 mt-5">
+               <div style={{width:"200px"}}>
                 <Select options={yearOptions} onChange={e => {
                     fetchYearChoices(e.value);
                     setSelectedYear(e.value);
                 }}/>
+               </div>
+                <div style={{width:"200px"}}>
                 <Select options={choiceOptions} onChange={e => {
                     setSelectedChoice(e.value);
                     fetchYearClasses(selectedYear, e.value);
                 }}/>
+                </div>
 
             </div>
             <Modal show={editModalIsOpen} close={closeEditModal} size="xl" onHide={closeEditModal} aria-labelledby="contained-modal-title-vcenter" centered>

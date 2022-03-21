@@ -1,7 +1,6 @@
 import React from "react";
 import Lottie from 'react-lottie';
 import animationData from '../assets/lf20_vooyqrnt.json'
-import useSearch from 'react-router-dom'
 
 const ThankYou = () => {
     return(

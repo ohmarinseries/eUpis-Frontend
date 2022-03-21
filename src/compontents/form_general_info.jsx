@@ -48,12 +48,12 @@ const FormGeneralInfo = () => {
                             choicesRenamed.push({value: choices[i].id, label: choices[i].full_choice_name})
                         }
                         setChoicesOptions(choicesRenamed);
+                        console.log(choicesRenamed);
+
                     })
                     .catch((error)=>{
                         console.error(error)
                     })
-                console.log(year);
-                console.log(choicesOptions);
             })
             .catch((error)=>{
                 console.error(error)
@@ -257,7 +257,7 @@ const FormGeneralInfo = () => {
 
             <div className="input-container">
                 <div className="input-container-header">
-                    <p>Izbor predmeta</p>
+                    <p>Izbor predmeta (Izabrati razlicite opcije)</p>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prvi strani jezik </label>
@@ -282,7 +282,7 @@ const FormGeneralInfo = () => {
 
             <div className="input-container">
                 <div className="input-container-header">
-                    <p>Izbor usmjerenja</p>
+                    <p>Izbor usmjerenja (Izabrati razlicite opcije)</p>
                 </div>
                 <div className="one-input-container">
                     <label className="form-label" htmlFor="prezime-input"> Prva Želja </label>

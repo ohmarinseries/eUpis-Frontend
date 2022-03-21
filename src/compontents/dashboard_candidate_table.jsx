@@ -1,6 +1,7 @@
 import React, {forwardRef, useState, useEffect} from "react";
 import MaterialTable from 'material-table';
 import Modal from "react-bootstrap/Modal";
+import Select from "react-select";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 import url from "../api-urls"
@@ -24,53 +25,281 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 
 
 import "./styles/dashboard.scss"
+import data from "bootstrap/js/src/dom/data";
 
 
 
 const DashboardCandidateTable = () => {
 
     const [selectedRow, setSelectedRow] = useState();
-    const [selectedRowData, setSelectedRowData] = useState();
+    const [selectedRowData, setSelectedRowData] = useState(null);
     const [modalIsOpen, setIsOpen] = useState(false);
-    const [tableData, setTableData] = useState({});
-    const {register, handleSubmit, setValue} = useForm();
-    let active_year;
+    const [tableData, setTableData] = useState([]);
+    const [activeYear, setActiveYear] = useState(null);
+    const [choiceOptions, setChoiceOptions] = useState({});
+    const [elementarySchoolOptions, setElementarySchoolOptions] = useState({});
+
+    const [selectedSex, setSelectedSex] = useState(null);
+    const [selectedElementary, setSelectedElementary] = useState(null);
+    const [selectedFirstChoice, setSelectedFirstChoice] = useState(null);
+    const [selectedSecondChoice, setSelectedSecondChoice] = useState(null);
+    const [selectedThirdChoice, setSelectedThirdChoice] = useState(null);
+    const [selectedFirstLanguage, setSelectedFirstLanguage] = useState(null);
+    const [selectedSecondLanguage, setSelectedSecondLanguage] = useState(null);
+    const [selectedFacultativeSubject, setSelectedFacultativeSubject] = useState(null);
+
+    const {register, handleSubmit, setValue, reset} = useForm();
+
 
     useEffect(() => {
         fetchActiveYear();
+        fetchChoicesOptions();
+        fetchElementarySchools();
     },[])
 
     const fetchActiveYear = () => {
         axios.get(url + '/candidates/year/active/')
             .then((response) => {
-                active_year = response.data.id;
-                console.log(active_year)
+                setActiveYear(response.data.id);
+                console.log(response.data.id);
+                fetchNonValidatedCandidates(response.data.id);
             })
             .catch((error) => {
                 console.log(error);
             })
     }
 
+    const fetchNonValidatedCandidates = (id) => {
+        axios.get(url + `/candidates/candidate/year/validation/${id}/`)
+             .then((response) => {
+                 let validationObj = response.data;
+                 for(let i = 0 ; i < validationObj.length ; i++){
+                     validationObj[i].sign_number = `${validationObj[i].first_choice.letter}/${validationObj[i].candidate_number}`;
+                 }
+                 setTableData(validationObj);
+              })
+             .catch((error) => {
+                 console.log(error);
+              })
+    }
+
+    const fetchChoicesOptions = () => {
+        let choices, choicesRenamed = [];
+        axios.get(url + `/candidates/yearchoice/${activeYear}/`)
+            .then((response) => {
+                choices = response.data;
+                for(let i = 0 ; i < choices.length ; i++){
+                    choices[i] = choices[i].choice;
+                    choicesRenamed.push({value: choices[i].id, label: choices[i].full_choice_name});
+                }
+                console.log(choicesRenamed);
+                setChoiceOptions(choicesRenamed);
+                
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+    const fetchElementarySchools = () => {
+        let elementarySchools, elementarySchoolsRenamed = []
+        axios.get(url + '/candidates/schools/')
+            .then((response => {
+                elementarySchools = response.data;
+                for(let i = 0 ; i < elementarySchools.length ; i++){
+                    elementarySchoolsRenamed.push({value: elementarySchools[i].id, label: elementarySchools[i].school_name});
+                }
+                setElementarySchoolOptions(elementarySchoolsRenamed);
+                console.log(elementarySchoolOptions)
+            }))
+            .catch((error) =>{
+                console.log(error);
+            })
+    }
+
     const openModal = () => {
-        setIsOpen(true);
+        if(selectedRowData !== null) {
+            setValue('name', selectedRowData.name, {shouldValidate: false});
+            setValue('surname', selectedRowData.surname, {shouldValidate: false});
+            setValue('birth_date', selectedRowData.birth_date, {shouldValidate: false});
+            setValue('birth_place', selectedRowData.birth_place, {shouldValidate: false});
+            setValue('birth_muncipality', selectedRowData.birth_muncipality, {shouldValidate: false});
+            setValue('birth_republic', selectedRowData.birth_republic, {shouldValidate: false});
+            setValue('citizenship', selectedRowData.citizenship, {shouldValidate: false});
+            setValue('jmbg', selectedRowData.jmbg, {shouldValidate: false});
+            setValue('street', selectedRowData.street, {shouldValidate: false});
+            setValue('house_number', selectedRowData.house_number, {shouldValidate: false});
+            setValue('residence_place', selectedRowData.residence_place, {shouldValidate: false});
+            setValue('residence_muncipality', selectedRowData.residence_muncipality, {shouldValidate: false});
+            setValue('phone', selectedRowData.phone, {shouldValidate: false});
+            setValue('email_contact', selectedRowData.email_contact, {shouldValidate: false});
+            setValue('testimony_number', selectedRowData.testimony_number, {shouldValidate: false});
+            setValue('testimony_date', selectedRowData.testimony_date, {shouldValidate: false});
+            setValue('father_name', selectedRowData.father_name, {shouldValidate: false});
+            setValue('father_surname', selectedRowData.father_surname, {shouldValidate: false});
+            setValue('father_profession', selectedRowData.father_profession, {shouldValidate: false});
+            setValue('mother_name', selectedRowData.mother_name, {shouldValidate: false});
+            setValue('mother_surname', selectedRowData.mother_surname, {shouldValidate: false});
+            setValue('mother_profession', selectedRowData.mother_profession, {shouldValidate: false});
+            setValue('sixth_grade_mark', selectedRowData.sixth_grade_mark, {shouldValidate: false});
+            setValue('seventh_grade_mark', selectedRowData.seventh_grade_mark, {shouldValidate: false});
+            setValue('eight_grade_mark', selectedRowData.eight_grade_mark, {shouldValidate: false});
+            setValue('ninth_grade_mark', selectedRowData.ninth_grade_mark, {shouldValidate: false});
+            setValue('math_eight_grade', selectedRowData.math_eight_grade, {shouldValidate: false});
+            setValue('physics_eight_grade', selectedRowData.physics_eight_grade, {shouldValidate: false});
+            setValue('informatics_eight_grade', selectedRowData.informatics_eight_grade, {shouldValidate: false});
+            setValue('math_ninth_grade', selectedRowData.math_ninth_grade, {shouldValidate: false});
+            setValue('physics_ninth_grade', selectedRowData.physics_ninth_grade, {shouldValidate: false});
+            setValue('informatics_ninth_grade', selectedRowData.informatics_ninth_grade, {shouldValidate: false});
+            setValue('k5', selectedRowData.k5, {shouldValidate: false})
+            setValue('k6', selectedRowData.k6, {shouldValidate: false})
+            if (selectedRowData.sex === "M") {
+                setSelectedSex({value: selectedRowData.sex, label: "Musko"});
+            } else if (selectedRowData.sex === "Z") {
+                setSelectedSex({value: selectedRowData.sex, label: "Zensko"});
+            }
+
+            if (selectedRowData.first_foriegn_language === "ENG") {
+                setSelectedFirstLanguage({value: selectedRowData.first_foriegn_language, label: "Engleski Jezik"});
+            } else if (selectedRowData.first_foriegn_language === "NJE") {
+                setSelectedFirstLanguage({value: selectedRowData.first_foriegn_language, label: "Njemacki Jezik"});
+            }
+
+            if (selectedRowData.second_foriegn_language === "ENG") {
+                setSelectedSecondLanguage({
+                    value: selectedRowData.second_foriegn_language_foriegn_language,
+                    label: "Engleski Jezik"
+                });
+            } else if (selectedRowData.second_foriegn_language === "NJE") {
+                setSelectedSecondLanguage({value: selectedRowData.second_foriegn_language, label: "Njemacki Jezik"});
+            }
+
+            if (selectedRowData.facultative_subject === "ISL") {
+                setSelectedFacultativeSubject({
+                    value: selectedRowData.facultative_subject,
+                    label: "Islamski Vjeronauk"
+                });
+            } else if (selectedRowData.facultative_subject === "PRA") {
+                setSelectedFacultativeSubject({
+                    value: selectedRowData.facultative_subject,
+                    label: "Pravoslavni Vjeronauk"
+                });
+            } else if (selectedRowData.facultative_subject === "KAT") {
+                setSelectedFacultativeSubject({
+                    value: selectedRowData.facultative_subject,
+                    label: "Katolicki Vjeronauk"
+                });
+            } else if (selectedRowData.facultative_subject === "RKT") {
+                setSelectedFacultativeSubject({
+                    value: selectedRowData.facultative_subject,
+                    label: "Religijska Kultura"
+                });
+            }
+
+            setSelectedFirstChoice({
+                value: selectedRowData.first_choice.id,
+                label: selectedRowData.first_choice.full_choice_name
+            });
+
+            if (selectedRowData.second_choice !== null) {
+                setSelectedSecondChoice({
+                    value: selectedRowData.second_choice.id,
+                    label: selectedRowData.second_choice.full_choice_name
+                });
+            } else if (selectedRowData.second_choice === null) {
+                setSelectedSecondChoice({value: null, label: "Nije odabrano"});
+            }
+
+            if (selectedRowData.third_choice !== null) {
+                setSelectedThirdChoice({
+                    value: selectedRowData.third_choice.id,
+                    label: selectedRowData.third_choice.full_choice_name
+                });
+            } else if (selectedRowData.third_choice === null) {
+                setSelectedThirdChoice({value: null, label: "Nije odabrano"});
+            }
+
+            setSelectedElementary({
+                value: selectedRowData.elementary_school.id,
+                label: selectedRowData.elementary_school.school_name
+            })
+
+            setIsOpen(true);
+        }
+
     }
 
     const closeModal = () => {
+        reset({k3:null});
+        reset({k4:false});
+        reset({military_privileges:false});
         setIsOpen(false);
     }
 
     const onValidate = (data) => {
-        console.log(data);
+        data.engage_year = activeYear;
+        data.first_choice = selectedFirstChoice.value;
+        data.third_choice = selectedThirdChoice.value;
+        data.second_choice = selectedSecondChoice.value;
+        data.first_foriegn_language = selectedFirstLanguage.value;
+        data.second_foriegn_language = selectedSecondLanguage.value;
+        data.facultative_subject = selectedFacultativeSubject.value;
+        data.sex = selectedSex.value;
+        data.validation_status = true;
+        data.candidate_number = selectedRowData.candidate_number;
+        if(data.k4 === true){
+            data.k4 = 15.0;
+        }
+        else if(data.k4 != true){
+            data.k4 = 0;
+        }
+
+        if(data.k3 === ""){
+            data.k3 = 0;
+        }
+        else if(data.k3 !== ""){
+            data.k3 = parseFloat(data.k3);
+        }
+        console.log(JSON.stringify(data));
+        axios.patch(url + `/candidates/candidate/details/${selectedRowData.id}/`, data)
+             .then((response) => {
+                 console.log(response.data);
+                 fetchNonValidatedCandidates(activeYear);
+                 closeModal();
+             })
+             .catch((error) => {
+                 console.log(error);
+             })
+    }
+
+    const onDelete = (id) => {
+
     }
 
     const onError = (error) =>{
         console.error(error);
     }
 
+    let optionsSex = [
+        { value: 'M', label: 'Musko' },
+        { value: 'Z', label: 'Zensko' }
+    ]
+    let optionsFirstLanguage = [
+        { value: 'ENG', label: 'Engleski Jezik' },
+        { value: 'NJE', label: 'Njemacki Jezik' }
+    ]
+
+    let optionsFacultativeSubject = [
+        { value: 'ISL', label: 'Islamski Vjeronauk' },
+        { value: 'PRA', label: 'Pravoslavni Vjeronauk' },
+        { value: 'KAT', label: 'Katolicki Vjeronauk' },
+        { value: 'RKT', label: 'Religijska Kultura' }
+    ]
+
     const columns = [
         {
-            title: "Upisni Br.",
-            field: "upisni_br"
+            title: "Upisni Broj.",
+            field: "sign_number"
         },
         {
             title: "Ime",
@@ -81,48 +310,32 @@ const DashboardCandidateTable = () => {
             field: "surname"
         },
         {
-            title: "Ime Oca",
-            field: "father_name"
+            title: "Opcina",
+            field: "residence_muncipality"
         },
-
         {
             title: "Osnovna Škola",
-            field: "osnovna_skola"
+            field: "elementary_school.school_name"
         },
         {
-            title: "Opći Uspjeh Bodovi",
-            field: "k1"
+            title: "Email",
+            field: "email_contact"
         },
         {
-            title: "Značajni Predmeti Bodovi",
-            field: "k2"
+            title: "Telefon",
+            field: "phone"
         },
         {
-            title: "Takmičenja",
-            field: ""
+            title: "Datum Svjedodzbe",
+            field: "testimony_date"
         },
         {
-            title: "Diplome(čl.65)",
-            field: "diplome"
-        },
-        {
-            title: "Eksterna Matura",
-            field: "eksterna_matura"
-        },
-        {
-            title: "Učenik Generacije",
-            field: "ucenik_generacije"
-        },
-        {
-            title: "Ukupni Bodovi",
-            field: "points"
-        },
+            title: "Broj Svjedodzbe",
+            field: "testimony_number"
+        }
+
     ];
 
-    const data = [
-        {upisni_br:"A/11", prezime:"Hurem", ime_oca:"Haris", ime:"Omar", osnovna_skola:"Miladije", opci_uspjeh_bodovi: 15, znacajni_predmeti_bodovi:30, takmicenja:null, diplome:30, eksterna_matura:9.76, ucenik_generacije:"DA", bodovi: 99},
-        {upisni_br:"A/11", prezime:"Hurem", ime_oca:"Haris", ime:"Omar", osnovna_skola:"Solana", opci_uspjeh_bodovi: 15, znacajni_predmeti_bodovi:30, takmicenja:null, diplome:30, eksterna_matura:9.76, ucenik_generacije:"DA", bodovi: 99},
-    ];
     const options = {
         paging : true,
         maxBodyHeight: '100%',
@@ -160,7 +373,7 @@ const DashboardCandidateTable = () => {
 
     return(
         <div>
-           <MaterialTable title={'Kandidati'} columns={columns} data={data} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
+           <MaterialTable title={'Kandidati'} columns={columns} data={tableData} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
                setSelectedRow(rowData.tableData.id);
                setSelectedRowData(rowData);
            }}
@@ -192,7 +405,7 @@ const DashboardCandidateTable = () => {
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="name-input" > Datum Rođenja </label>
-                                <input type="date" className="form-control" id="name-input" {...register("birth_date", { required: true })}/>
+                                <input type="text" className="form-control" id="name-input" {...register("birth_date", { required: true })}/>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="name-input"> Mjesto Rođenja </label>
@@ -216,11 +429,7 @@ const DashboardCandidateTable = () => {
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="prezime-input"> Spol </label>
-                                <select {...register("sex", { required: true })}  id="drugistrani" className="form-select" >
-                                    <option value=" "> </option>
-                                    <option value="M">Muško </option>
-                                    <option value="Z"> Žensko </option>
-                                </select>
+                                <Select {...register("sex")} defaultValue={selectedSex} options={optionsSex} onChange={e => {setSelectedSex({value: e.value, label: e.label})}} />
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="name-input"> Adresa Stanovanja </label>
@@ -248,7 +457,7 @@ const DashboardCandidateTable = () => {
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="name-input"> Osnovna Škola </label>
-                                <input type="text" className="form-control" id="name-input" {...register("elementary_school", { required: true })}/>
+                                <Select options={elementarySchoolOptions} defaultValue={selectedElementary} onChange={e => setSelectedElementary({value: e.value, label: e.label})}/>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="name-input"> Broj Svjedodžbe</label>
@@ -256,7 +465,7 @@ const DashboardCandidateTable = () => {
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="name-input"> Datum Svjedodžbe </label>
-                                <input type="date" className="form-control" id="name-input" {...register("testimony_date", { required: true })}/>
+                                <input type="text" className="form-control" id="name-input" {...register("testimony_date", { required: true })}/>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="ime-input"> Ime Oca </label>
@@ -284,68 +493,27 @@ const DashboardCandidateTable = () => {
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="ime-input"> Prvi Strani Jezik </label>
-                                <select id="drugistrani" className="form-select" {...register("first_foriegn_language", { required: true })}>
-                                    <option value=" "> </option>
-                                    <option value="Engleski jezik">Engleski jezik </option>
-                                    <option value="Njemački jezik ">Njemački jezik </option>
-                                </select>
+                                <Select {...register("first_foriegn_language")} options={optionsFirstLanguage} defaultValue={selectedFirstLanguage} onChange={e => {setSelectedFirstLanguage({value: e.value, label: e.label})}}/>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="prezime-input"> Drugi Strani Jezik </label>
-                                <select id="drugistrani" className="form-select" {...register("second_foriegn_language", { required: true })}>
-                                    <option value=" "> </option>
-                                    <option value="Engleski jezik">Engleski jezik </option>
-                                    <option value="Njemački jezik ">Njemački jezik </option>
-                                </select>
+                                <Select {...register("second_foriegn_language")} options={optionsFirstLanguage} defaultValue={selectedSecondLanguage} onChange={e => {setSelectedSecondLanguage({value: e.value, label: e.label})}}/>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="zanimanjeoca-input"> Fakultativna Nastava </label>
-                                <select id="fakultativni" className="form-select" {...register("facultative_subject", { required: true })}>
-                                    <option value=" "> </option>
-                                    <option value="Islamski vjeronauk">Islamski vjeronauk</option>
-                                    <option value="Katolički vjeronauk">Katolicki vjeronauk</option>
-                                    <option value="Pravoslavni vjeronauk">Pravoslavni vjeronauk</option>
-                                    <option value="Religijska kultura">Religijska kultura</option>
-                                </select>
+                                <Select {...register("facultative_subject")} options={optionsFacultativeSubject} defaultValue={selectedFacultativeSubject} onChange={e => {setSelectedFacultativeSubject({value: e.value, label: e.label})}}/>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="prezime-input"> Prva Želja </label>
-                                <select {...register("first_choice", { required: true })}  id="drugistrani" className="form-select" >
-                                    <option value=" "> </option>
-                                    <option value="A">Tehničar računarstva</option>
-                                    <option value="B">Tehničar elektronike</option>
-                                    <option value="C">Tehničar elektroenergetike</option>
-                                    <option value="D">Tehničar mehatronike</option>
-                                    <option value="E">Elektroničar telekomunikacija</option>
-                                    <option value="F">Autoelektričar</option>
-                                    <option value="G">Električar</option>
-                                </select>
+                                <Select {...register("first_choice")} options={choiceOptions} defaultValue={selectedFirstChoice} onChange={e => setSelectedFirstChoice({value: e.value, label: e.label})}/>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="prezime-input"> Druga Želja (neobavezno) </label>
-                                <select {...register("second_choice")}  id="drugistrani" className="form-select" >
-                                    <option value={null}> </option>
-                                    <option value="A">Tehničar računarstva</option>
-                                    <option value="B">Tehničar elektronike</option>
-                                    <option value="C">Tehničar elektroenergetike</option>
-                                    <option value="D">Tehničar mehatronike</option>
-                                    <option value="E">Elektroničar telekomunikacija</option>
-                                    <option value="F">Autoelektričar</option>
-                                    <option value="G">Električar</option>
-                                </select>
+                                <Select {...register("second_choice")} options={choiceOptions} defaultValue={selectedSecondChoice} onChange={e => setSelectedSecondChoice({value: e.value, label: e.label})}/>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="fakultativni"> Treća Želja (neobavezno) </label>
-                                <select {...register("third_choice")}  id="fakultativni" className="form-select" >
-                                    <option value={null}> </option>
-                                    <option value="A">Tehničar računarstva</option>
-                                    <option value="B">Tehničar elektronike</option>
-                                    <option value="C">Tehničar elektroenergetike</option>
-                                    <option value="D">Tehničar mehatronike</option>
-                                    <option value="E">Elektroničar telekomunikacija</option>
-                                    <option value="F">Autoelektričar</option>
-                                    <option value="G">Električar</option>
-                                </select>
+                                <Select {...register("third_choice")} options={choiceOptions} defaultValue={selectedThirdChoice} onChange={e => setSelectedThirdChoice({value: e.value, label: e.label})}/>
                             </div>
                         </div>
                         <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
@@ -397,7 +565,7 @@ const DashboardCandidateTable = () => {
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="zanimanjeoca-input"> Takmičenja </label>
-                                <select id="fakultativni" className="form-select" {...register("k3", { required: true })} >
+                                <select id="fakultativni" className="form-select" {...register("k3")} >
                                     <option value={null}>{null}</option>
                                     <option value={5}>5</option>
                                     <option value={8}>8</option>
@@ -423,6 +591,7 @@ const DashboardCandidateTable = () => {
                     </Modal.Body>
                     <Modal.Footer>
                         <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Validiraj</button>
+                        <button className="btn btn-danger btn-lg btn-block mx-3" > Obrisi </button>
                     </Modal.Footer>
                 </form>
             </Modal>
