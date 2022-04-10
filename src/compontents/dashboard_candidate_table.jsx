@@ -3,8 +3,9 @@ import MaterialTable from 'material-table';
 import Modal from "react-bootstrap/Modal";
 import Select from "react-select";
 import {useForm} from "react-hook-form";
+
 import axios from "axios";
-import url from "../api-urls"
+import url from "../api-urls";
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -104,15 +105,15 @@ const DashboardCandidateTable = () => {
     const fetchElementarySchools = () => {
         let elementarySchools, elementarySchoolsRenamed = []
         axios.get(url + '/candidates/schools/')
-            .then((response => {
+            .then((response) => {
                 elementarySchools = response.data;
                 for(let i = 0 ; i < elementarySchools.length ; i++){
                     elementarySchoolsRenamed.push({value: elementarySchools[i].id, label: elementarySchools[i].school_name});
                 }
                 setElementarySchoolOptions(elementarySchoolsRenamed);
                 console.log(elementarySchoolOptions)
-            }))
-            .catch((error) =>{
+            })
+            .catch((error) => {
                 console.log(error);
             })
     }
@@ -234,9 +235,12 @@ const DashboardCandidateTable = () => {
         reset({k4:false});
         reset({military_privileges:false});
         setIsOpen(false);
+        setSelectedRow(null);
+        setSelectedRowData(null);
     }
 
     const onValidate = (data) => {
+
         data.engage_year = activeYear;
         data.first_choice = selectedFirstChoice.value;
         data.third_choice = selectedThirdChoice.value;
@@ -245,8 +249,12 @@ const DashboardCandidateTable = () => {
         data.second_foriegn_language = selectedSecondLanguage.value;
         data.facultative_subject = selectedFacultativeSubject.value;
         data.sex = selectedSex.value;
+        data.elementary_school = selectedElementary.value;
         data.validation_status = true;
         data.candidate_number = selectedRowData.candidate_number;
+        data.validation_email = selectedRowData.validation_email;
+        data.second_deadline = selectedRowData.second_deadline;
+
         if(data.k4 === true){
             data.k4 = 15.0;
         }
@@ -260,7 +268,7 @@ const DashboardCandidateTable = () => {
         else if(data.k3 !== ""){
             data.k3 = parseFloat(data.k3);
         }
-        console.log(JSON.stringify(data));
+        console.log(data);
         axios.patch(url + `/candidates/candidate/details/${selectedRowData.id}/`, data)
              .then((response) => {
                  console.log(response.data);
@@ -280,21 +288,23 @@ const DashboardCandidateTable = () => {
         console.error(error);
     }
 
-    let optionsSex = [
+    const optionsSex = [
         { value: 'M', label: 'Musko' },
         { value: 'Z', label: 'Zensko' }
     ]
-    let optionsFirstLanguage = [
+    const optionsFirstLanguage = [
         { value: 'ENG', label: 'Engleski Jezik' },
         { value: 'NJE', label: 'Njemacki Jezik' }
     ]
 
-    let optionsFacultativeSubject = [
+    const optionsFacultativeSubject = [
         { value: 'ISL', label: 'Islamski Vjeronauk' },
         { value: 'PRA', label: 'Pravoslavni Vjeronauk' },
         { value: 'KAT', label: 'Katolicki Vjeronauk' },
         { value: 'RKT', label: 'Religijska Kultura' }
     ]
+
+
 
     const columns = [
         {
@@ -429,7 +439,9 @@ const DashboardCandidateTable = () => {
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="prezime-input"> Spol </label>
+                                <div style={{width:"200px"}}>
                                 <Select {...register("sex")} defaultValue={selectedSex} options={optionsSex} onChange={e => {setSelectedSex({value: e.value, label: e.label})}} />
+                                </div>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="name-input"> Adresa Stanovanja </label>
@@ -457,7 +469,9 @@ const DashboardCandidateTable = () => {
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="name-input"> Osnovna Škola </label>
+                                <div style={{width:"200px"}}>
                                 <Select options={elementarySchoolOptions} defaultValue={selectedElementary} onChange={e => setSelectedElementary({value: e.value, label: e.label})}/>
+                                </div>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="name-input"> Broj Svjedodžbe</label>
@@ -493,27 +507,39 @@ const DashboardCandidateTable = () => {
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="ime-input"> Prvi Strani Jezik </label>
+                                <div style={{width:"300px"}}>
                                 <Select {...register("first_foriegn_language")} options={optionsFirstLanguage} defaultValue={selectedFirstLanguage} onChange={e => {setSelectedFirstLanguage({value: e.value, label: e.label})}}/>
+                                </div>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="prezime-input"> Drugi Strani Jezik </label>
+                                <div style={{width:"300px"}}>
                                 <Select {...register("second_foriegn_language")} options={optionsFirstLanguage} defaultValue={selectedSecondLanguage} onChange={e => {setSelectedSecondLanguage({value: e.value, label: e.label})}}/>
+                                </div>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="zanimanjeoca-input"> Fakultativna Nastava </label>
+                                <div style={{width:"300px"}}>
                                 <Select {...register("facultative_subject")} options={optionsFacultativeSubject} defaultValue={selectedFacultativeSubject} onChange={e => {setSelectedFacultativeSubject({value: e.value, label: e.label})}}/>
+                                </div>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="prezime-input"> Prva Želja </label>
+                                <div style={{width:"300px"}}>
                                 <Select {...register("first_choice")} options={choiceOptions} defaultValue={selectedFirstChoice} onChange={e => setSelectedFirstChoice({value: e.value, label: e.label})}/>
+                                </div>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="prezime-input"> Druga Želja (neobavezno) </label>
+                                <div style={{width:"300px"}}>
                                 <Select {...register("second_choice")} options={choiceOptions} defaultValue={selectedSecondChoice} onChange={e => setSelectedSecondChoice({value: e.value, label: e.label})}/>
+                                </div>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="fakultativni"> Treća Želja (neobavezno) </label>
+                                <div style={{width:"300px"}}>
                                 <Select {...register("third_choice")} options={choiceOptions} defaultValue={selectedThirdChoice} onChange={e => setSelectedThirdChoice({value: e.value, label: e.label})}/>
+                                </div>
                             </div>
                         </div>
                         <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
@@ -533,6 +559,8 @@ const DashboardCandidateTable = () => {
                                 <label className="form-label" htmlFor="zanimanjeoca-input"> IX </label>
                                 <input type="number" step=".1" min={2.0} max={5.0} {...register("eight_grade_mark", { required: true })} className="form-control" id="zanimanjeoca-input"/>
                             </div>
+                            </div>
+                            <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="zanimanjeoca-input"> Matematika VIII </label>
                                 <input min={2} max={5} type="number" {...register("math_eight_grade", { required: true })} className="form-control" id="zanimanjeoca-input"/>
@@ -560,11 +588,12 @@ const DashboardCandidateTable = () => {
                         </div>
                         <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
                             <div className="one-input-container">
-                                <label className="form-label" htmlFor="prezime-input">Procenti na eksternoj maturi (0 - 100)</label>
+                                <label className="form-label" htmlFor="prezime-input">Eksternoj maturi (0 - 100)</label>
                                 <input type="number" min={0} max={100} {...register("k6", { required: true })} className="form-control" id="prezimeoca-input"/>
                             </div>
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="zanimanjeoca-input"> Takmičenja </label>
+                                <div style={{width:"200px"}}>
                                 <select id="fakultativni" className="form-select" {...register("k3")} >
                                     <option value={null}>{null}</option>
                                     <option value={5}>5</option>
@@ -572,7 +601,10 @@ const DashboardCandidateTable = () => {
                                     <option value={9}>9</option>
                                     <option value={10}>10</option>
                                 </select>
+                                </div>
                             </div>
+                            </div>
+                            <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
                             <div className="one-input-container">
                                 <label className="form-label" htmlFor="prezime-input">Učenik generacije</label>
                                 <input className="form-check-input" type="checkbox" {...register("k5")} value=""  id="flexCheckDefault" />

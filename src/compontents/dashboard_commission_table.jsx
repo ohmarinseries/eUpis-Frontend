@@ -17,6 +17,9 @@ import Remove from "@material-ui/icons/Remove";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import MaterialTable from "material-table";
 import Modal from 'react-bootstrap/Modal';
+
+import axios from "axios";
+import url from "../api-urls";
 import {useForm} from "react-hook-form";
 
 
@@ -25,13 +28,26 @@ const DashboardCommissionTable = () => {
 
     const [selectedRow, setSelectedRow] = useState();
     const [selectedRowData, setSelectedRowData] = useState();
+    const [tableData, setTableData] = useState();
+
     const [createModalIsOpen, setCreateIsOpen] = useState(false);
-    const [editModalIsOpen, setEditIsOpen] = useState(false);
-    const {register, handleSubmit, setValue} = useForm();
+    const [createAdminModalIsOpen, setCreateAdminIsOpen] = useState(false);
+
+    const {register, handleSubmit, reset} = useForm();
 
     useEffect(() => {
-
+        fetchCommission();
     }, [])
+
+    const fetchCommission = () => {
+        axios.get(url + '/users/account/')
+            .then((response) => {
+                setTableData(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+    }
 
     const openCreateModal = () => {
         setCreateIsOpen(true);
@@ -39,24 +55,60 @@ const DashboardCommissionTable = () => {
 
 
     const closeCreateModal = () => {
+        reset({first_name: null})
+        reset({last_name: null})
+        reset({email: null})
+        reset({password: null})
         setCreateIsOpen(false);
     }
 
-    const openEditModal = () => {
-        setEditIsOpen(true);
+
+    const openAdminCreateModal = () => {
+        setCreateAdminIsOpen(true);
     }
 
 
-    const closeEditModal = () => {
-        setEditIsOpen(false);
+    const closeAdminCreateModal = () => {
+        reset({first_name: null});
+        reset({last_name: null});
+        reset({email: null});
+        reset({password: null});
+
+        setCreateAdminIsOpen(false);
     }
 
     const onCreate = (data) => {
         console.log(data);
+        axios.post(url + '/auth/users/', data)
+             .then((response) => {
+                 fetchCommission();
+                 closeCreateModal();
+             })
+             .catch((error) => {
+                console.log(error);
+             })
     }
 
-    const onEdit = (data) => {
+    const onAdminCreate = (data) => {
         console.log(data);
+        axios.post(url + '/users/superuser/create/', data)
+             .then((response) => {
+                 fetchCommission();
+                 closeAdminCreateModal();
+              })
+             .catch((error) => {
+                 console.log(error);
+             })
+    }
+
+    const onDelete = (id) => {
+        axios.delete(url + `/users/account/details/${id}/`)
+            .then((response) => {
+                fetchCommission();
+             })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     const onError = (error) =>{
@@ -66,11 +118,11 @@ const DashboardCommissionTable = () => {
     const columns = [
         {
             title: "Ime",
-            field: "ime"
+            field: "first_name"
         },
         {
             title: "Prezime",
-            field: "prezime"
+            field: "last_name"
         },
         {
             title: "Email",
@@ -78,16 +130,11 @@ const DashboardCommissionTable = () => {
         },
         {
             title: "Admin",
-            field: "admin"
+            field: "is_superuser"
         },
 
-
     ];
 
-    const data = [
-        {ime:"Edin", prezime:"Zulfic", email:"example@example.com", admin:"DA"},
-        {ime:"Nekitamo", prezime:"Anonimus", email:"example@example.com", admin:"NE"}
-    ];
     const options = {
         paging : true,
         maxBodyHeight: '100%',
@@ -99,6 +146,7 @@ const DashboardCommissionTable = () => {
         rowStyle: rowData => ({
             backgroundColor: rowData.tableData.id === selectedRow ? '#ededed' : 'white',
         }),
+        padding: 'dense',
 
     }
 
@@ -124,7 +172,7 @@ const DashboardCommissionTable = () => {
 
     return(
         <div>
-            <MaterialTable title={'Komisija'} columns={columns} data={data} options={options} icons={tableIcons}
+            <MaterialTable title={'Komisija'} columns={columns} data={tableData} options={options} icons={tableIcons}
                            onRowClick={(event, rowData) => {
                                setSelectedRow(rowData.tableData.id);
                                setSelectedRowData(rowData);
@@ -137,10 +185,16 @@ const DashboardCommissionTable = () => {
                                    onClick:()=>openCreateModal()
                                },
                                {
-                                   icon: () => <button className="btn btn-outline-dark rounded">Uredi</button>,
-                                   tooltip:"Uredi korisnika",
+                                   icon: () => <button className="btn btn-outline-dark rounded">Kreiraj Admina</button>,
+                                   tooltip:"Kreiraj admina",
                                    isFreeAction:true,
-                                   onClick:()=>openEditModal()
+                                   onClick:()=>openAdminCreateModal()
+                               },
+                               {
+                                   icon: () => <button className="btn btn-outline-dark rounded">Obrisi</button>,
+                                   tooltip:"Obrisi korisnika",
+                                   isFreeAction:true,
+                                   onClick:()=>onDelete(selectedRowData.id)
                                },
 
 
@@ -172,10 +226,6 @@ const DashboardCommissionTable = () => {
                                 <label className="form-label" htmlFor="letter-input"> Lozinka </label>
                                 <input type="text"  className="form-control" id="letter-input" {...register("password", { required: true })}/>
                             </div>
-                            <div className="one-input-container">
-                                <label className="form-label" htmlFor="prezime-input"> Admin </label>
-                                <input className="form-check-input" type="checkbox" value="" {...register("is_admin")}  id="flexCheckDefault" />
-                            </div>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
@@ -184,13 +234,13 @@ const DashboardCommissionTable = () => {
                 </form>
             </Modal>
 
-            <Modal show={editModalIsOpen} close={closeEditModal} size="xl" onHide={closeEditModal} aria-labelledby="contained-modal-title-vcenter" centered>
+            <Modal show={createAdminModalIsOpen} close={closeAdminCreateModal} size="xl" onHide={closeAdminCreateModal} aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton >
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Uredi Korisnika
+                        Kreiraj Korisnika
                     </Modal.Title>
                 </Modal.Header>
-                <form className="container-sm d-flex flex-column justify-content-between" onSubmit={handleSubmit(onEdit, onError)}>
+                <form className="container-sm d-flex flex-column justify-content-around" onSubmit={handleSubmit(onAdminCreate, onError)}>
                     <Modal.Body>
                         <div className="container-sm d-flex flex-row justify-content-around flex-wrap">
                             <div className="one-input-container">
@@ -206,13 +256,13 @@ const DashboardCommissionTable = () => {
                                 <input type="text"  className="form-control" id="full_choice_name-input" {...register("email", { required: true })}/>
                             </div>
                             <div className="one-input-container">
-                                <label className="form-label" htmlFor="prezime-input"> Admin </label>
-                                <input className="form-check-input" type="checkbox" value="" {...register("is_admin")}  id="flexCheckDefault" />
+                                <label className="form-label" htmlFor="letter-input"> Lozinka </label>
+                                <input type="text"  className="form-control" id="letter-input" {...register("password", { required: true })}/>
                             </div>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Uredi</button>
+                        <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Kreiraj</button>
                     </Modal.Footer>
                 </form>
             </Modal>

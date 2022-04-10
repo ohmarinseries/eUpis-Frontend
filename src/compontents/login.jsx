@@ -1,24 +1,50 @@
 import React, {useEffect} from "react";
-import {Link, useHistory} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {useForm} from "react-hook-form";
+
+import axios from "axios";
+import url from "../api-urls";
+
 
 import "./styles/dashboard.scss"
 
+
 const Login = () => {
 
-    //const dispatch=useDispatch();
-    //const loading = useSelector((state)=>state.authReducer.loading)
 
-    //const navigation = useHistory();
+    const navigation = useHistory();
+    const {register, handleSubmit} = useForm();
+
 
     useEffect(() => {
-
+        localStorage.clear();
+        console.log(localStorage.getItem('refresh'));
     }, [])
 
-    if(false){
+    const signIn = (data) => {
 
+        axios.post(url + '/auth/jwt/create/', data)
+             .then((response) => {
+                 localStorage.setItem("refresh", response.data.refresh);
+                 localStorage.setItem("access", response.data.access);
+
+                 console.log(localStorage.getItem('refresh'))
+                 navigation.push('/dashboard');
+             })
+            .catch((error) => {
+                console.log(error);
+            })
     }
-    else {
+
+    const onLogin = (data) => {
+        console.log(data);
+        signIn(data);
+    }
+
+    const onError = (error) => {
+        console.log(error);
+    }
+
     return(
     <div className="container vh-100 vw-100 align-content-lg-center" >
         <div className="container py-5 h-100">
@@ -28,24 +54,20 @@ const Login = () => {
                         <div className="card-body p-5 text-center">
 
                             <h3 className="mb-5">Prijava</h3>
-
-                            <div className="form-outline mb-4 p-2">
-                                <input type="email" id="email" className="form-control form-control-lg" placeholder="Email"/>
-
+                            <form onSubmit={handleSubmit(onLogin, onError)}>
+                            <div className="form-outline mb-4 p-2" style={{width:"400px"}}>
+                                <input {...register("email", { required: true })} type="email" id="email" className="form-control form-control-lg" placeholder="Email"/>
                             </div>
 
-                            <div className="form-outline mb-4 p-2">
-                                <input type="password" id="password" className="form-control form-control-lg" placeholder="Lozinka"/>
-
+                            <div className="form-outline mb-4 p-2" style={{width:"400px"}}>
+                                <input {...register("password", { required: true })} type="password" id="password" className="form-control form-control-lg" placeholder="Lozinka"/>
                             </div>
 
-                            <p className="small mb-5 pb-lg-2 text-black">Zaboravili ste loziniku?</p>
-                            <div className="container-fluid d-flex flex-column justify-content-start align-content-center">
 
-                            <Link to="/dashboard"><button className="btn btn-success btn-lg btn-block mb-3" type="submit">Prijavi se!</button></Link>
-                            <Link to="/"><button className="btn btn-danger btn-lg btn-block" type="submit">Povratak</button></Link>
+                            <input className="btn btn-success btn-lg btn-block mb-3 mt-5" type="submit" value='Prijavi se!'/>
 
-                            </div>
+
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -54,7 +76,7 @@ const Login = () => {
 
         </div>
         )
-    }
+
 
 }
 
