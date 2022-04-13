@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {useHistory} from "react-router-dom";
-import axios from "axios";
-import url from "../api-urls";
+
 import Select from "react-select";
 import instance from "../utils/axiosNonAuthInstance"
 
@@ -34,13 +33,13 @@ const FormGeneralInfo = () => {
     },[])
 
     const fetchActiveYear = () => {
-        axios
-            .get(url + '/candidates/year/active/')
+        instance
+            .get('/candidates/year/active/')
             .then((res) => {
                 console.log(res.data.id);
                 setYear(res.data.id);
-                axios
-                    .get(url + `/candidates/yearchoice/${res.data.id}/`)
+                instance
+                    .get(`/candidates/yearchoice/${res.data.id}/`)
                     .then((response)=>{
                         choices = response.data;
                         for(let i = 0 ; i < choices.length ; i++){
@@ -62,7 +61,7 @@ const FormGeneralInfo = () => {
 
 
     const fetchElementarySchools = () => {
-        axios.get(url + '/candidates/schools/')
+        instance.get('/candidates/schools/')
             .then((response => {
                 elementarySchools = response.data;
                 for(let i = 0 ; i < elementarySchools.length ; i++){
@@ -111,8 +110,8 @@ const FormGeneralInfo = () => {
         candidateObj = JSON.stringify(data);
         console.log(candidateObj);
         console.log(data);
-      axios
-            .post(url + '/candidates/', data)
+        instance
+            .post('/candidates/', data)
             .then((response) =>{
                 console.log(response.data);
                 navigation.push(`/thank-you/${response.data.email_contact}/${response.data.name}/${response.data.surname}`)

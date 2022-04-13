@@ -18,9 +18,10 @@ import ViewColumn from "@material-ui/icons/ViewColumn";
 import MaterialTable from "material-table";
 import Modal from 'react-bootstrap/Modal';
 
-import axios from "axios";
-import url from "../api-urls";
+import instance from "../utils/axiosAuthInstance";
+
 import {useForm} from "react-hook-form";
+import {useHistory} from "react-router-dom";
 
 
 
@@ -34,18 +35,24 @@ const DashboardCommissionTable = () => {
     const [createAdminModalIsOpen, setCreateAdminIsOpen] = useState(false);
 
     const {register, handleSubmit, reset} = useForm();
+    const navigator = useHistory();
 
     useEffect(() => {
         fetchCommission();
     }, [])
 
     const fetchCommission = () => {
-        axios.get(url + '/users/account/')
+        instance.get('/users/account/')
             .then((response) => {
                 setTableData(response.data);
             })
             .catch((error) => {
-                console.error(error);
+                if(error.response.status === 401){
+                    navigator.push('/dashboard-login');
+                }
+                else if(error.response.status === 403){
+                    navigator.push('/dashboard');
+                }
             })
     }
 
@@ -78,36 +85,50 @@ const DashboardCommissionTable = () => {
     }
 
     const onCreate = (data) => {
-        console.log(data);
-        axios.post(url + '/auth/users/', data)
+         instance.post('/auth/users/', data)
              .then((response) => {
                  fetchCommission();
                  closeCreateModal();
              })
              .catch((error) => {
-                console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
     const onAdminCreate = (data) => {
-        console.log(data);
-        axios.post(url + '/users/superuser/create/', data)
+
+        instance.post('/users/superuser/create/', data)
              .then((response) => {
                  fetchCommission();
                  closeAdminCreateModal();
               })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
     const onDelete = (id) => {
-        axios.delete(url + `/users/account/details/${id}/`)
+        instance.delete(`/users/account/details/${id}/`)
             .then((response) => {
                 fetchCommission();
              })
             .catch((error) => {
-                console.log(error);
+                if(error.response.status === 401){
+                    navigator.push('/dashboard-login');
+                }
+                else if(error.response.status === 403){
+                    navigator.push('/dashboard');
+                }
             })
     }
 

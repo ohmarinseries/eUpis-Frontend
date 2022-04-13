@@ -17,16 +17,19 @@ import Search from "@material-ui/icons/Search";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Remove from "@material-ui/icons/Remove";
 import ViewColumn from "@material-ui/icons/ViewColumn";
+
 import {useForm} from "react-hook-form";
-import axios from "axios";
-import url from "../api-urls";
+import instance from "../utils/axiosAuthInstance";
+import {useHistory} from "react-router-dom";
 
 const DashboardSettingsElementarySchoolTable = () => {
-    const [selectedRow, setSelectedRow] = useState();
+    const [selectedRow, setSelectedRow] = useState(null);
     const [selectedRowData, setSelectedRowData] = useState();
     const [createModalIsOpen, setCreateIsOpen] = useState(false);
     const [editModalIsOpen, setEditIsOpen] = useState(false);
     const [tableData, setTableData] = useState([]);
+
+    const navigator = useHistory();
     const {register, handleSubmit, setValue, reset} = useForm();
 
     useEffect(() => {
@@ -34,13 +37,17 @@ const DashboardSettingsElementarySchoolTable = () => {
     }, [])
 
     const fetchElementarySchools = () => {
-        axios.get(url + '/candidates/schools/')
+        instance.get('/candidates/schools/')
              .then((response) => {
-                 console.log(response.data);
                  setTableData(response.data);
               })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
@@ -54,8 +61,10 @@ const DashboardSettingsElementarySchoolTable = () => {
     }
 
     const openEditModal = () => {
-       setValue('school_name', selectedRowData.school_name, {shouldValidate: false});
-       setEditIsOpen(true);
+       if(selectedRow != null) {
+           setValue('school_name', selectedRowData.school_name, {shouldValidate: false});
+           setEditIsOpen(true);
+       }
     }
 
     const closeEditModal = () => {
@@ -64,37 +73,50 @@ const DashboardSettingsElementarySchoolTable = () => {
 
     const onCreate = (data) => {
        let schoolObj = {school_name: data.school_name}
-        axios.post(url + '/candidates/schools/', schoolObj)
+        instance.post('/candidates/schools/', schoolObj)
              .then((response) => {
-               console.log(response.data);
                fetchElementarySchools();
                closeCreateModal();
               })
              .catch((error) => {
-               console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
               })
     }
 
     const onEdit = (data) => {
         let schoolObj = {school_name: data.school_name}
-        axios.patch(url + `/candidates/schools/details/${selectedRowData.id}/`, schoolObj)
+        instance.patch(`/candidates/schools/details/${selectedRowData.id}/`, schoolObj)
              .then((response) => {
-                 console.log(response.data);
                  fetchElementarySchools();
                  closeEditModal();
              })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
               })
     }
 
     const onDelete = (id) => {
-        axios.delete(url + `/candidates/schools/details/${id}/`)
+        instance.delete(`/candidates/schools/details/${id}/`)
              .then((response) => {
                 fetchElementarySchools();
               })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
@@ -173,7 +195,12 @@ return(
                                    icon: () => <button className="btn btn-outline-dark rounded">Obrisi</button>,
                                    tooltip:"Obrisi Osnovnu Skolu",
                                    isFreeAction:true,
-                                   onClick:()=>onDelete(selectedRowData.id)
+                                   onClick:()=>{
+                                       if(selectedRow != null) {
+                                           onDelete(selectedRowData.id)
+                                       }
+                                   }
+
                                },
 
 

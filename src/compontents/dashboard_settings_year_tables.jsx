@@ -1,4 +1,6 @@
 import React, {forwardRef, useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
+
 import MaterialTable from "material-table";
 import Modal from "react-bootstrap/Modal";
 
@@ -17,32 +19,40 @@ import Search from "@material-ui/icons/Search";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Remove from "@material-ui/icons/Remove";
 import ViewColumn from "@material-ui/icons/ViewColumn";
+
 import {useForm} from "react-hook-form";
-import axios from "axios";
-import url from "../api-urls";
+import instance from "../utils/axiosAuthInstance";
 
 const DashboardSettingsYearTables = () => {
-    const [selectedRow, setSelectedRow] = useState();
+    const [selectedRow, setSelectedRow] = useState(null);
     const [selectedRowData, setSelectedRowData] = useState();
     const [createModalIsOpen, setCreateIsOpen] = useState(false);
     const [editModalIsOpen, setEditIsOpen] = useState(false);
     const [settingsModalIsOpen, setSettingsIsOpen] = useState(false);
     const [exportModalIsOpen, setExportIsOpen] = useState(false);
     const [tableData, setTableData] = useState([]);
+
+    const navigator = useHistory();
     const {register, handleSubmit, setValue, reset} = useForm();
+
+    const navigation = useHistory();
 
     useEffect(() => {
         fetchYears();
     }, [])
 
     const fetchYears = () => {
-        axios.get(url + '/candidates/year/')
+        instance.get('/candidates/year/')
              .then((response) => {
-                 console.log(response.data);
                  setTableData(response.data);
              })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
@@ -68,10 +78,12 @@ const DashboardSettingsYearTables = () => {
     }
 
     const openEditModal = () => {
-        setValue('engage_year', selectedRowData.engage_year, {shouldValidate: false});
-        setValue('first_deadline_min_points', selectedRowData.first_deadline_min_points, {shouldValidate: false});
-        setValue('second_deadline_min_points', selectedRowData.second_deadline_min_points, {shouldValidate: false});
-        setEditIsOpen(true);
+        if(selectedRow != null) {
+            setValue('engage_year', selectedRowData.engage_year, {shouldValidate: false});
+            setValue('first_deadline_min_points', selectedRowData.first_deadline_min_points, {shouldValidate: false});
+            setValue('second_deadline_min_points', selectedRowData.second_deadline_min_points, {shouldValidate: false});
+            setEditIsOpen(true);
+        }
     }
 
     const closeEditModal = () => {
@@ -92,14 +104,18 @@ const DashboardSettingsYearTables = () => {
     const onCreate = (data) => {
         let yearObj = {engage_year: data.engage_year, first_deadline_min_points: data.first_deadline_min_points,
             second_deadline_min_points: data.second_deadline_min_points}
-        axios.post(url + '/candidates/year/', yearObj)
+        instance.post('/candidates/year/', yearObj)
              .then((response) => {
-                 console.log(response.data);
                  fetchYears();
                  closeCreateModal();
               })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
@@ -111,30 +127,39 @@ const DashboardSettingsYearTables = () => {
         console.log(data);
         console.log(selectedRowData);
         console.log(yearObj);
-        axios.patch(url + `/candidates/year/details/${selectedRowData.id}/`, yearObj)
+        instance.patch(`/candidates/year/details/${selectedRowData.id}/`, yearObj)
              .then((response) => {
-                 console.log(response);
                  fetchYears();
                  closeEditModal();
               })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
               })
 
     }
 
     const onDelete = (id) => {
-        axios.delete(url + `/candidates/year/details/${id}/`)
+       instance.delete(`/candidates/year/details/${id}/`)
              .then((response) => {
                  fetchYears();
               })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
     const onError = (error) =>{
-        console.error(error);
+        console.log(error);
     }
 
     const columns = [
@@ -224,7 +249,11 @@ const DashboardSettingsYearTables = () => {
                                        icon: () => <button className="btn btn-outline-dark rounded">Obrisi</button>,
                                        tooltip:"Obrisi Upisnu godinu",
                                        isFreeAction:true,
-                                       onClick:()=>onDelete(selectedRowData.id)
+                                       onClick:()=>{
+                                           if(selectedRow != null) {
+                                               onDelete(selectedRowData.id)
+                                           }
+                                       }
                                    },
                                    {
                                        icon: () => <button className="btn btn-outline-dark rounded">Rang</button>,

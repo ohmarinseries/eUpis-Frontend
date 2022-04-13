@@ -19,14 +19,16 @@ import Search from "@material-ui/icons/Search";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Remove from "@material-ui/icons/Remove";
 import ViewColumn from "@material-ui/icons/ViewColumn";
+
 import {useForm} from "react-hook-form";
-import axios from "axios";
-import url from "../api-urls";
+
+import instance from "../utils/axiosAuthInstance";
+import {useHistory} from "react-router-dom";
 
 
 const DashboardSettingsClassesTable = () => {
 
-    const [selectedRow, setSelectedRow] = useState();
+    const [selectedRow, setSelectedRow] = useState(null);
     const [selectedRowData, setSelectedRowData] = useState();
     const [editModalIsOpen, setEditIsOpen] = useState(false);
     const [createModalIsOpen, setCreateIsOpen] = useState(false);
@@ -35,6 +37,8 @@ const DashboardSettingsClassesTable = () => {
     const [choiceOptions, setChoiceOptions] = useState({});
     const [selectedChoice, setSelectedChoice] = useState(null);
     const [tableData, setTableData] = useState([]);
+
+    const navigator = useHistory();
     const {register, handleSubmit, setValue, reset} = useForm();
 
     useEffect(() => {
@@ -43,7 +47,7 @@ const DashboardSettingsClassesTable = () => {
 
     const fetchYears = () => {
         let year, yearRenamed = [];
-        axios.get(url + '/candidates/year/')
+        instance.get('/candidates/year/')
              .then((response) => {
                  year = response.data;
                  for(let i = 0 ; i < year.length; i++){
@@ -52,42 +56,56 @@ const DashboardSettingsClassesTable = () => {
                  setYearOptions(yearRenamed)
              })
             .catch((error) => {
-                console.log(error)
+                if(error.response.status === 401){
+                    navigator.push('/dashboard-login');
+                }
+                else if(error.response.status === 403){
+                    navigator.push('/dashboard');
+                }
             })
     }
 
     const fetchYearClasses = (id, choice_id) => {
-        axios.get(url + `/candidates/grade/year/${id}/${choice_id}/`)
+        instance.get(`/candidates/grade/year/${id}/${choice_id}/`)
              .then((response) => {
-                 console.log(response.data);
                  setTableData(response.data);
              })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
     const fetchYearChoices = (id) => {
         let choices, choicesRenamed = [];
-        axios.get(url + `/candidates/yearchoice/${id}/`)
+        instance.get(`/candidates/yearchoice/${id}/`)
              .then((response) => {
                 choices = response.data;
-                console.log(response.data);
                 for(let i = 0 ; i < choices.length; i++){
                     choicesRenamed.push({value:choices[i].choice.id, label: choices[i].choice.full_choice_name});
                 }
-                console.log(choicesRenamed)
                 setChoiceOptions(choicesRenamed);
             })
             .catch((error) => {
-                console.log(error);
+                if(error.response.status === 401){
+                    navigator.push('/dashboard-login');
+                }
+                else if(error.response.status === 403){
+                    navigator.push('/dashboard');
+                }
             })
     }
 
     const openEditModal = (data) => {
-        setValue('title', data.title, {shouldValidate: false});
-        setValue('students_number', data.students_number, {shouldValidate: false});
-        setEditIsOpen(true);
+        if(selectedRow != null) {
+            setValue('title', data.title, {shouldValidate: false});
+            setValue('students_number', data.students_number, {shouldValidate: false});
+            setEditIsOpen(true);
+        }
     }
 
     const closeEditModal = () => {
@@ -106,39 +124,50 @@ const DashboardSettingsClassesTable = () => {
 
     const onEdit = (data) => {
         let classObj = {title: data.title, students_number: data.students_number};
-        axios.patch(url + `/candidates/grade/details/${selectedRowData.id}/`, classObj)
+        instance.patch(`/candidates/grade/details/${selectedRowData.id}/`, classObj)
              .then((response) => {
-                console.log(response.data);
                 fetchYearClasses(selectedYear, selectedChoice);
                 closeEditModal();
              })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
     const onCreate = (data) => {
         let gradeObj = {title: data.title, students_number: data.students_number, engage_year: selectedYear, choice: selectedChoice}
-        console.log(selectedYear);
-        console.log(selectedChoice);
-        axios.post(url + '/candidates/grade/', gradeObj)
+        instance.post('/candidates/grade/', gradeObj)
              .then((response) => {
-                 console.log(response.data);
                  fetchYearClasses(selectedYear, selectedChoice);
                  closeCreateModal();
              })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
     const onDelete = (id) => {
-        axios.delete(url + `/candidates/grade/details/${id}/`)
+        instance.delete(`/candidates/grade/details/${id}/`)
              .then((response) => {
                  fetchYearClasses(selectedYear, selectedChoice);
              })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
@@ -219,7 +248,11 @@ const DashboardSettingsClassesTable = () => {
                                    icon: () => <button className="btn btn-outline-dark rounded">Obrisi</button>,
                                    tooltip:"Uredi Razred",
                                    isFreeAction:true,
-                                   onClick:()=>onDelete(selectedRowData.id)
+                                   onClick:()=> {
+                                       if(selectedRow != null) {
+                                           onDelete(selectedRowData.id)
+                                       }
+                                   }
                                },
                            ]}/>
             <div className="container d-flex flex-row justify-content-around align-content-center w-100 mt-5">

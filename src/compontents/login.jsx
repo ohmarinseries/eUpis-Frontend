@@ -1,48 +1,43 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {useForm} from "react-hook-form";
 
-import axios from "axios";
-import url from "../api-urls";
-
+import instance from "../utils/axiosNonAuthInstance";
 
 import "./styles/dashboard.scss"
 
-
 const Login = () => {
 
-
+    const [errorMessage, setErrorMessage] = useState(null);
     const navigation = useHistory();
     const {register, handleSubmit} = useForm();
 
-
     useEffect(() => {
         localStorage.clear();
-        console.log(localStorage.getItem('refresh'));
     }, [])
 
     const signIn = (data) => {
 
-        axios.post(url + '/auth/jwt/create/', data)
+        instance.post('/auth/jwt/create/', data)
              .then((response) => {
                  localStorage.setItem("refresh", response.data.refresh);
                  localStorage.setItem("access", response.data.access);
 
-                 console.log(localStorage.getItem('refresh'))
                  navigation.push('/dashboard');
              })
-            .catch((error) => {
-                console.log(error);
-            })
+             .catch((error) => {
+                 if(error.response.status === 401){
+                     setErrorMessage("Pogresan email ili lozinka");
+                 }
+             })
     }
 
     const onLogin = (data) => {
-        console.log(data);
         signIn(data);
     }
 
     const onError = (error) => {
-        console.log(error);
+        setErrorMessage("Morate unijeti podatke u oba polja");
     }
 
     return(
@@ -63,9 +58,8 @@ const Login = () => {
                                 <input {...register("password", { required: true })} type="password" id="password" className="form-control form-control-lg" placeholder="Lozinka"/>
                             </div>
 
-
+                            <h6 style={{color:"red"}} >{errorMessage}</h6>
                             <input className="btn btn-success btn-lg btn-block mb-3 mt-5" type="submit" value='Prijavi se!'/>
-
 
                             </form>
                         </div>

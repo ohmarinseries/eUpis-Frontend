@@ -1,14 +1,22 @@
 import React, {useEffect, useState} from "react";
 import {set, useForm} from "react-hook-form";
 
+import axios from "axios";
+import instance from "../utils/axiosAuthInstance";
+
 const DashboardProfileInfo = () => {
 
     const {register, handleSubmit, setValue} = useForm();
+
     const [readOnly, setReadOnly] = useState(true);
 
     useEffect(() => {
 
     }, [])
+
+    const fetchCommission = () => {
+
+    }
 
     const onWrite = () => {
         setReadOnly(false)

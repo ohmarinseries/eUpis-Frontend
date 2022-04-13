@@ -3,8 +3,8 @@ import React, {forwardRef, useEffect, useState} from "react";
 import MaterialTable from "material-table";
 import Modal from 'react-bootstrap/Modal';
 import {useForm} from "react-hook-form";
-import axios from "axios";
-import url from "../api-urls";
+
+import instance from "../utils/axiosAuthInstance";
 
 import "./styles/dashboard.scss";
 import AddBox from "@material-ui/icons/AddBox";
@@ -22,17 +22,20 @@ import Search from "@material-ui/icons/Search";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Remove from "@material-ui/icons/Remove";
 import ViewColumn from "@material-ui/icons/ViewColumn";
+import {useHistory} from "react-router-dom";
 
 
 const DashboardSettingsChoicesTable = () => {
 
-    const [selectedRow, setSelectedRow] = useState();
+    const [selectedRow, setSelectedRow] = useState(null);
     const [selectedRowData, setSelectedRowData] = useState();
     const [createModalIsOpen, setCreateIsOpen] = useState(false);
     const [addModalIsOpen, setAddIsOpen] = useState(false);
     const [editModalIsOpen, setEditIsOpen] = useState(false);
     const [activeYear, setActiveYear] = useState(null);
     const [tableData, setTableData] = useState([{}]);
+
+    const navigator = useHistory();
     const {register, handleSubmit, setValue, reset} = useForm();
 
 
@@ -42,25 +45,34 @@ const DashboardSettingsChoicesTable = () => {
     }, [])
 
     const fetchChoices = () => {
-        axios.get(url + '/candidates/choices/')
+        instance.get('/candidates/choices/')
             .then((response) => {
                 setTableData(response.data);
             })
             .catch((error) => {
-                console.log(error);
+                if(error.response.status === 401){
+                    navigator.push('/dashboard-login');
+                }
+                else if(error.response.status === 403){
+                    navigator.push('/dashboard');
+                }
             })
     }
 
     const fetchActiveYear = () => {
         let year;
-        axios.get(url + '/candidates/year/active/')
+        instance.get('/candidates/year/active/')
             .then((response) => {
                 year = response.data.id;
                 setActiveYear(year);
-                console.log(year)
             })
             .catch((error) => {
-                console.log(error);
+                if(error.response.status === 401){
+                    navigator.push('/dashboard-login');
+                }
+                else if(error.response.status === 403){
+                    navigator.push('/dashboard');
+                }
             })
     }
 
@@ -76,10 +88,11 @@ const DashboardSettingsChoicesTable = () => {
     }
 
     const openEditModal = () => {
-        setEditIsOpen(true);
-        console.log(selectedRowData);
-        setValue('full_choice_name', selectedRowData.full_choice_name, {shouldValidate: false});
-        setValue('letter', selectedRowData.letter, {shouldValidate: false})
+        if(selectedRow != null) {
+            setEditIsOpen(true);
+            setValue('full_choice_name', selectedRowData.full_choice_name, {shouldValidate: false});
+            setValue('letter', selectedRowData.letter, {shouldValidate: false})
+        }
     }
 
 
@@ -90,7 +103,9 @@ const DashboardSettingsChoicesTable = () => {
     }
 
     const openAddModal = () => {
-        setAddIsOpen(true);
+        if(selectedRow != null) {
+            setAddIsOpen(true);
+        }
     }
 
 
@@ -100,7 +115,7 @@ const DashboardSettingsChoicesTable = () => {
 
     const onCreate = (data) => {
 
-       axios.post(url + "/candidates/choices/", data)
+       instance.post("/candidates/choices/", data)
             .then((response) => {
                setCreateIsOpen(false);
                reset({full_choice_name : null});
@@ -108,44 +123,61 @@ const DashboardSettingsChoicesTable = () => {
                fetchChoices();
             })
            .catch((error) => {
-               console.log(error);
+               if(error.response.status === 401){
+                   navigator.push('/dashboard-login');
+               }
+               else if(error.response.status === 403){
+                   navigator.push('/dashboard');
+               }
            })
     }
 
     const onEdit = (data) => {
-        axios.patch(url + `/candidates/choices/details/${selectedRowData.id}/`, data)
+        instance.patch(`/candidates/choices/details/${selectedRowData.id}/`, data)
              .then((response) => {
-                 console.log(response.data);
                  fetchChoices();
                  closeEditModal();
              })
             .catch((error) => {
-                console.log(error);
+                if(error.response.status === 401){
+                    navigator.push('/dashboard-login');
+                }
+                else if(error.response.status === 403){
+                    navigator.push('/dashboard');
+                }
             })
     }
 
     const onDelete = (id) => {
-        axios.delete(url + `/candidates/choices/details/${id}/`)
+        instance.delete(`/candidates/choices/details/${id}/`)
              .then((response) => {
                  fetchChoices();
              })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
     const onAdd = (data) => {
         let choiceObj={choice: selectedRowData.id, engage_year: activeYear, students_number: data.full_choice_name, class_number: data.letter}
-        console.log(data);
-        axios.post(url + '/candidates/yearchoice/', choiceObj)
+        instance.post('/candidates/yearchoice/', choiceObj)
              .then((response) => {
-                 console.log(response.data);
                  reset({full_choice_name : null});
                  reset({letter: null});
                  setAddIsOpen(false);
              })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
@@ -227,7 +259,11 @@ const DashboardSettingsChoicesTable = () => {
                 icon: () => <button className="btn btn-outline-dark rounded">Obrisi</button>,
                 tooltip:"Obrisi Smjer",
                 isFreeAction:true,
-                onClick:()=>onDelete(selectedRowData.id)
+                onClick:()=>{
+                    if(selectedRow != null) {
+                        onDelete(selectedRowData.id);
+                    }
+                }
             },
             {
                 icon: () => <button className="btn btn-outline-dark rounded">Ubaci</button>,

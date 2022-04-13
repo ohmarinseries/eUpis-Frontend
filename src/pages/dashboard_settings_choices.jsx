@@ -1,11 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 
 import DashboardNavbar from "../compontents/dashboard_navbar";
 import DashboardSettingsChoicesTable from "../compontents/dashboard_settings_choices_table";
 import DashboardSettingsYearChoicesTable from "../compontents/dashboard_settings_year_choices_table";
-import Select from "react-select";
-import axios from "axios";
-import url from "../api-urls";
+
 
 
 const DashboardSettingsChoices = () => {

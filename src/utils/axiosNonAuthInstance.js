@@ -1,11 +1,9 @@
 import axios from "axios";
-
-
-const URL = "https://eupis.herokuapp.com";
+import url from "../api-urls";
 
 
 const instance = axios.create({
-    baseURL:URL
+    baseURL:url
 })
 
 

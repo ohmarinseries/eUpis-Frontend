@@ -15,21 +15,24 @@ import Search from "@material-ui/icons/Search";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Remove from "@material-ui/icons/Remove";
 import ViewColumn from "@material-ui/icons/ViewColumn";
+
 import MaterialTable from "material-table";
 import Modal from 'react-bootstrap/Modal';
+
 import {useForm} from "react-hook-form";
-import axios from "axios";
-import url from "../api-urls";
+import instance from "../utils/axiosAuthInstance";
+import {useHistory} from "react-router-dom";
 
+const DashboardSettingsYearChoicesTable = () => {
 
-const DashboardSettingsYearChoicesTable = ({selYear}) => {
-
-    const [selectedRow, setSelectedRow] = useState();
+    const [selectedRow, setSelectedRow] = useState(null);
     const [selectedRowData, setSelectedRowData] = useState();
     const [editModalIsOpen, setEditIsOpen] = useState(false);
     const [activeYear, setActiveYear] = useState(null);
     const [yearTitle, setYearTitle] = useState("");
     const [tableData, setTableData] = useState([]);
+
+    const navigator = useHistory();
     const {register, handleSubmit, setValue, reset} = useForm();
 
     useEffect(() => {
@@ -37,35 +40,44 @@ const DashboardSettingsYearChoicesTable = ({selYear}) => {
     }, [])
 
     const fetchActiveYear = () => {
-        let year;
-
-        axios.get(url + '/candidates/year/active/')
+        instance.get('/candidates/year/active/')
             .then((response) => {
                 setActiveYear(response.data.id);
                 setYearTitle("Godina: " + response.data.engage_year)
-                console.log(year)
                 fetchYearChoices(response.data.id);
             })
             .catch((error) => {
-                console.log(error);
+                if(error.response.status === 401){
+                    navigator.push('/dashboard-login');
+                }
+                else if(error.response.status === 403){
+                    navigator.push('/dashboard');
+                }
              })}
 
 
     const fetchYearChoices = (id) => {
-        axios.get(url + `/candidates/yearchoice/${id}/`)
+        instance.get(`/candidates/yearchoice/${id}/`)
              .then((response) => {
                  setTableData(response.data);
              })
              .catch((error) => {
-                console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
 
     }
 
     const openEditModal = (data) => {
-        setValue('class_number', data.class_number, {shouldValidate: false});
-        setValue('students_number', data.students_number, {shouldValidate: false})
-        setEditIsOpen(true);
+        if(selectedRow != null) {
+            setValue('class_number', data.class_number, {shouldValidate: false});
+            setValue('students_number', data.students_number, {shouldValidate: false})
+            setEditIsOpen(true);
+        }
     }
 
     const closeEditModal = () => {
@@ -77,25 +89,33 @@ const DashboardSettingsYearChoicesTable = ({selYear}) => {
 
     const onEdit = (data) => {
         let choiceObj = {students_number: data.students_number, class_number: data.class_number}
-        axios.patch(url + `/candidates/yearchoice/details/${selectedRowData.id}/`, choiceObj)
+        instance.patch(`/candidates/yearchoice/details/${selectedRowData.id}/`, choiceObj)
              .then((response) => {
-                 console.log(response.data);
                  fetchYearChoices(activeYear);
                  closeEditModal();
               })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
               })
     }
 
     const onEject = (id) => {
-        axios.delete(url + `/candidates/yearchoice/details/${id}/`)
+        instance.delete(`/candidates/yearchoice/details/${id}/`)
              .then((response) => {
-                console.log(response)
                 fetchYearChoices(activeYear);
              })
              .catch((error) => {
-                console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
@@ -177,7 +197,11 @@ const DashboardSettingsYearChoicesTable = ({selYear}) => {
                 icon: () => <button className="btn btn-outline-dark rounded">Izbaci</button>,
                 tooltip:"Izbaci Smjer",
                 isFreeAction:true,
-                onClick:()=>onEject(selectedRowData.id)
+                onClick:()=>{
+                    if(selectedRow != null) {
+                        onEject(selectedRowData.id)
+                    }
+                }
             },
             {
                 icon: () => <button className="btn btn-outline-dark rounded">Uredi</button>,

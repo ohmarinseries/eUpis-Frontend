@@ -2,10 +2,10 @@ import React, {forwardRef, useState, useEffect} from "react";
 import MaterialTable from 'material-table';
 import Modal from "react-bootstrap/Modal";
 import Select from "react-select";
+
 import {useForm} from "react-hook-form";
 
-import axios from "axios";
-import url from "../api-urls";
+import instance from "../utils/axiosAuthInstance";
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -26,9 +26,7 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 
 
 import "./styles/dashboard.scss"
-import data from "bootstrap/js/src/dom/data";
-
-
+import {useHistory} from "react-router-dom";
 
 const DashboardCandidateTable = () => {
 
@@ -49,6 +47,7 @@ const DashboardCandidateTable = () => {
     const [selectedSecondLanguage, setSelectedSecondLanguage] = useState(null);
     const [selectedFacultativeSubject, setSelectedFacultativeSubject] = useState(null);
 
+    const navigator = useHistory();
     const {register, handleSubmit, setValue, reset} = useForm();
 
 
@@ -59,19 +58,23 @@ const DashboardCandidateTable = () => {
     },[])
 
     const fetchActiveYear = () => {
-        axios.get(url + '/candidates/year/active/')
+        instance.get('/candidates/year/active/')
             .then((response) => {
                 setActiveYear(response.data.id);
-                console.log(response.data.id);
                 fetchNonValidatedCandidates(response.data.id);
             })
             .catch((error) => {
-                console.log(error);
+                if(error.response.status === 401){
+                    navigator.push('/dashboard-login');
+                }
+                else if(error.response.status === 403){
+                    navigator.push('/dashboard');
+                }
             })
     }
 
     const fetchNonValidatedCandidates = (id) => {
-        axios.get(url + `/candidates/candidate/year/validation/${id}/`)
+        instance.get(`/candidates/candidate/year/validation/${id}/`)
              .then((response) => {
                  let validationObj = response.data;
                  for(let i = 0 ; i < validationObj.length ; i++){
@@ -80,41 +83,54 @@ const DashboardCandidateTable = () => {
                  setTableData(validationObj);
               })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
               })
     }
 
     const fetchChoicesOptions = () => {
         let choices, choicesRenamed = [];
-        axios.get(url + `/candidates/yearchoice/${activeYear}/`)
+        instance.get(`/candidates/yearchoice/${activeYear}/`)
             .then((response) => {
                 choices = response.data;
                 for(let i = 0 ; i < choices.length ; i++){
                     choices[i] = choices[i].choice;
                     choicesRenamed.push({value: choices[i].id, label: choices[i].full_choice_name});
                 }
-                console.log(choicesRenamed);
                 setChoiceOptions(choicesRenamed);
                 
             })
             .catch((error) => {
-                console.log(error);
+                if(error.response.status === 401){
+                    navigator.push('/dashboard-login');
+                }
+                else if(error.response.status === 403){
+                    navigator.push('/dashboard');
+                }
             })
     }
 
     const fetchElementarySchools = () => {
         let elementarySchools, elementarySchoolsRenamed = []
-        axios.get(url + '/candidates/schools/')
+        instance.get('/candidates/schools/')
             .then((response) => {
                 elementarySchools = response.data;
                 for(let i = 0 ; i < elementarySchools.length ; i++){
                     elementarySchoolsRenamed.push({value: elementarySchools[i].id, label: elementarySchools[i].school_name});
                 }
                 setElementarySchoolOptions(elementarySchoolsRenamed);
-                console.log(elementarySchoolOptions)
             })
             .catch((error) => {
-                console.log(error);
+                if(error.response.status === 401){
+                    navigator.push('/dashboard-login');
+                }
+                else if(error.response.status === 403){
+                    navigator.push('/dashboard');
+                }
             })
     }
 
@@ -258,7 +274,7 @@ const DashboardCandidateTable = () => {
         if(data.k4 === true){
             data.k4 = 15.0;
         }
-        else if(data.k4 != true){
+        else if(data.k4 !== true){
             data.k4 = 0;
         }
 
@@ -268,15 +284,18 @@ const DashboardCandidateTable = () => {
         else if(data.k3 !== ""){
             data.k3 = parseFloat(data.k3);
         }
-        console.log(data);
-        axios.patch(url + `/candidates/candidate/details/${selectedRowData.id}/`, data)
+        instance.patch(`/candidates/candidate/details/${selectedRowData.id}/`, data)
              .then((response) => {
-                 console.log(response.data);
                  fetchNonValidatedCandidates(activeYear);
                  closeModal();
              })
              .catch((error) => {
-                 console.log(error);
+                 if(error.response.status === 401){
+                     navigator.push('/dashboard-login');
+                 }
+                 else if(error.response.status === 403){
+                     navigator.push('/dashboard');
+                 }
              })
     }
 
