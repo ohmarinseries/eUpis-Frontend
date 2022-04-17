@@ -30,7 +30,7 @@ const DashboardCandidatesClassesTable = () => {
     const [selectedRowDataSecond, setSelectedRowDataSecond] = useState();
 
     useEffect(() => {
-
+        // eslint-disable-next-line
     }, [])
 
     const columnsClasses = [

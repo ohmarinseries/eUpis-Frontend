@@ -30,13 +30,13 @@ const FormGeneralInfo = () => {
     useEffect(()=>{
         fetchActiveYear();
         fetchElementarySchools();
-    },[])
+        // eslint-disable-next-line
+    }, [])
 
     const fetchActiveYear = () => {
         instance
             .get('/candidates/year/active/')
             .then((res) => {
-                console.log(res.data.id);
                 setYear(res.data.id);
                 instance
                     .get(`/candidates/yearchoice/${res.data.id}/`)
@@ -47,7 +47,6 @@ const FormGeneralInfo = () => {
                             choicesRenamed.push({value: choices[i].id, label: choices[i].full_choice_name})
                         }
                         setChoicesOptions(choicesRenamed);
-                        console.log(choicesRenamed);
 
                     })
                     .catch((error)=>{
@@ -68,7 +67,6 @@ const FormGeneralInfo = () => {
                     elementarySchoolsRenamed.push({value: elementarySchools[i].id, label: elementarySchools[i].school_name});
                 }
                 setElementarySchoolOptions(elementarySchoolsRenamed);
-                console.log(elementarySchoolOptions)
             }))
             .catch((error) =>{
                 console.log(error);
@@ -108,12 +106,9 @@ const FormGeneralInfo = () => {
         data.validation_email = false;
 
         candidateObj = JSON.stringify(data);
-        console.log(candidateObj);
-        console.log(data);
         instance
             .post('/candidates/', data)
             .then((response) =>{
-                console.log(response.data);
                 navigation.push(`/thank-you/${response.data.email_contact}/${response.data.name}/${response.data.surname}`)
             })
             .catch((error)=>{

@@ -42,6 +42,7 @@ const DashboardSettingsChoicesTable = () => {
     useEffect(() => {
         fetchActiveYear();
         fetchChoices();
+        // eslint-disable-next-line
     }, [])
 
     const fetchChoices = () => {
@@ -50,11 +51,8 @@ const DashboardSettingsChoicesTable = () => {
                 setTableData(response.data);
             })
             .catch((error) => {
-                if(error.response.status === 401){
-                    navigator.push('/dashboard-login');
-                }
-                else if(error.response.status === 403){
-                    navigator.push('/dashboard');
+                if(error.response.status === 403){
+                    navigator.push('/dashboard')
                 }
             })
     }
@@ -67,11 +65,8 @@ const DashboardSettingsChoicesTable = () => {
                 setActiveYear(year);
             })
             .catch((error) => {
-                if(error.response.status === 401){
-                    navigator.push('/dashboard-login');
-                }
-                else if(error.response.status === 403){
-                    navigator.push('/dashboard');
+                if(error.response.status === 403){
+                    navigator.push('/dashboard')
                 }
             })
     }
@@ -123,11 +118,8 @@ const DashboardSettingsChoicesTable = () => {
                fetchChoices();
             })
            .catch((error) => {
-               if(error.response.status === 401){
-                   navigator.push('/dashboard-login');
-               }
-               else if(error.response.status === 403){
-                   navigator.push('/dashboard');
+               if(error.response.status === 403){
+                   navigator.push('/dashboard')
                }
            })
     }
@@ -139,11 +131,8 @@ const DashboardSettingsChoicesTable = () => {
                  closeEditModal();
              })
             .catch((error) => {
-                if(error.response.status === 401){
-                    navigator.push('/dashboard-login');
-                }
-                else if(error.response.status === 403){
-                    navigator.push('/dashboard');
+                if(error.response.status === 403){
+                    navigator.push('/dashboard')
                 }
             })
     }
@@ -154,11 +143,8 @@ const DashboardSettingsChoicesTable = () => {
                  fetchChoices();
              })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
              })
     }
@@ -172,11 +158,8 @@ const DashboardSettingsChoicesTable = () => {
                  setAddIsOpen(false);
              })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
              })
     }

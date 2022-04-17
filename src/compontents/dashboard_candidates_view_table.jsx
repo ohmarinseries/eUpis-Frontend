@@ -36,6 +36,7 @@ const DashboardCandidatesViewTable = () => {
     const [selectedRowData, setSelectedRowData] = useState(null);
     const [selectedYear, setSelectedYear] = useState();
     const [choiceOptions, setChoiceOptions] = useState({});
+    const [deadlineOptions, setDeadlineOptions] = useState({});
     const [elementarySchoolOptions, setElementarySchoolOptions] = useState({});
 
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -48,6 +49,7 @@ const DashboardCandidatesViewTable = () => {
     const [selectedSecondChoice, setSelectedSecondChoice] = useState();
     const [selectedThirdChoice, setSelectedThirdChoice] = useState();
     const [selectedCompetitions, setSelectedCompetitions] = useState();
+    const [selectedDeadline, setSelectedDeadline] = useState();
 
 
 
@@ -60,6 +62,7 @@ const DashboardCandidatesViewTable = () => {
 
     useEffect(() => {
         fetchYears();
+        // eslint-disable-next-line
     }, [])
 
     const fetchYears = () => {
@@ -73,14 +76,15 @@ const DashboardCandidatesViewTable = () => {
                 setYearOptions(yearRename);
             })
             .catch((error) => {
-                if(error.response.status === 401 || error.response.status === 403){
-                    navigator.push('/dashboard-login');
+                if(error.response.status === 403){
+                    navigator.push('/dashboard');
                 }
             })
     }
 
-    const fetchCandidates = (id) => {
-        instance.get(`/candidates/candidate/year/validated/${id}/`)
+    const fetchCandidates = (id, deadline) => {
+        if(deadline !== null){
+        instance.get(`/candidates/candidate/year/validated/${id}/`, {params: {deadline: deadline}})
              .then((response) => {
                 let candidateObj = response.data;
                 for(let i = 0 ; i < candidateObj.length ; i++){
@@ -102,10 +106,39 @@ const DashboardCandidatesViewTable = () => {
                 setTableData(candidateObj);
               })
              .catch((error) => {
-                 if(error.response.status === 401 || error.response.status === 403){
-                     navigator.push('/dashboard-login');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
               })
+        }
+        else{
+            instance.get(`/candidates/candidate/year/validated/${id}/`)
+                .then((response) => {
+                    let candidateObj = response.data;
+                    for(let i = 0 ; i < candidateObj.length ; i++){
+                        candidateObj[i].sign_number = `${candidateObj[i].first_choice.letter}/${candidateObj[i].candidate_number}`;
+
+                        if(candidateObj[i].position_first !== null){
+                            candidateObj[i].accepted_position = candidateObj[i].position_first;
+                        }
+                        else if(candidateObj[i].position_second !== null){
+                            candidateObj[i].accepted_position = candidateObj[i].position_second;
+                        }
+                        else if(candidateObj[i].position_third !== null){
+                            candidateObj[i].accepted_position = candidateObj[i].position_third;
+                        }
+                        else{
+                            candidateObj[i].accepted_position = 0;
+                        }
+                    }
+                    setTableData(candidateObj);
+                })
+                .catch((error) => {
+                    if(error.response.status === 403){
+                        navigator.push('/dashboard')
+                    }
+                })
+        }
 
     }
 
@@ -120,8 +153,8 @@ const DashboardCandidatesViewTable = () => {
                 setElementarySchoolOptions(elementarySchoolsRenamed);
             })
             .catch((error) => {
-                if(error.response.status === 401 || error.response.status === 403){
-                    navigator.push('/dashboard-login');
+                if(error.response.status === 403){
+                    navigator.push('/dashboard')
                 }
             })
     }
@@ -140,14 +173,29 @@ const DashboardCandidatesViewTable = () => {
 
             })
             .catch((error) => {
-                console.log(error);
+                if(error.response.status === 403){
+                    navigator.push('/dashboard')
+                }
             })
     }
 
     const onYearSelect = (id) => {
-        fetchCandidates(id);
+        setDeadlineOptions([
+            { value: 1, label: 'Prvi rok' },
+            { value: 2, label: 'Drugi rok' }
+        ]);
         fetchYearChoices(id);
         fetchElementarySchools()
+    }
+
+    const onDeadlineSelect = (deadline) => {
+        if(deadline === 1){
+            fetchCandidates(selectedYear, null);
+        }
+        else{
+            fetchCandidates(selectedYear, true);
+        }
+
     }
 
     const openModal = () => {
@@ -188,6 +236,13 @@ const DashboardCandidatesViewTable = () => {
             setValue('k6', selectedRowData.k6, {shouldValidate: false});
             setValue('k4', selectedRowData.k4, {shouldValidate: false});
             setValue('military_privileges', selectedRowData.military_privileges, {shouldValidate: false});
+
+            if(selectedRowData.k4 > 0){
+                setValue('k4', true, {shouldValidate: false});
+            }
+            else{
+                setValue('k4', false, {shouldValidate: false});
+            }
 
             if (selectedRowData.sex === "M") {
                 setSelectedSex({value: selectedRowData.sex, label: "Musko"});
@@ -288,8 +343,13 @@ const DashboardCandidatesViewTable = () => {
     }
 
     const onAbandoned = (id) => {
-        console.log('');
+       instance.patch(`/candidates/candidate/abandon/${id}/`)
+               .then((response) => {
 
+               })
+               .catch((error) => {
+
+               })
     }
 
     const onError = (error) =>{
@@ -377,6 +437,7 @@ const DashboardCandidatesViewTable = () => {
 
     ]
 
+
     const options = {
         paging : true,
         maxBodyHeight: '100%',
@@ -412,10 +473,16 @@ const DashboardCandidatesViewTable = () => {
     };
 
     return<div>
-      <div className="container d-flex flex-row justify-content-between align-content-center w-100 mb-4">  <Select options={yearOptions} onChange={e => {setSelectedYear(e.value)
-      onYearSelect(e.value)
-      }} /> </div>
-    <MaterialTable title={'Kandidati'} columns={columns} data={tableData} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
+      <div className="container d-flex flex-row justify-content-between align-content-center w-100 mb-4">
+          <Select options={yearOptions} onChange={e => {setSelectedYear(e.value)
+                onYearSelect(e.value)
+      }} />
+          <Select options={deadlineOptions} onChange = {e => {
+                setSelectedDeadline(e.value);
+                onDeadlineSelect(e.value);
+          }} />
+      </div>
+    <MaterialTable title={'Pregled'} columns={columns} data={tableData} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
         setSelectedRow(rowData.tableData.id);
         setSelectedRowData(rowData);
     }}
@@ -430,7 +497,7 @@ const DashboardCandidatesViewTable = () => {
             icon: () => <button className="btn btn-outline-dark rounded">Podigao dokumente</button>,
             tooltip:"Podigao dokumente",
             isFreeAction:true,
-            onClick:()=>console.log("Podigao dokumente")
+            onClick:()=>onAbandoned(selectedRowData.id)
         },
 
         ]}/>

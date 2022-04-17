@@ -34,6 +34,7 @@ const DashboardSettingsElementarySchoolTable = () => {
 
     useEffect(() => {
         fetchElementarySchools();
+        // eslint-disable-next-line
     }, [])
 
     const fetchElementarySchools = () => {
@@ -41,14 +42,9 @@ const DashboardSettingsElementarySchoolTable = () => {
              .then((response) => {
                  setTableData(response.data);
               })
-             .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
-                 }
-             })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     const openCreateModal = () => {
@@ -79,12 +75,9 @@ const DashboardSettingsElementarySchoolTable = () => {
                closeCreateModal();
               })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
-                 }
+                if(error.response.status === 403){
+                    navigator.push('/dashboard')
+                }
               })
     }
 
@@ -96,11 +89,8 @@ const DashboardSettingsElementarySchoolTable = () => {
                  closeEditModal();
              })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
               })
     }
@@ -111,11 +101,8 @@ const DashboardSettingsElementarySchoolTable = () => {
                 fetchElementarySchools();
               })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
              })
     }

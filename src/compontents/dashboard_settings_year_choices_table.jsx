@@ -37,6 +37,7 @@ const DashboardSettingsYearChoicesTable = () => {
 
     useEffect(() => {
         fetchActiveYear();
+        // eslint-disable-next-line
     }, [])
 
     const fetchActiveYear = () => {
@@ -47,11 +48,8 @@ const DashboardSettingsYearChoicesTable = () => {
                 fetchYearChoices(response.data.id);
             })
             .catch((error) => {
-                if(error.response.status === 401){
-                    navigator.push('/dashboard-login');
-                }
-                else if(error.response.status === 403){
-                    navigator.push('/dashboard');
+                if(error.response.status === 403){
+                    navigator.push('/dashboard')
                 }
              })}
 
@@ -62,11 +60,8 @@ const DashboardSettingsYearChoicesTable = () => {
                  setTableData(response.data);
              })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
              })
 
@@ -95,11 +90,8 @@ const DashboardSettingsYearChoicesTable = () => {
                  closeEditModal();
               })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
               })
     }
@@ -110,11 +102,8 @@ const DashboardSettingsYearChoicesTable = () => {
                 fetchYearChoices(activeYear);
              })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
              })
     }

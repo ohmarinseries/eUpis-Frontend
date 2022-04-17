@@ -10,7 +10,7 @@ const ThankYou = () => {
                 <h1>Hvala na prijavi! </h1>
               </div>
               <div>
-                  <Lottie options={{animationData:animationData, rendererSettings: {
+                  <Lottie alt="A" options={{animationData:animationData, rendererSettings: {
                           preserveAspectRatio: "xMidYMid slice"
                       }}} width={400} height={400} />
               </div>

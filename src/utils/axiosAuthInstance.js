@@ -23,18 +23,30 @@ instance.interceptors.response.use(
         return response;
     },
     async (error) => {
-        const request = error.config;
-        if (error.response.status === 403 || error.response.status === 401){
+        let request = error.config;
+        if (error.response.status === 401 && !request._retry){
             request._retry = true;
+            //DON'T JUDGE ME
            await axios.post(url + '/auth/jwt/refresh/', {'refresh' : localStorage.getItem('refresh')})
                       .then((response) => {
-                          console.log(response.data.access);
                           localStorage.setItem('access', response.data.access);
                           request.headers.Authorization = 'Bearer ' + localStorage.getItem('access')
-                          return axios(request)
-                      })
+                          if(request.method === 'get'){
+                              window.location.reload();
+                          }
+                          else{
+                              axios(request).then(() => {
+                                  window.location.reload();
+                              });
+                          }
 
-            return Promise.reject(error);
+                      })
+                      .catch((err) => {
+                          if(err.response.status === 401){
+                              window.location = '/dashboard-login';
+                          }
+                      })
+            return Promise.reject(error.response.data);
         }
     }
 )

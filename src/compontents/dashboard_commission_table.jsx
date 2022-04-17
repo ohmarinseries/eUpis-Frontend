@@ -39,6 +39,7 @@ const DashboardCommissionTable = () => {
 
     useEffect(() => {
         fetchCommission();
+        // eslint-disable-next-line
     }, [])
 
     const fetchCommission = () => {
@@ -47,11 +48,8 @@ const DashboardCommissionTable = () => {
                 setTableData(response.data);
             })
             .catch((error) => {
-                if(error.response.status === 401){
-                    navigator.push('/dashboard-login');
-                }
-                else if(error.response.status === 403){
-                    navigator.push('/dashboard');
+                if(error.response.status === 403){
+                    navigator.push('/dashboard')
                 }
             })
     }
@@ -91,11 +89,8 @@ const DashboardCommissionTable = () => {
                  closeCreateModal();
              })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
              })
     }
@@ -108,11 +103,8 @@ const DashboardCommissionTable = () => {
                  closeAdminCreateModal();
               })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
              })
     }
@@ -123,11 +115,8 @@ const DashboardCommissionTable = () => {
                 fetchCommission();
              })
             .catch((error) => {
-                if(error.response.status === 401){
-                    navigator.push('/dashboard-login');
-                }
-                else if(error.response.status === 403){
-                    navigator.push('/dashboard');
+                if(error.response.status === 403){
+                    navigator.push('/dashboard')
                 }
             })
     }

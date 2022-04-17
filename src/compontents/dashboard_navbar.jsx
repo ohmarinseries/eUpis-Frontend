@@ -16,8 +16,8 @@ const DashboardNavbar = () => {
                 <Navbar.Collapse id="responsive-navbar-nav" >
                 <Nav className="elements-navbar w-100 justify-content-end">
                     <NavDropdown title="Kandidati" id="navbarScrollingDropdown" style={{marginRight:"20px"}}>
-                        <NavDropdown.Item href="/dashboard/candidates/view">Pregled</NavDropdown.Item>
                         <NavDropdown.Item href="/dashboard/validation">Validacija</NavDropdown.Item>
+                        <NavDropdown.Item href="/dashboard/candidates/view">Pregled <span className="badge bg-dark text-light b-text-size">Admin</span></NavDropdown.Item>
                         <NavDropdown.Item href="/dashboard/candidates-classes">Razredi <span className="badge bg-dark text-light b-text-size">Admin</span></NavDropdown.Item>
                     </NavDropdown>
                     <NavDropdown title="Podešavanja" id="navbarScrollingDropdown" style={{marginRight:"20px"}}>

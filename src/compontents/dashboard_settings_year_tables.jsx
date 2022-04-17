@@ -32,13 +32,13 @@ const DashboardSettingsYearTables = () => {
     const [exportModalIsOpen, setExportIsOpen] = useState(false);
     const [tableData, setTableData] = useState([]);
 
-    const navigator = useHistory();
     const {register, handleSubmit, setValue, reset} = useForm();
 
-    const navigation = useHistory();
+    const navigator = useHistory();
 
     useEffect(() => {
         fetchYears();
+        // eslint-disable-next-line
     }, [])
 
     const fetchYears = () => {
@@ -47,11 +47,8 @@ const DashboardSettingsYearTables = () => {
                  setTableData(response.data);
              })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
              })
     }
@@ -93,14 +90,6 @@ const DashboardSettingsYearTables = () => {
         setEditIsOpen(false);
     }
 
-    const openSettingsModal = () => {
-        setSettingsIsOpen(true);
-    }
-
-    const closeSettingsModal = () => {
-        setSettingsIsOpen(false);
-    }
-
     const onCreate = (data) => {
         let yearObj = {engage_year: data.engage_year, first_deadline_min_points: data.first_deadline_min_points,
             second_deadline_min_points: data.second_deadline_min_points}
@@ -110,11 +99,8 @@ const DashboardSettingsYearTables = () => {
                  closeCreateModal();
               })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
              })
     }
@@ -133,11 +119,8 @@ const DashboardSettingsYearTables = () => {
                  closeEditModal();
               })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
               })
 
@@ -149,11 +132,8 @@ const DashboardSettingsYearTables = () => {
                  fetchYears();
               })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
              })
     }
@@ -255,17 +235,18 @@ const DashboardSettingsYearTables = () => {
                                            }
                                        }
                                    },
-                                   {
-                                       icon: () => <button className="btn btn-outline-dark rounded">Rang</button>,
-                                       tooltip:"Opcije za Upisnu godinu",
-                                       isFreeAction:true,
-                                       onClick:()=>openSettingsModal()
-                                   },
+
                                    {
                                        icon: () => <button className="btn btn-outline-dark rounded">Export</button>,
                                        tooltip:"Opcije za Upisnu godinu",
                                        isFreeAction:true,
                                        onClick:()=>openExportModal()
+                                   },
+                                   {
+                                       icon: () => <button className="btn btn-outline-dark rounded">Drugi Rok</button>,
+                                       tooltip:"Opcije za Upisnu godinu",
+                                       isFreeAction:true,
+                                       onClick:()=>console.log('a')
                                    },
 
 
@@ -329,31 +310,6 @@ const DashboardSettingsYearTables = () => {
                     </Modal.Footer>
                 </form>
             </Modal>
-
-            <Modal show={settingsModalIsOpen} close={closeSettingsModal} size="lg" onHide={closeSettingsModal} aria-labelledby="contained-modal-title-vcenter" centered>
-                <Modal.Header closeButton >
-                    <Modal.Title id="contained-modal-title-vcenter">
-                        Opcije za Godinu
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className="container d-flex flex-row align-content-center justify-content-around ">
-                        <div className="container d-flex flex-row justify-content-center align-content-center">
-                            <button className="btn btn-lg btn-outline-dark rounded">Rang Prvi Rok</button>
-                        </div>
-                        <div className="container d-flex flex-row justify-content-center align-content-center">
-                            <button className="btn btn-lg btn-outline-dark rounded">Rang Drugi Rok</button>
-                        </div>
-                        <div className="container d-flex flex-row justify-content-center align-content-center">
-                            <button className="btn btn-lg btn-outline-dark rounded">Resetiraj Rang</button>
-                        </div>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-
-                </Modal.Footer>
-            </Modal>
-
             <Modal show={exportModalIsOpen} close={closeExportModal} size="lg" onHide={closeExportModal} aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton >
                     <Modal.Title id="contained-modal-title-vcenter">

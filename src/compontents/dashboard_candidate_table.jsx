@@ -35,6 +35,7 @@ const DashboardCandidateTable = () => {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [tableData, setTableData] = useState([]);
     const [activeYear, setActiveYear] = useState(null);
+    const [activeDeadline, setActiveDeadline] = useState(null);
     const [choiceOptions, setChoiceOptions] = useState({});
     const [elementarySchoolOptions, setElementarySchoolOptions] = useState({});
 
@@ -51,30 +52,35 @@ const DashboardCandidateTable = () => {
     const {register, handleSubmit, setValue, reset} = useForm();
 
 
-    useEffect(() => {
-        fetchActiveYear();
+    useEffect(async () => {
+        await fetchActiveYear();
         fetchChoicesOptions();
         fetchElementarySchools();
-    },[])
+        // eslint-disable-next-line
+    }, [])
 
     const fetchActiveYear = () => {
         instance.get('/candidates/year/active/')
             .then((response) => {
                 setActiveYear(response.data.id);
-                fetchNonValidatedCandidates(response.data.id);
+                if(response.data.first_deadline_status){
+                    setActiveDeadline(response.data.first_deadline_status);
+                    fetchNonValidatedCandidates(response.data.id, response.data.second_deadline_status);
+                }
+                else if(response.data.second_deadline_status){
+                    setActiveDeadline(response.data.second_deadline_status);
+                    fetchNonValidatedCandidates(response.data.id, response.data.second_deadline_status);
+                }
+
             })
             .catch((error) => {
-                if(error.response.status === 401){
-                    navigator.push('/dashboard-login');
-                }
-                else if(error.response.status === 403){
-                    navigator.push('/dashboard');
-                }
+
             })
     }
 
-    const fetchNonValidatedCandidates = (id) => {
-        instance.get(`/candidates/candidate/year/validation/${id}/`)
+    const fetchNonValidatedCandidates = (id, deadline) => {
+        if(deadline !== null){
+        instance.get(`/candidates/candidate/year/validation/${id}/`, {params: {deadline: deadline}})
              .then((response) => {
                  let validationObj = response.data;
                  for(let i = 0 ; i < validationObj.length ; i++){
@@ -83,13 +89,22 @@ const DashboardCandidateTable = () => {
                  setTableData(validationObj);
               })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
-                 }
+
               })
+        }
+        else{
+            instance.get(`/candidates/candidate/year/validation/${id}/`)
+                .then((response) => {
+                    let validationObj = response.data;
+                    for(let i = 0 ; i < validationObj.length ; i++){
+                        validationObj[i].sign_number = `${validationObj[i].first_choice.letter}/${validationObj[i].candidate_number}`;
+                    }
+                    setTableData(validationObj);
+                })
+                .catch((error) => {
+
+                })
+        }
     }
 
     const fetchChoicesOptions = () => {
@@ -105,12 +120,7 @@ const DashboardCandidateTable = () => {
                 
             })
             .catch((error) => {
-                if(error.response.status === 401){
-                    navigator.push('/dashboard-login');
-                }
-                else if(error.response.status === 403){
-                    navigator.push('/dashboard');
-                }
+
             })
     }
 
@@ -125,12 +135,7 @@ const DashboardCandidateTable = () => {
                 setElementarySchoolOptions(elementarySchoolsRenamed);
             })
             .catch((error) => {
-                if(error.response.status === 401){
-                    navigator.push('/dashboard-login');
-                }
-                else if(error.response.status === 403){
-                    navigator.push('/dashboard');
-                }
+
             })
     }
 
@@ -286,21 +291,26 @@ const DashboardCandidateTable = () => {
         }
         instance.patch(`/candidates/candidate/details/${selectedRowData.id}/`, data)
              .then((response) => {
-                 fetchNonValidatedCandidates(activeYear);
+                 fetchNonValidatedCandidates(activeYear, activeDeadline);
                  closeModal();
              })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
+                 if(error.response.status === 403){
                      navigator.push('/dashboard');
                  }
              })
     }
 
     const onDelete = (id) => {
-
+        instance.delete(`/candidates/candidate/details/${id}/`)
+            .then((response) => {
+                fetchNonValidatedCandidates(activeYear, activeDeadline);
+            })
+            .catch((error) => {
+                if(error.response.status === 403){
+                    navigator.push('/dashboard');
+                }
+            })
     }
 
     const onError = (error) =>{
@@ -402,7 +412,7 @@ const DashboardCandidateTable = () => {
 
     return(
         <div>
-           <MaterialTable title={'Kandidati'} columns={columns} data={tableData} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
+           <MaterialTable title={'Validacija'} columns={columns} data={tableData} options={options} icons={tableIcons} onRowClick={(event, rowData) => {
                setSelectedRow(rowData.tableData.id);
                setSelectedRowData(rowData);
            }}
@@ -642,7 +652,6 @@ const DashboardCandidateTable = () => {
                     </Modal.Body>
                     <Modal.Footer>
                         <button type="submit" className="btn btn-success btn-lg btn-block mx-3">Validiraj</button>
-                        <button className="btn btn-danger btn-lg btn-block mx-3" > Obrisi </button>
                     </Modal.Footer>
                 </form>
             </Modal>

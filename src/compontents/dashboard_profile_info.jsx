@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {set, useForm} from "react-hook-form";
+import {useForm} from "react-hook-form";
 
-import axios from "axios";
 import instance from "../utils/axiosAuthInstance";
 
 const DashboardProfileInfo = () => {
@@ -11,11 +10,17 @@ const DashboardProfileInfo = () => {
     const [readOnly, setReadOnly] = useState(true);
 
     useEffect(() => {
-
+        fetchUser();
     }, [])
 
-    const fetchCommission = () => {
-
+    const fetchUser = () => {
+        instance.get('/auth/users/me/')
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     const onWrite = () => {

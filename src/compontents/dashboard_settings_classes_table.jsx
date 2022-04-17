@@ -43,6 +43,7 @@ const DashboardSettingsClassesTable = () => {
 
     useEffect(() => {
         fetchYears();
+        // eslint-disable-next-line
     }, [])
 
     const fetchYears = () => {
@@ -56,11 +57,8 @@ const DashboardSettingsClassesTable = () => {
                  setYearOptions(yearRenamed)
              })
             .catch((error) => {
-                if(error.response.status === 401){
-                    navigator.push('/dashboard-login');
-                }
-                else if(error.response.status === 403){
-                    navigator.push('/dashboard');
+                if(error.response.status === 403){
+                    navigator.push('/dashboard')
                 }
             })
     }
@@ -71,11 +69,8 @@ const DashboardSettingsClassesTable = () => {
                  setTableData(response.data);
              })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
              })
     }
@@ -91,11 +86,8 @@ const DashboardSettingsClassesTable = () => {
                 setChoiceOptions(choicesRenamed);
             })
             .catch((error) => {
-                if(error.response.status === 401){
-                    navigator.push('/dashboard-login');
-                }
-                else if(error.response.status === 403){
-                    navigator.push('/dashboard');
+                if(error.response.status === 403){
+                    navigator.push('/dashboard')
                 }
             })
     }
@@ -130,11 +122,8 @@ const DashboardSettingsClassesTable = () => {
                 closeEditModal();
              })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
              })
     }
@@ -147,11 +136,8 @@ const DashboardSettingsClassesTable = () => {
                  closeCreateModal();
              })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
              })
     }
@@ -162,11 +148,8 @@ const DashboardSettingsClassesTable = () => {
                  fetchYearClasses(selectedYear, selectedChoice);
              })
              .catch((error) => {
-                 if(error.response.status === 401){
-                     navigator.push('/dashboard-login');
-                 }
-                 else if(error.response.status === 403){
-                     navigator.push('/dashboard');
+                 if(error.response.status === 403){
+                     navigator.push('/dashboard')
                  }
              })
     }
